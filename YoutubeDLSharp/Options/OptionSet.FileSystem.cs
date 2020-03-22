@@ -6,13 +6,13 @@ namespace YoutubeDLSharp.Options
 {
     public partial class OptionSet
     {
-        private Option<string> batchFile = new Option<string>("--batch-file");
+        private Option<string> batchFile = new Option<string>("-a", "--batch-file");
         private Option<bool> id = new Option<bool>("--id");
-        private Option<string> output = new Option<string>("--output");
+        private Option<string> output = new Option<string>("-o", "--output");
         private Option<int?> autonumberStart = new Option<int?>("--autonumber-start");
         private Option<bool> restrictFilenames = new Option<bool>("--restrict-filenames");
-        private Option<bool> noOverwrites = new Option<bool>("--no-overwrites");
-        private Option<bool> doContinue = new Option<bool>("--continue");
+        private Option<bool> noOverwrites = new Option<bool>("-w", "--no-overwrites");
+        private Option<bool> doContinue = new Option<bool>("-c", "--continue");
         private Option<bool> noContinue = new Option<bool>("--no-continue");
         private Option<bool> noPart = new Option<bool>("--no-part");
         private Option<bool> noMtime = new Option<bool>("--no-mtime");

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
 
 namespace YoutubeDLSharp.Options
 {
@@ -6,14 +9,19 @@ namespace YoutubeDLSharp.Options
     /// Represents one youtube-dl option.
     /// </summary>
     /// <typeparam name="T">The type of the option.</typeparam>
-    public class Option<T>
+    public class Option<T> : IOption
     {
         private T value;
 
         /// <summary>
-        /// The string representation of the option flag.
+        /// The default string representation of the option flag.
         /// </summary>
-        public string OptionString { get; }
+        public string DefaultOptionString => OptionStrings.Last();
+
+        /// <summary>
+        /// An array of all possible string representations of the option flag.
+        /// </summary>
+        public string[] OptionStrings { get; }
 
         /// <summary>
         /// True if the option flag is set; false otherwise.
@@ -39,8 +47,37 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public Option(params string[] optionStrings)
         {
-            OptionString = optionStrings[0];
+            OptionStrings = optionStrings;
             IsSet = false;
+        }
+
+        /// <summary>
+        /// Sets the option value from a given string representation.
+        /// </summary>
+        /// <param name="s">The string (including the option flag).</param>
+        public void SetFromString(string s)
+        {
+            string[] split = s.Split(' ');
+            if (!OptionStrings.Contains(split[0]))
+                throw new ArgumentException("Given string does not match required format.");
+            if (Value is bool)
+            {
+                Value = (T)(object)OptionStrings.Contains(s);
+            }
+            else if (Value is Enum)
+            {
+                string titleCase = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(split[1]);
+                Value = (T)Enum.Parse(typeof(T), titleCase);
+            }
+            else if (Value is DateTime)
+            {
+                Value = (T)(object)DateTime.ParseExact(split[1], "yyyyMMdd", null);
+            }
+            else
+            {
+                TypeConverter conv = TypeDescriptor.GetConverter(typeof(T));
+                Value = (T)conv.ConvertFrom(split[1]);
+            }
         }
 
         public override string ToString()
@@ -56,7 +93,7 @@ namespace YoutubeDLSharp.Options
             else if (Value is string)
                 val = $" \"{Value}\"";
             else val = " " + Value;
-            return OptionString + val;
+            return DefaultOptionString + val;
         }
     }
 }

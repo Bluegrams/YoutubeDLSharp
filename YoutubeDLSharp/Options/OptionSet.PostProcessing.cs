@@ -6,12 +6,12 @@ namespace YoutubeDLSharp.Options
 {
     public partial class OptionSet
     {
-        private Option<bool> extractAudio = new Option<bool>("--extract-audio");
+        private Option<bool> extractAudio = new Option<bool>("-x", "--extract-audio");
         private Option<AudioConversionFormat> audioFormat = new Option<AudioConversionFormat>("--audio-format");
         private Option<byte?> audioQuality = new Option<byte?>("--audio-quality");
         private Option<VideoRecodeFormat> recodeVideo = new Option<VideoRecodeFormat>("--recode-video");
         private Option<string> postprocessorArgs = new Option<string>("--postprocessor-args");
-        private Option<bool> keepVideo = new Option<bool>("--keep-video");
+        private Option<bool> keepVideo = new Option<bool>("-k", "--keep-video");
         private Option<bool> noPostOverwrites = new Option<bool>("--no-post-overwrites");
         private Option<bool> embedSubs = new Option<bool>("--embed-subs");
         private Option<bool> embedThumbnail = new Option<bool>("--embed-thumbnail");

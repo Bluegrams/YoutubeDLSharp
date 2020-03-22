@@ -29,33 +29,32 @@ namespace YoutubeDLSharp.Tests
             Assert.AreEqual("Youtube", result.Data.ExtractorKey);
             Assert.AreEqual(new DateTime(2016, 02, 01), result.Data.UploadDate);
             Assert.IsNotNull(result.Data.Formats);
+            Assert.IsNotNull(result.Data.Tags);
             Assert.IsNull(result.Data.Entries);
         }
 
         [TestMethod]
-        public async Task TestVideoInformationTED()
+        public async Task TestVideoInformationVimeo()
         {
-            string url = "https://www.ted.com/talks/tim_urban_inside_the_mind_of_a_master_procrastinator";
+            string url = "https://vimeo.com/23608259";
             RunResult<VideoData> result = await ydl.RunVideoDataFetch(url);
             Assert.IsTrue(result.Success);
             Assert.AreEqual(MetadataType.Video, result.Data.ResultType);
-            Assert.AreEqual("Inside the mind of a master procrastinator", result.Data.Title);
-            Assert.AreEqual("TED", result.Data.ExtractorKey);
-            Assert.AreEqual("Tim Urban", result.Data.Uploader);
+            Assert.AreEqual("Cats in Tanks", result.Data.Title);
+            Assert.AreEqual("Vimeo", result.Data.ExtractorKey);
+            Assert.AreEqual("Whitehouse Post", result.Data.Uploader);
             Assert.IsNotNull(result.Data.Formats);
-            Assert.IsTrue(result.Data.Subtitles.ContainsKey("en"));
-            Assert.IsNotNull(result.Data.Tags);
             Assert.IsNull(result.Data.Entries);
         }
 
         [TestMethod]
         public async Task TestPlaylistInformation()
         {
-            string url = "https://www.youtube.com/playlist?list=PL7JgdmQ0zTfaqs4-oR7OD4I7WFLbL3N55";
+            string url = "https://www.youtube.com/playlist?list=PLD8804CB40CAB0EA5";
             RunResult<VideoData> result = await ydl.RunVideoDataFetch(url);
             Assert.IsTrue(result.Success);
             Assert.AreEqual(MetadataType.Playlist, result.Data.ResultType);
-            Assert.AreEqual("Top Tracks - Rachel Platten", result.Data.Title);
+            Assert.AreEqual("E.Grieg Peer Gynt Suite playlist", result.Data.Title);
             Assert.AreEqual("YoutubePlaylist", result.Data.ExtractorKey);
             Assert.IsNotNull(result.Data.Entries);
         }

@@ -9,8 +9,8 @@ namespace YoutubeDLSharp.Options
         private Option<string> proxy = new Option<string>("--proxy");
         private Option<int?> socketTimeout = new Option<int?>("--socket-timeout");
         private Option<string> sourceAddress = new Option<string>("--source-address");
-        private Option<bool> forceIpv4 = new Option<bool>("--force-ipv4");
-        private Option<bool> forceIpv6 = new Option<bool>("--force-ipv6");
+        private Option<bool> forceIpv4 = new Option<bool>("-4", "--force-ipv4");
+        private Option<bool> forceIpv6 = new Option<bool>("-6", "--force-ipv6");
 
         /// <summary>
         /// Use the specified HTTP/HTTPS/SOCKS proxy.

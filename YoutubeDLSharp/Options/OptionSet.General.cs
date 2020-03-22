@@ -6,10 +6,10 @@ namespace YoutubeDLSharp.Options
 {
     public partial class OptionSet
     {
-        private Option<bool> help = new Option<bool>("--help");
+        private Option<bool> help = new Option<bool>("-h", "--help");
         private Option<bool> version = new Option<bool>("--version");
-        private Option<bool> update = new Option<bool>("--update");
-        private Option<bool> ignoreErrors = new Option<bool>("--ignore-errors");
+        private Option<bool> update = new Option<bool>("-U", "--update");
+        private Option<bool> ignoreErrors = new Option<bool>("-i", "--ignore-errors");
         private Option<bool> abortOnError = new Option<bool>("--abort-on-error");
         private Option<bool> dumpUserAgent = new Option<bool>("--dump-user-agent");
         private Option<bool> listExtractors = new Option<bool>("--list-extractors");

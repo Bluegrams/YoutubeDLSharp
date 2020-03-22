@@ -6,29 +6,29 @@ namespace YoutubeDLSharp.Options
 {
     public partial class OptionSet
     {
-        private Option<bool> quiet = new Option<bool>("--quiet");
+        private Option<bool> quiet = new Option<bool>("-q", "--quiet");
         private Option<bool> noWarnings = new Option<bool>("--no-warnings");
-        private Option<bool> simulate = new Option<bool>("--simulate");
+        private Option<bool> simulate = new Option<bool>("-s", "--simulate");
         private Option<bool> skipDownload = new Option<bool>("--skip-download");
-        private Option<bool> getUrl = new Option<bool>("--get-url");
-        private Option<bool> getTitle = new Option<bool>("--get-title");
+        private Option<bool> getUrl = new Option<bool>("-g", "--get-url");
+        private Option<bool> getTitle = new Option<bool>("-e", "--get-title");
         private Option<bool> getId = new Option<bool>("--get-id");
         private Option<bool> getThumbnail = new Option<bool>("--get-thumbnail");
         private Option<bool> getDescription = new Option<bool>("--get-description");
         private Option<bool> getDuration = new Option<bool>("--get-duration");
         private Option<bool> getFilename = new Option<bool>("--get-filename");
         private Option<bool> getFormat = new Option<bool>("--get-format");
-        private Option<bool> dumpJson = new Option<bool>("--dump-json");
-        private Option<bool> dumpSingleJson = new Option<bool>("--dump-single-json");
+        private Option<bool> dumpJson = new Option<bool>("-j", "--dump-json");
+        private Option<bool> dumpSingleJson = new Option<bool>("-J", "--dump-single-json");
         private Option<bool> printJson = new Option<bool>("--print-json");
         private Option<bool> newline = new Option<bool>("--newline");
         private Option<bool> noProgress = new Option<bool>("--no-progress");
         private Option<bool> consoleTitle = new Option<bool>("--console-title");
-        private Option<bool> verbose = new Option<bool>("--verbose");
+        private Option<bool> verbose = new Option<bool>("-v", "--verbose");
         private Option<bool> dumpPages = new Option<bool>("--dump-pages");
         private Option<bool> writePages = new Option<bool>("--write-pages");
         private Option<bool> printTraffic = new Option<bool>("--print-traffic");
-        private Option<bool> callHome = new Option<bool>("--call-home");
+        private Option<bool> callHome = new Option<bool>("-C", "--call-home");
         private Option<bool> noCallHome = new Option<bool>("--no-call-home");
 
         /// <summary>

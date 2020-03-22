@@ -6,10 +6,10 @@ namespace YoutubeDLSharp.Options
 {
     public partial class OptionSet
     {
-        private Option<string> format = new Option<string>("--format");
+        private Option<string> format = new Option<string>("-f", "--format");
         private Option<bool> allFormats = new Option<bool>("--all-formats");
         private Option<bool> preferFreeFormats = new Option<bool>("--prefer-free-formats");
-        private Option<bool> listFormats = new Option<bool>("--list-formats");
+        private Option<bool> listFormats = new Option<bool>("-F", "--list-formats");
         private Option<bool> youtubeSkipDashManifest = new Option<bool>("--youtube-skip-dash-manifest");
         private Option<DownloadMergeFormat> mergeOutputFormat = new Option<DownloadMergeFormat>("--merge-output-format");
 

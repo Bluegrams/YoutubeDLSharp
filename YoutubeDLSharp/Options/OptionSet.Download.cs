@@ -6,8 +6,8 @@ namespace YoutubeDLSharp.Options
 {
     public partial class OptionSet
     {
-        private Option<long?> limitRate = new Option<long?>("--limit-rate");
-        private Option<int?> retries = new Option<int?>("--retries");
+        private Option<long?> limitRate = new Option<long?>("-r", "--limit-rate");
+        private Option<int?> retries = new Option<int?>("-R", "--retries");
         private Option<int?> fragmentRetries = new Option<int?>("--fragment-retries");
         private Option<bool> skipUnavailableFragments = new Option<bool>("--skip-unavailable-fragments");
         private Option<bool> abortOnUnavailableFragment = new Option<bool>("--abort-on-unavailable-fragment");

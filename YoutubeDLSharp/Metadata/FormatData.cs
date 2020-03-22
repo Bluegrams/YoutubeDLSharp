@@ -36,7 +36,7 @@ namespace YoutubeDLSharp.Metadata
         [JsonProperty("vbr")]
         public double? VideoBitrate { get; set; }
         [JsonProperty("fps")]
-        public int? FrameRate { get; set; }
+        public float? FrameRate { get; set; }
         [JsonProperty("vcodec")]
         public string VideoCodec { get; set; }
         [JsonProperty("container")]
