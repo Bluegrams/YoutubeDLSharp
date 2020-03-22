@@ -17,6 +17,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBox x:Name="txtUrl" Margin="0,12" FontSize="14"/>
             <Grid Grid.Row="1">
@@ -35,6 +36,8 @@
             </Grid>
             <ProgressBar x:Name="progDownload" Grid.Row="2" Height="20" Margin="0,12"
                          Maximum="1"/>
+            <TextBox x:Name="txtOutput" Grid.Row="3" IsReadOnly="True"
+                     Height="100" VerticalScrollBarVisibility="Visible"/>
         </Grid>
     </DockPanel>
 </Window>

@@ -14,6 +14,7 @@ namespace WpfDemoApp
         private bool audioOnly = false;
 
         private IProgress<DownloadProgress> progress;
+        private IProgress<string> output;
 
         public MainWindow()
         {
@@ -21,6 +22,7 @@ namespace WpfDemoApp
             this.DataContext = this;
             InitializeComponent();
             progress = new Progress<DownloadProgress>((p) => progDownload.Value = p.Progress);
+            output = new Progress<string>((s) => txtOutput.AppendText(s + Environment.NewLine));
         }
 
         public YoutubeDL YoutubeDL { get; }
@@ -57,13 +59,15 @@ namespace WpfDemoApp
             string url = txtUrl.Text;
             RunResult<string> result;
             IsNotDownloading = false;
+            txtOutput.Clear();
             if (AudioOnly)
             {
-               result = await YoutubeDL.RunAudioDownload(url, AudioConversionFormat.Mp3,progress: progress);
+               result = await YoutubeDL.RunAudioDownload(url, AudioConversionFormat.Mp3,progress: progress,
+                                            output: output);
             }
             else
             {
-                result = await YoutubeDL.RunVideoDownload(url, progress: progress);
+                result = await YoutubeDL.RunVideoDownload(url, progress: progress, output: output);
             }
             if (result.Success)
             {

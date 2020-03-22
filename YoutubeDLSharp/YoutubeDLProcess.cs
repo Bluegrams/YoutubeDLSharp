@@ -22,6 +22,13 @@ namespace YoutubeDLSharp
         private static Regex rgxPost = new Regex(@"\[ffmpeg\]\s+", RegexOptions.Compiled);
 
         /// <summary>
+        /// The path to the Python interpreter.
+        /// If this property is non-empty, youtube-dl will be run using the Python interpreter.
+        /// In this case, ExecutablePath should point to a non-binary, Python version of youtube-dl.
+        /// </summary>
+        public string PythonPath { get; set; }
+
+        /// <summary>
         /// The path to the youtube-dl executable.
         /// </summary>
         public string ExecutablePath { get; set; }
@@ -43,6 +50,9 @@ namespace YoutubeDLSharp
         {
             this.ExecutablePath = executablePath;
         }
+
+        internal string ConvertToArgs(string[] urls, OptionSet options)
+            => (urls != null ? String.Join(" ", urls) : String.Empty) + options.ToString();
 
         /// <summary>
         /// Invokes youtube-dl with the specified parameters and options.
@@ -68,15 +78,22 @@ namespace YoutubeDLSharp
             var process = new Process();
             var startInfo = new ProcessStartInfo()
             {
-                FileName = ExecutablePath,
                 CreateNoWindow = true,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
 
             };
-            startInfo.Arguments = urls != null ? String.Join(" ", urls) : String.Empty;
-            startInfo.Arguments += options.ToString();
+            if (!String.IsNullOrEmpty(PythonPath))
+            {
+                startInfo.FileName = PythonPath;
+                startInfo.Arguments = $"\"{ExecutablePath}\" {ConvertToArgs(urls, options)}";
+            }
+            else
+            {
+                startInfo.FileName = ExecutablePath;
+                startInfo.Arguments = ConvertToArgs(urls, options);
+            }
             process.EnableRaisingEvents = true;
             process.StartInfo = startInfo;
             var tcsOut = new TaskCompletionSource<bool>();
