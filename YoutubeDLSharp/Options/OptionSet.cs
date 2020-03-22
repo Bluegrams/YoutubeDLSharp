@@ -60,7 +60,7 @@ namespace YoutubeDLSharp.Options
             {
                 string line = lines[i].Trim();
                 // skip comments
-                if (line.StartsWith("#"))
+                if (line.StartsWith("#") || String.IsNullOrWhiteSpace(line))
                     continue;
                 string flag = line.Split(' ')[0];
                 IOption option = options.Where(o => o.OptionStrings.Contains(flag))

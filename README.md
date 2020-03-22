@@ -88,7 +88,7 @@ The project includes a demo WPF desktop app under [WpfDemoApp](WpfDemoApp/MainWi
 
 ### Advanced Usage
 
-YoutubeDLShatp uses the `OptionSet` class to model youtube-dl options.
+YoutubeDLSharp uses the `OptionSet` class to model youtube-dl options.
 The names of the option properties correspond to the names of youtube-dl, so defining a set of options can look like this:
 
 ```csharp
@@ -115,6 +115,22 @@ ytdlProc.ErrorReceived += (o, e) => Console.WriteLine("ERROR: " + e.Data);
 string[] urls = new[] { "https://github.com/ytdl-org/youtube-dl#options" };
 await ytdlProc.RunAsync(urls, options);
 ```
+
+#### Load/ Save configuration
+
+You can persist a youtube-dl configuration to a file and reload it:
+
+```csharp
+// Save to file
+var saveOptions = new OptionSet();
+saveOptions.WriteConfigFile("path\\to\\file");
+
+// Reload configuration
+OptionSet loadOptions = OptionSet.LoadConfigFile("path\\to\\file");
+```
+
+The file format is compatible with the format used by youtube-dl itself.
+For more, read https://github.com/ytdl-org/youtube-dl#configuration.
 
 ## Issues & Contributing
 

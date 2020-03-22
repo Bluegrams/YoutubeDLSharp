@@ -45,6 +45,7 @@ namespace YoutubeDLSharp.Tests
                 "-x",
                 "# extract to mp3",
                 "--audio-format mp3",
+                "",
                 "# Use this proxy",
                 "--proxy 127.0.0.1:3128",
                 "-o ~/Movies/%(title)s.%(ext)s"

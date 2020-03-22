@@ -12,10 +12,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>0.2.0</VersionPrefix>
     <BuildYear>$([System.DateTime]::Now.ToString(yy))</BuildYear>
     <BuildDay>$([System.DateTime]::Now.DayOfYear)</BuildDay>
     <AssemblyVersion>$(VersionPrefix).$(BuildYear)$(BuildDay)</AssemblyVersion>
+    <PackageReleaseNotes>https://github.com/Bluegrams/YoutubeDLSharp/blob/master/Changelog.md</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
