@@ -14,8 +14,8 @@ namespace YoutubeDLSharp.Options
         private Option<DownloadMergeFormat> mergeOutputFormat = new Option<DownloadMergeFormat>("--merge-output-format");
 
         /// <summary>
-        /// Video format code, see the "FORMAT
-        /// SELECTION" for all the info
+        /// Video format code, see the &quot;FORMAT
+        /// SELECTION&quot; for all the info
         /// </summary>
         public string Format { get => format.Value; set => format.Value = value; }
         /// <summary>

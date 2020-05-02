@@ -26,9 +26,9 @@ namespace YoutubeDLSharp.Options
         private Option<bool> rmCacheDir = new Option<bool>("--rm-cache-dir");
 
         /// <summary>
-        /// File containing URLs to download ('-' for
+        /// File containing URLs to download (&#x27;-&#x27; for
         /// stdin), one URL per line. Lines starting
-        /// with '#', ';' or ']' are considered as
+        /// with &#x27;#&#x27;, &#x27;;&#x27; or &#x27;]&#x27; are considered as
         /// comments and ignored.
         /// </summary>
         public string BatchFile { get => batchFile.Value; set => batchFile.Value = value; }
@@ -37,8 +37,8 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool Id { get => id.Value; set => id.Value = value; }
         /// <summary>
-        /// Output filename template, see the "OUTPUT
-        /// TEMPLATE" for all the info
+        /// Output filename template, see the &quot;OUTPUT
+        /// TEMPLATE&quot; for all the info
         /// </summary>
         public string Output { get => output.Value; set => output.Value = value; }
         /// <summary>
@@ -48,7 +48,7 @@ namespace YoutubeDLSharp.Options
         public int? AutonumberStart { get => autonumberStart.Value; set => autonumberStart.Value = value; }
         /// <summary>
         /// Restrict filenames to only ASCII
-        /// characters, and avoid "&" and spaces in
+        /// characters, and avoid &quot;&amp;&quot; and spaces in
         /// filenames
         /// </summary>
         public bool RestrictFilenames { get => restrictFilenames.Value; set => restrictFilenames.Value = value; }
@@ -93,7 +93,7 @@ namespace YoutubeDLSharp.Options
         public bool WriteAnnotations { get => writeAnnotations.Value; set => writeAnnotations.Value = value; }
         /// <summary>
         /// JSON file containing the video information
-        /// (created with the "--write-info-json"
+        /// (created with the &quot;--write-info-json&quot;
         /// option)
         /// </summary>
         public string LoadInfoJson { get => loadInfoJson.Value; set => loadInfoJson.Value = value; }
@@ -105,12 +105,11 @@ namespace YoutubeDLSharp.Options
         /// <summary>
         /// Location in the filesystem where youtube-dl
         /// can store some downloaded information
-        /// permanently. By default
-        /// $XDG_CACHE_HOME/youtube-dl or
-        /// ~/.cache/youtube-dl . At the moment, only
-        /// YouTube player files (for videos with
-        /// obfuscated signatures) are cached, but that
-        /// may change.
+        /// permanently. By default $XDG_CACHE_HOME
+        /// /youtube-dl or ~/.cache/youtube-dl . At the
+        /// moment, only YouTube player files (for
+        /// videos with obfuscated signatures) are
+        /// cached, but that may change.
         /// </summary>
         public string CacheDir { get => cacheDir.Value; set => cacheDir.Value = value; }
         /// <summary>

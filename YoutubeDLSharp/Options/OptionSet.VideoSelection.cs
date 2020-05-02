@@ -39,11 +39,11 @@ namespace YoutubeDLSharp.Options
         /// <summary>
         /// Playlist video items to download. Specify
         /// indices of the videos in the playlist
-        /// separated by commas like: "--playlist-items
-        /// 1,2,5,8" if you want to download videos
+        /// separated by commas like: &quot;--playlist-items
+        /// 1,2,5,8&quot; if you want to download videos
         /// indexed 1, 2, 5, 8 in the playlist. You can
-        /// specify range: "--playlist-items
-        /// 1-3,7,10-13", it will download the videos
+        /// specify range: &quot;--playlist-items
+        /// 1-3,7,10-13&quot;, it will download the videos
         /// at index 1, 2, 3, 7, 10, 11, 12 and 13.
         /// </summary>
         public string PlaylistItems { get => playlistItems.Value; set => playlistItems.Value = value; }
@@ -97,15 +97,15 @@ namespace YoutubeDLSharp.Options
         public long? MaxViews { get => maxViews.Value; set => maxViews.Value = value; }
         /// <summary>
         /// Generic video filter. Specify any key (see
-        /// the "OUTPUT TEMPLATE" for a list of
+        /// the &quot;OUTPUT TEMPLATE&quot; for a list of
         /// available keys) to match if the key is
         /// present, !key to check if the key is not
-        /// present, key > NUMBER (like "comment_count
-        /// > 12", also works with >=, <, <=, !=, =) to
-        /// compare against a number, key = 'LITERAL'
-        /// (like "uploader = 'Mike Smith'", also works
+        /// present, key &gt; NUMBER (like &quot;comment_count
+        /// &gt; 12&quot;, also works with &gt;=, &lt;, &lt;=, !=, =) to
+        /// compare against a number, key = &#x27;LITERAL&#x27;
+        /// (like &quot;uploader = &#x27;Mike Smith&#x27;&quot;, also works
         /// with !=) to match against a string literal
-        /// and & to require multiple matches. Values
+        /// and &amp; to require multiple matches. Values
         /// which are not known are excluded unless you
         /// put a question mark (?) after the operator.
         /// For example, to only match videos that have
@@ -113,8 +113,8 @@ namespace YoutubeDLSharp.Options
         /// less than 50 times (or the dislike
         /// functionality is not available at the given
         /// service), but who also have a description,
-        /// use --match-filter "like_count > 100 &
-        /// dislike_count <? 50 & description" .
+        /// use --match-filter &quot;like_count &gt; 100 &amp;
+        /// dislike_count &lt;? 50 &amp; description&quot; .
         /// </summary>
         public string MatchFilter { get => matchFilter.Value; set => matchFilter.Value = value; }
         /// <summary>

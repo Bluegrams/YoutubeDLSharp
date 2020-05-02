@@ -32,9 +32,9 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool ExtractAudio { get => extractAudio.Value; set => extractAudio.Value = value; }
         /// <summary>
-        /// Specify audio format: "best", "aac",
-        /// "flac", "mp3", "m4a", "opus", "vorbis", or
-        /// "wav"; "best" by default; No effect without
+        /// Specify audio format: &quot;best&quot;, &quot;aac&quot;,
+        /// &quot;flac&quot;, &quot;mp3&quot;, &quot;m4a&quot;, &quot;opus&quot;, &quot;vorbis&quot;, or
+        /// &quot;wav&quot;; &quot;best&quot; by default; No effect without
         /// -x
         /// </summary>
         public AudioConversionFormat AudioFormat { get => audioFormat.Value; set => audioFormat.Value = value; }
@@ -86,14 +86,14 @@ namespace YoutubeDLSharp.Options
         /// expression with named capture groups may
         /// also be used. The parsed parameters replace
         /// existing values. Example: --metadata-from-
-        /// title "%(artist)s - %(title)s" matches a
-        /// title like "Coldplay - Paradise". Example
+        /// title &quot;%(artist)s - %(title)s&quot; matches a
+        /// title like &quot;Coldplay - Paradise&quot;. Example
         /// (regex): --metadata-from-title
-        /// "(?P<artist>.+?) - (?P<title>.+)"
+        /// &quot;(?P&lt;artist&gt;.+?) - (?P&lt;title&gt;.+)&quot;
         /// </summary>
         public string MetadataFromTitle { get => metadataFromTitle.Value; set => metadataFromTitle.Value = value; }
         /// <summary>
-        /// Write metadata to the video file's xattrs
+        /// Write metadata to the video file&#x27;s xattrs
         /// (using dublin core and xdg standards)
         /// </summary>
         public bool Xattrs { get => xattrs.Value; set => xattrs.Value = value; }
@@ -123,9 +123,9 @@ namespace YoutubeDLSharp.Options
         public string FfmpegLocation { get => ffmpegLocation.Value; set => ffmpegLocation.Value = value; }
         /// <summary>
         /// Execute a command on the file after
-        /// downloading, similar to find's -exec
-        /// syntax. Example: --exec 'adb push {}
-        /// /sdcard/Music/ && rm {}'
+        /// downloading, similar to find&#x27;s -exec
+        /// syntax. Example: --exec &#x27;adb push {}
+        /// /sdcard/Music/ &amp;&amp; rm {}&#x27;
         /// </summary>
         public string Exec { get => exec.Value; set => exec.Value = value; }
         /// <summary>

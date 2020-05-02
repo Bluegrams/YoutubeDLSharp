@@ -82,7 +82,7 @@ namespace YoutubeDLSharp.Options
         public bool GetFormat { get => getFormat.Value; set => getFormat.Value = value; }
         /// <summary>
         /// Simulate, quiet but print JSON information.
-        /// See the "OUTPUT TEMPLATE" for a description
+        /// See the &quot;OUTPUT TEMPLATE&quot; for a description
         /// of available keys.
         /// </summary>
         public bool DumpJson { get => dumpJson.Value; set => dumpJson.Value = value; }

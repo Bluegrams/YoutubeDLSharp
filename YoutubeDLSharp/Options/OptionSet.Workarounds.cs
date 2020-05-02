@@ -41,7 +41,7 @@ namespace YoutubeDLSharp.Options
         public string Referer { get => referer.Value; set => referer.Value = value; }
         /// <summary>
         /// Specify a custom HTTP header and its value,
-        /// separated by a colon ':'. You can use this
+        /// separated by a colon &#x27;:&#x27;. You can use this
         /// option multiple times
         /// </summary>
         public string AddHeader { get => addHeader.Value; set => addHeader.Value = value; }

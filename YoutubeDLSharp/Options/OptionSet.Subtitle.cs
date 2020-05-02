@@ -33,8 +33,8 @@ namespace YoutubeDLSharp.Options
         public bool ListSubs { get => listSubs.Value; set => listSubs.Value = value; }
         /// <summary>
         /// Subtitle format, accepts formats
-        /// preference, for example: "srt" or
-        /// "ass/srt/best"
+        /// preference, for example: &quot;srt&quot; or
+        /// &quot;ass/srt/best&quot;
         /// </summary>
         public string SubFormat { get => subFormat.Value; set => subFormat.Value = value; }
         /// <summary>

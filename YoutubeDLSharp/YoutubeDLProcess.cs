@@ -17,7 +17,7 @@ namespace YoutubeDLSharp
         // the regex used to match the currently downloaded video of a playlist.
         private static Regex rgxPlaylist = new Regex(@"Downloading video (\d+) of (\d+)", RegexOptions.Compiled);
         // the regex used for matching download progress information.
-        private static Regex rgxProgress = new Regex(@"\[download\]\s+([\d\.]+)%", RegexOptions.Compiled);
+        private static Regex rgxProgress = new Regex(@"\[download\]\s+([\d\.]+)?%?", RegexOptions.Compiled);
         // the regex used to match the beginning of post-processing.
         private static Regex rgxPost = new Regex(@"\[ffmpeg\]\s+", RegexOptions.Compiled);
 
@@ -107,7 +107,9 @@ namespace YoutubeDLSharp
                 Match match;
                 if ((match = rgxProgress.Match(e.Data)).Success)
                 {
-                    var progValue = float.Parse(match.Groups[1].ToString(), CultureInfo.InvariantCulture) / 100.0f;
+                    float progValue = 0f;
+                    if (match.Groups.Count > 1 && match.Groups[1].Length > 0)
+                        progValue = float.Parse(match.Groups[1].ToString(), CultureInfo.InvariantCulture) / 100.0f;
                     progress?.Report(new DownloadProgress(DownloadState.Downloading, progValue));
                 }
                 else if ((match = rgxPost.Match(e.Data)).Success)

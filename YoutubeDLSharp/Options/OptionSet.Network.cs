@@ -17,7 +17,7 @@ namespace YoutubeDLSharp.Options
         /// To enable SOCKS proxy, specify a proper
         /// scheme. For example
         /// socks5://127.0.0.1:1080/. Pass in an empty
-        /// string (--proxy "") for direct connection
+        /// string (--proxy &quot;&quot;) for direct connection
         /// </summary>
         public string Proxy { get => proxy.Value; set => proxy.Value = value; }
         /// <summary>

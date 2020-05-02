@@ -68,12 +68,12 @@ namespace YoutubeDLSharp.Options
         public bool ForceGenericExtractor { get => forceGenericExtractor.Value; set => forceGenericExtractor.Value = value; }
         /// <summary>
         /// Use this prefix for unqualified URLs. For
-        /// example "gvsearch2:" downloads two videos
-        /// from google videos for youtube-dl "large
-        /// apple". Use the value "auto" to let
-        /// youtube-dl guess ("auto_warning" to emit a
-        /// warning when guessing). "error" just throws
-        /// an error. The default value "fixup_error"
+        /// example &quot;gvsearch2:&quot; downloads two videos
+        /// from google videos for youtube-dl &quot;large
+        /// apple&quot;. Use the value &quot;auto&quot; to let
+        /// youtube-dl guess (&quot;auto_warning&quot; to emit a
+        /// warning when guessing). &quot;error&quot; just throws
+        /// an error. The default value &quot;fixup_error&quot;
         /// repairs broken URLs, but emits an error if
         /// this is not possible instead of searching.
         /// </summary>

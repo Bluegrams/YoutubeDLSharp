@@ -31,12 +31,12 @@ namespace YoutubeDLSharp.Options
         public long? LimitRate { get => limitRate.Value; set => limitRate.Value = value; }
         /// <summary>
         /// Number of retries (default is 10), or
-        /// "infinite".
+        /// &quot;infinite&quot;.
         /// </summary>
         public int? Retries { get => retries.Value; set => retries.Value = value; }
         /// <summary>
         /// Number of retries for a fragment (default
-        /// is 10), or "infinite" (DASH, hlsnative and
+        /// is 10), or &quot;infinite&quot; (DASH, hlsnative and
         /// ISM)
         /// </summary>
         public int? FragmentRetries { get => fragmentRetries.Value; set => fragmentRetries.Value = value; }
