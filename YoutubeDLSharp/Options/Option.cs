@@ -66,17 +66,17 @@ namespace YoutubeDLSharp.Options
             }
             else if (Value is Enum)
             {
-                string titleCase = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(split[1]);
+                string titleCase = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(split[1].Trim('"'));
                 Value = (T)Enum.Parse(typeof(T), titleCase);
             }
             else if (Value is DateTime)
             {
-                Value = (T)(object)DateTime.ParseExact(split[1], "yyyyMMdd", null);
+                Value = (T)(object)DateTime.ParseExact(split[1].Trim('"'), "yyyyMMdd", null);
             }
             else
             {
                 TypeConverter conv = TypeDescriptor.GetConverter(typeof(T));
-                Value = (T)conv.ConvertFrom(split[1]);
+                Value = (T)conv.ConvertFrom(split[1].Trim('"'));
             }
         }
 

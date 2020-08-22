@@ -17,7 +17,7 @@ namespace YoutubeDLSharp
     /// </summary>
     public class YoutubeDL
     {
-        private static Regex rgxFile = new Regex("echo\\s\\\"(.*)\\\"", RegexOptions.Compiled);
+        private static Regex rgxFile = new Regex("echo\\s\\\"?(.*)\\\"?", RegexOptions.Compiled);
 
         protected ProcessRunner runner;
 
@@ -114,11 +114,16 @@ namespace YoutubeDLSharp
         /// <param name="url">The URL of the video to fetch information for.</param>
         /// <param name="ct">A CancellationToken used to cancel the process.</param>
         /// <param name="flat">If set to true, does not extract information for each video in a playlist.</param>
+        /// <param name="overrideOptions">Override options of the default option set for this run.</param>
         /// <returns>A RunResult object containing a VideoData object with the requested video information.</returns>
         public async Task<RunResult<VideoData>> RunVideoDataFetch(string url,
-            CancellationToken ct = default, bool flat = true)
+            CancellationToken ct = default, bool flat = true, OptionSet overrideOptions = null)
         {
             var opts = GetDownloadOptions();
+            if (overrideOptions != null)
+            {
+                opts = opts.OverrideOptions(overrideOptions);
+            }
             opts.DumpSingleJson = true;
             opts.FlatPlaylist = flat;
             VideoData videoData = null;
@@ -138,15 +143,20 @@ namespace YoutubeDLSharp
         /// <param name="ct">A CancellationToken used to cancel the download.</param>
         /// <param name="progress">A progress provider used to get download progress information.</param>
         /// <param name="output">A progress provider used to capture the standard output.</param>
+        /// <param name="overrideOptions">Override options of the default option set for this run.</param>
         /// <returns>A RunResult object containing the path to the downloaded and converted video.</returns>
         public async Task<RunResult<string>> RunVideoDownload(string url,
             string format = "bestvideo+bestaudio/best",
             DownloadMergeFormat mergeFormat = DownloadMergeFormat.Unspecified,
             VideoRecodeFormat recodeFormat = VideoRecodeFormat.None,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null)
         {
             var opts = GetDownloadOptions();
+            if (overrideOptions != null)
+            {
+                opts = opts.OverrideOptions(overrideOptions);
+            }
             opts.Format = format;
             opts.MergeOutputFormat = mergeFormat;
             opts.RecodeVideo = recodeFormat;
@@ -159,7 +169,7 @@ namespace YoutubeDLSharp
                 var match = rgxFile.Match(e.Data);
                 if (match.Success)
                 {
-                    outputFile = match.Groups[1].ToString();
+                    outputFile = match.Groups[1].ToString().Trim('"');
                     progress?.Report(new DownloadProgress(DownloadState.Success, data: outputFile));
                 }
                 output?.Report(e.Data);
@@ -180,6 +190,7 @@ namespace YoutubeDLSharp
         /// <param name="ct">A CancellationToken used to cancel the download.</param>
         /// <param name="progress">A progress provider used to get download progress information.</param>
         /// <param name="output">A progress provider used to capture the standard output.</param>
+        /// <param name="overrideOptions">Override options of the default option set for this run.</param>
         /// <returns>A RunResult object containing the paths to the downloaded and converted videos.</returns>
         public async Task<RunResult<string[]>> RunVideoPlaylistDownload(string url,
             int? start = 1, int? end = null,
@@ -187,9 +198,13 @@ namespace YoutubeDLSharp
             string format = "bestvideo+bestaudio/best",
             VideoRecodeFormat recodeFormat = VideoRecodeFormat.None,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null)
         {
             var opts = GetDownloadOptions();
+            if (overrideOptions != null)
+            {
+                opts = opts.OverrideOptions(overrideOptions);
+            }
             opts.NoPlaylist = false;
             opts.PlaylistStart = start;
             opts.PlaylistEnd = end;
@@ -206,7 +221,7 @@ namespace YoutubeDLSharp
                 var match = rgxFile.Match(e.Data);
                 if (match.Success)
                 {
-                    var file = match.Groups[1].ToString();
+                    var file = match.Groups[1].ToString().Trim('"');
                     outputFiles.Add(file);
                     progress?.Report(new DownloadProgress(DownloadState.Success, data: file));
                 }
@@ -224,12 +239,17 @@ namespace YoutubeDLSharp
         /// <param name="ct">A CancellationToken used to cancel the download.</param>
         /// <param name="progress">A progress provider used to get download progress information.</param>
         /// <param name="output">A progress provider used to capture the standard output.</param>
+        /// <param name="overrideOptions">Override options of the default option set for this run.</param>
         /// <returns>A RunResult object containing the path to the downloaded and converted video.</returns>
         public async Task<RunResult<string>> RunAudioDownload(string url, AudioConversionFormat format,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null)
         {
             var opts = GetDownloadOptions();
+            if (overrideOptions != null)
+            {
+                opts = opts.OverrideOptions(overrideOptions);
+            }
             opts.Format = "bestaudio/best";
             opts.ExtractAudio = true;
             opts.AudioFormat = format;
@@ -243,7 +263,7 @@ namespace YoutubeDLSharp
                 var match = rgxFile.Match(e.Data);
                 if (match.Success)
                 {
-                    outputFile = match.Groups[1].ToString();
+                    outputFile = match.Groups[1].ToString().Trim('"');
                     progress?.Report(new DownloadProgress(DownloadState.Success, data: outputFile));
                 }
                 output?.Report(e.Data);
@@ -263,15 +283,20 @@ namespace YoutubeDLSharp
         /// <param name="ct">A CancellationToken used to cancel the download.</param>
         /// <param name="progress">A progress provider used to get download progress information.</param>
         /// <param name="output">A progress provider used to capture the standard output.</param>
+        /// <param name="overrideOptions">Override options of the default option set for this run.</param>
         /// <returns>A RunResult object containing the paths to the downloaded and converted videos.</returns>
         public async Task<RunResult<string[]>> RunAudioPlaylistDownload(string url,
             int? start = 1, int? end = null,
             int[] items = null, AudioConversionFormat format = AudioConversionFormat.Best,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null)
         {
             var outputFiles = new List<string>();
             var opts = GetDownloadOptions();
+            if (overrideOptions != null)
+            {
+                opts = opts.OverrideOptions(overrideOptions);
+            }
             opts.NoPlaylist = false;
             opts.PlaylistStart = start;
             opts.PlaylistEnd = end;
@@ -288,7 +313,7 @@ namespace YoutubeDLSharp
                 var match = rgxFile.Match(e.Data);
                 if (match.Success)
                 {
-                    var file = match.Groups[1].ToString();
+                    var file = match.Groups[1].ToString().Trim('"');
                     outputFiles.Add(file);
                     progress?.Report(new DownloadProgress(DownloadState.Success, data: file));
                 }

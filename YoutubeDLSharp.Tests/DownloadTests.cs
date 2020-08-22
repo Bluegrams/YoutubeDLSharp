@@ -66,6 +66,25 @@ namespace YoutubeDLSharp.Tests
             downloadedFiles.Add(file);
         }
 
+        [TestMethod]
+        public async Task TestVideoDownloadWithOverrideOptions()
+        {
+            var overrideOptions = new OptionSet()
+            {
+                Output = "%(extractor)s_%(title)s_%(upload_date)s.%(ext)s",
+                RestrictFilenames = true,
+                RecodeVideo = VideoRecodeFormat.Mp4
+            };
+            var result = await ydl.RunVideoDownload(URL, format: "best", overrideOptions: overrideOptions);
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(String.Empty, String.Join("", result.ErrorOutput));
+            string file = result.Data;
+            Assert.IsTrue(File.Exists(file));
+            Assert.AreEqual(".mp4", Path.GetExtension(file));
+            Assert.AreEqual("youtube_TEST_VIDEO_20070221", Path.GetFileNameWithoutExtension(file));
+            downloadedFiles.Add(file);
+        }
+
         [ClassCleanup]
         public static void Cleanup()
         {

@@ -5,7 +5,7 @@ using YoutubeDLSharp.Options;
 namespace YoutubeDLSharp.Tests
 {
     [TestClass]
-    public class OptionsFromStringTests
+    public class OptionSetTests
     {
         [TestMethod]
         public void TestSimpleOptionFromString()
@@ -55,6 +55,32 @@ namespace YoutubeDLSharp.Tests
             Assert.AreEqual(AudioConversionFormat.Mp3, opts.AudioFormat);
             Assert.AreEqual("127.0.0.1:3128", opts.Proxy);
             Assert.AreEqual("~/Movies/%(title)s.%(ext)s", opts.Output);
+        }
+
+        [TestMethod]
+        public void TestOptionSetOverrideOptions()
+        {
+            var originalOptions = new OptionSet()
+            {
+                MergeOutputFormat = DownloadMergeFormat.Mp4,
+                ExtractAudio = true,
+                AudioFormat = AudioConversionFormat.Wav,
+                AudioQuality = 0,
+                Username = "bob",
+                Verbose = true
+            };
+            var overrideOptions = new OptionSet()
+            {
+                MergeOutputFormat = DownloadMergeFormat.Mkv,
+                Password = "passw0rd"
+            };
+            var newOptions = originalOptions.OverrideOptions(overrideOptions);
+            Assert.AreEqual(AudioConversionFormat.Wav, newOptions.AudioFormat);
+            Assert.AreEqual((byte)0, newOptions.AudioQuality);
+            Assert.IsTrue(newOptions.Verbose);
+            Assert.AreEqual(DownloadMergeFormat.Mkv, newOptions.MergeOutputFormat);
+            Assert.AreEqual("bob", newOptions.Username);
+            Assert.AreEqual("passw0rd", newOptions.Password);
         }
     }
 }
