@@ -29,6 +29,18 @@ namespace YoutubeDLSharp
         /// </summary>
         public float Progress { get; }
         /// <summary>
+        /// The total download size string as outputted by youtube-dl.
+        /// </summary>
+        public string TotalDownloadSize { get; }
+        /// <summary>
+        /// The download speed string as outputted by youtube-dl.
+        /// </summary>
+        public string DownloadSpeed { get; }
+        /// <summary>
+        /// The estimated remaining time of the download as outputted by youtube-dl.
+        /// </summary>
+        public string ETA { get; }
+        /// <summary>
         /// The current video index (starting at 1) if mutliple items are downloaded at once.
         /// </summary>
         public int VideoIndex { get; }
@@ -40,10 +52,17 @@ namespace YoutubeDLSharp
         /// <summary>
         /// Creates a new instance of class DownloadProgress.
         /// </summary>
-        public DownloadProgress(DownloadState status, float progress = 0, int index = 1, string data = null)
+        public DownloadProgress(
+            DownloadState status, float progress = 0,
+            string totalDownloadSize = null, string downloadSpeed = null, string eta = null,
+            int index = 1, string data = null
+        )
         {
             this.State = status;
             this.Progress = progress;
+            this.TotalDownloadSize = totalDownloadSize;
+            this.DownloadSpeed = downloadSpeed;
+            this.ETA = eta;
             this.VideoIndex = index;
             this.Data = data;
         }

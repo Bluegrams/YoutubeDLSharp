@@ -58,6 +58,7 @@ namespace YoutubeDLSharp.Options
         public void SetFromString(string s)
         {
             string[] split = s.Split(' ');
+            string stringValue = s.Substring(split[0].Length).Trim().Trim('"');
             if (!OptionStrings.Contains(split[0]))
                 throw new ArgumentException("Given string does not match required format.");
             if (Value is bool)
@@ -66,17 +67,17 @@ namespace YoutubeDLSharp.Options
             }
             else if (Value is Enum)
             {
-                string titleCase = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(split[1].Trim('"'));
+                string titleCase = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(stringValue);
                 Value = (T)Enum.Parse(typeof(T), titleCase);
             }
             else if (Value is DateTime)
             {
-                Value = (T)(object)DateTime.ParseExact(split[1].Trim('"'), "yyyyMMdd", null);
+                Value = (T)(object)DateTime.ParseExact(stringValue, "yyyyMMdd", null);
             }
             else
             {
                 TypeConverter conv = TypeDescriptor.GetConverter(typeof(T));
-                Value = (T)conv.ConvertFrom(split[1].Trim('"'));
+                Value = (T)conv.ConvertFrom(stringValue);
             }
         }
 

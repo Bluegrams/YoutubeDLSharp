@@ -15,11 +15,14 @@ namespace YoutubeDLSharp
     public class YoutubeDLProcess
     {
         // the regex used to match the currently downloaded video of a playlist.
-        private static Regex rgxPlaylist = new Regex(@"Downloading video (\d+) of (\d+)", RegexOptions.Compiled);
+        private static readonly Regex rgxPlaylist = new Regex(@"Downloading video (\d+) of (\d+)", RegexOptions.Compiled);
         // the regex used for matching download progress information.
-        private static Regex rgxProgress = new Regex(@"\[download\]\s+([\d\.]+)?%?", RegexOptions.Compiled);
+        private static readonly Regex rgxProgress = new Regex(
+            @"\[download\]\s+(?:(?<percent>[\d\.]+)%(?:\s+of\s+\~?(?<total>[\d\.\w]+))?\s+at\s+(?:(?<speed>[\d\.\w]+\/s)|[\w\s]+)\s+ETA\s(?<eta>[\d\:]+))?",
+            RegexOptions.Compiled
+        );
         // the regex used to match the beginning of post-processing.
-        private static Regex rgxPost = new Regex(@"\[ffmpeg\]\s+", RegexOptions.Compiled);
+        private static readonly Regex rgxPost = new Regex(@"\[ffmpeg\]\s+", RegexOptions.Compiled);
 
         /// <summary>
         /// The path to the Python interpreter.
@@ -107,10 +110,25 @@ namespace YoutubeDLSharp
                 Match match;
                 if ((match = rgxProgress.Match(e.Data)).Success)
                 {
-                    float progValue = 0f;
                     if (match.Groups.Count > 1 && match.Groups[1].Length > 0)
-                        progValue = float.Parse(match.Groups[1].ToString(), CultureInfo.InvariantCulture) / 100.0f;
-                    progress?.Report(new DownloadProgress(DownloadState.Downloading, progValue));
+                    {
+                        float progValue = float.Parse(match.Groups[1].ToString(), CultureInfo.InvariantCulture) / 100.0f;
+                        Group totalGroup = match.Groups["total"];
+                        string total = totalGroup.Success ? totalGroup.Value : null;
+                        Group speedGroup = match.Groups["speed"];
+                        string speed = speedGroup.Success ? speedGroup.Value : null;
+                        Group etaGroup = match.Groups["eta"];
+                        string eta = etaGroup.Success ? etaGroup.Value : null;
+                        progress?.Report(
+                            new DownloadProgress(
+                                DownloadState.Downloading, progress: progValue, totalDownloadSize: total, downloadSpeed: speed, eta: eta
+                            )
+                        );
+                    }
+                    else
+                    {
+                        progress?.Report(new DownloadProgress(DownloadState.Downloading));
+                    }
                 }
                 else if ((match = rgxPost.Match(e.Data)).Success)
                 {

@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>0.2.1</VersionPrefix>
+    <VersionPrefix>0.3.0</VersionPrefix>
     <BuildYear>$([System.DateTime]::Now.ToString(yy))</BuildYear>
     <BuildDay>$([System.DateTime]::Now.DayOfYear)</BuildDay>
     <AssemblyVersion>$(VersionPrefix).$(BuildYear)$(BuildDay)</AssemblyVersion>

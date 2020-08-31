@@ -21,7 +21,7 @@ namespace WpfDemoApp
             this.YoutubeDL = new YoutubeDL();
             this.DataContext = this;
             InitializeComponent();
-            progress = new Progress<DownloadProgress>((p) => progDownload.Value = p.Progress);
+            progress = new Progress<DownloadProgress>((p) => showProgress(p));
             output = new Progress<string>((s) => txtOutput.AppendText(s + Environment.NewLine));
         }
 
@@ -75,6 +75,12 @@ namespace WpfDemoApp
             }
             else showErrorMessage(url, String.Join("\n", result.ErrorOutput));
             IsNotDownloading = true;
+        }
+
+        private void showProgress(DownloadProgress p)
+        {
+            progDownload.Value = p.Progress;
+            txtProgress.Text = $"speed: {p.DownloadSpeed} | left: {p.ETA}";
         }
 
         private async void InformationButton_Click(object sender, RoutedEventArgs e)

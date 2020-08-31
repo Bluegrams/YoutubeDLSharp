@@ -48,13 +48,15 @@ namespace YoutubeDLSharp.Tests
                 "",
                 "# Use this proxy",
                 "--proxy 127.0.0.1:3128",
-                "-o ~/Movies/%(title)s.%(ext)s"
+                "-o ~/Movies/%(title)s.%(ext)s",
+                "--ffmpeg-location \"My Programs/ffmpeg.exe\""
             };
             OptionSet opts = OptionSet.FromString(lines);
             Assert.IsTrue(opts.ExtractAudio);
             Assert.AreEqual(AudioConversionFormat.Mp3, opts.AudioFormat);
             Assert.AreEqual("127.0.0.1:3128", opts.Proxy);
             Assert.AreEqual("~/Movies/%(title)s.%(ext)s", opts.Output);
+            Assert.AreEqual("My Programs/ffmpeg.exe", opts.FfmpegLocation);
         }
 
         [TestMethod]

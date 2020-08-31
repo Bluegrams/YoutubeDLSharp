@@ -34,8 +34,11 @@
                 <Button Grid.Column="2" IsEnabled="{Binding IsNotDownloading, Mode=OneWay}"
                         Content="Information" Click="InformationButton_Click"/>
             </Grid>
-            <ProgressBar x:Name="progDownload" Grid.Row="2" Height="20" Margin="0,12"
-                         Maximum="1"/>
+            <StackPanel Grid.Row="2" Margin="0,12">
+                <ProgressBar x:Name="progDownload" Height="20" Margin="0"
+                             Maximum="1"/>
+                <TextBlock x:Name="txtProgress" Text="speed:  | left:"/>
+            </StackPanel>
             <TextBox x:Name="txtOutput" Grid.Row="3" IsReadOnly="True"
                      Height="100" VerticalScrollBarVisibility="Visible"/>
         </Grid>
