@@ -13,8 +13,8 @@ namespace YoutubeDLSharp.Options
 
         /// <summary>
         /// Adobe Pass multiple-system operator (TV
-        /// provider) identifier, use --ap-list-mso for
-        /// a list of available MSOs
+        /// provider) identifier, use --ap-list-mso
+        /// for a list of available MSOs
         /// </summary>
         public string ApMso { get => apMso.Value; set => apMso.Value = value; }
         /// <summary>
@@ -22,9 +22,9 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public string ApUsername { get => apUsername.Value; set => apUsername.Value = value; }
         /// <summary>
-        /// Multiple-system operator account password.
-        /// If this option is left out, youtube-dl will
-        /// ask interactively.
+        /// Multiple-system operator account
+        /// password. If this option is left out,
+        /// youtube-dl will ask interactively.
         /// </summary>
         public string ApPassword { get => apPassword.Value; set => apPassword.Value = value; }
         /// <summary>

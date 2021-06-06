@@ -1,6 +1,6 @@
 # YoutubeDLSharp
 
-[![Build Status](https://bluegrams.visualstudio.com/vividl/_apis/build/status/youtubedlsharp-ci?branchName=master)](https://bluegrams.visualstudio.com/vividl/_build/latest?definitionId=3&branchName=master)
+[![Build status](https://bluegrams.visualstudio.com/vividl/_apis/build/status/youtubedlsharp-ci)](https://bluegrams.visualstudio.com/vividl/_build/latest?definitionId=3)
 [![NuGet](https://img.shields.io/nuget/v/YoutubeDLSharp.svg)](https://www.nuget.org/packages/YoutubeDLSharp/)
 
 A simple .NET wrapper library for [youtube-dl](https://github.com/ytdl-org/youtube-dl).
@@ -42,17 +42,19 @@ string path = res.Data;
 Instead of only downloading a video, you can also directly extract the audio track ...
 
 ```csharp
-var res = await ytdl.RunAudioDownload("https://www.youtube.com/watch?v=QUQsqBqxoR4",
-                                      AudioConversionFormat.Mp3);
+var res = await ytdl.RunAudioDownload(
+    "https://www.youtube.com/watch?v=QUQsqBqxoR4",
+    AudioConversionFormat.Mp3
+);
 ```
 
 ... or selectively download videos from a playlist:
 
 ```csharp
 var res = await ytdl.RunVideoPlaylistDownload(
-            "https://www.youtube.com/playlist?list=PLPfak9ofGSn9sWgKrHrXrxQXXxwhCblaT",
-            start: 52, end: 76
-        );
+    "https://www.youtube.com/playlist?list=PLPfak9ofGSn9sWgKrHrXrxQXXxwhCblaT",
+    start: 52, end: 76
+);
 ```
 
 All of the above methods also allow you to track the download progress or cancel an ongoing download:

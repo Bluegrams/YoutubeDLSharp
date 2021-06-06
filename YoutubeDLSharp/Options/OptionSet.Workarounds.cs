@@ -17,7 +17,8 @@ namespace YoutubeDLSharp.Options
         private Option<int?> maxSleepInterval = new Option<int?>("--max-sleep-interval");
 
         /// <summary>
-        /// Force the specified encoding (experimental)
+        /// Force the specified encoding
+        /// (experimental)
         /// </summary>
         public string Encoding { get => encoding.Value; set => encoding.Value = value; }
         /// <summary>
@@ -25,9 +26,9 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoCheckCertificate { get => noCheckCertificate.Value; set => noCheckCertificate.Value = value; }
         /// <summary>
-        /// Use an unencrypted connection to retrieve
-        /// information about the video. (Currently
-        /// supported only for YouTube)
+        /// Use an unencrypted connection to
+        /// retrieve information about the video.
+        /// (Currently supported only for YouTube)
         /// </summary>
         public bool PreferInsecure { get => preferInsecure.Value; set => preferInsecure.Value = value; }
         /// <summary>
@@ -35,36 +36,38 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public string UserAgent { get => userAgent.Value; set => userAgent.Value = value; }
         /// <summary>
-        /// Specify a custom referer, use if the video
-        /// access is restricted to one domain
+        /// Specify a custom referer, use if the
+        /// video access is restricted to one
+        /// domain
         /// </summary>
         public string Referer { get => referer.Value; set => referer.Value = value; }
         /// <summary>
-        /// Specify a custom HTTP header and its value,
-        /// separated by a colon &#x27;:&#x27;. You can use this
-        /// option multiple times
+        /// Specify a custom HTTP header and its
+        /// value, separated by a colon &#x27;:&#x27;. You
+        /// can use this option multiple times
         /// </summary>
         public string AddHeader { get => addHeader.Value; set => addHeader.Value = value; }
         /// <summary>
         /// Work around terminals that lack
-        /// bidirectional text support. Requires bidiv
-        /// or fribidi executable in PATH
+        /// bidirectional text support. Requires
+        /// bidiv or fribidi executable in PATH
         /// </summary>
         public bool BidiWorkaround { get => bidiWorkaround.Value; set => bidiWorkaround.Value = value; }
         /// <summary>
         /// Number of seconds to sleep before each
-        /// download when used alone or a lower bound
-        /// of a range for randomized sleep before each
-        /// download (minimum possible number of
-        /// seconds to sleep) when used along with
-        /// --max-sleep-interval.
+        /// download when used alone or a lower
+        /// bound of a range for randomized sleep
+        /// before each download (minimum possible
+        /// number of seconds to sleep) when used
+        /// along with --max-sleep-interval.
         /// </summary>
         public int? SleepInterval { get => sleepInterval.Value; set => sleepInterval.Value = value; }
         /// <summary>
-        /// Upper bound of a range for randomized sleep
-        /// before each download (maximum possible
-        /// number of seconds to sleep). Must only be
-        /// used along with --min-sleep-interval.
+        /// Upper bound of a range for randomized
+        /// sleep before each download (maximum
+        /// possible number of seconds to sleep).
+        /// Must only be used along with --min-
+        /// sleep-interval.
         /// </summary>
         public int? MaxSleepInterval { get => maxSleepInterval.Value; set => maxSleepInterval.Value = value; }
     }

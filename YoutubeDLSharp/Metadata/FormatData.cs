@@ -66,6 +66,6 @@ namespace YoutubeDLSharp.Metadata
         [JsonProperty("no_resume")]
         public bool? NoResume { get; set; }
 
-        public override string ToString() => $"{Extension} [{Format}]";
+        public override string ToString() => $"[{Extension}] {Format}";
     }
 }

@@ -54,7 +54,7 @@ def build_summary(descr_lines):
         INDENT*" " + "/// </summary>",
     ]
     for i, line in enumerate(descr_lines):
-        prop_list.insert(1+i, INDENT*" " + "/// " + html.escape(line))
+        prop_list.insert(1+i, INDENT*" " + "/// " + html.escape(line.strip()))
     return prop_list
 
 def build_prop(ctype, name, descr_lines=None):

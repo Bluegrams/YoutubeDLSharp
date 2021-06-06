@@ -32,24 +32,26 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool Version { get => version.Value; set => version.Value = value; }
         /// <summary>
-        /// Update this program to latest version. Make
-        /// sure that you have sufficient permissions
-        /// (run with sudo if needed)
+        /// Update this program to latest version.
+        /// Make sure that you have sufficient
+        /// permissions (run with sudo if needed)
         /// </summary>
         public bool Update { get => update.Value; set => update.Value = value; }
         /// <summary>
-        /// Continue on download errors, for example to
-        /// skip unavailable videos in a playlist
+        /// Continue on download errors, for
+        /// example to skip unavailable videos in a
+        /// playlist
         /// </summary>
         public bool IgnoreErrors { get => ignoreErrors.Value; set => ignoreErrors.Value = value; }
         /// <summary>
-        /// Abort downloading of further videos (in the
-        /// playlist or the command line) if an error
-        /// occurs
+        /// Abort downloading of further videos (in
+        /// the playlist or the command line) if an
+        /// error occurs
         /// </summary>
         public bool AbortOnError { get => abortOnError.Value; set => abortOnError.Value = value; }
         /// <summary>
-        /// Display the current browser identification
+        /// Display the current browser
+        /// identification
         /// </summary>
         public bool DumpUserAgent { get => dumpUserAgent.Value; set => dumpUserAgent.Value = value; }
         /// <summary>
@@ -67,35 +69,36 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool ForceGenericExtractor { get => forceGenericExtractor.Value; set => forceGenericExtractor.Value = value; }
         /// <summary>
-        /// Use this prefix for unqualified URLs. For
-        /// example &quot;gvsearch2:&quot; downloads two videos
-        /// from google videos for youtube-dl &quot;large
-        /// apple&quot;. Use the value &quot;auto&quot; to let
-        /// youtube-dl guess (&quot;auto_warning&quot; to emit a
-        /// warning when guessing). &quot;error&quot; just throws
-        /// an error. The default value &quot;fixup_error&quot;
-        /// repairs broken URLs, but emits an error if
-        /// this is not possible instead of searching.
+        /// Use this prefix for unqualified URLs.
+        /// For example &quot;gvsearch2:&quot; downloads two
+        /// videos from google videos for youtube-
+        /// dl &quot;large apple&quot;. Use the value &quot;auto&quot;
+        /// to let youtube-dl guess (&quot;auto_warning&quot;
+        /// to emit a warning when guessing).
+        /// &quot;error&quot; just throws an error. The
+        /// default value &quot;fixup_error&quot; repairs
+        /// broken URLs, but emits an error if this
+        /// is not possible instead of searching.
         /// </summary>
         public string DefaultSearch { get => defaultSearch.Value; set => defaultSearch.Value = value; }
         /// <summary>
-        /// Do not read configuration files. When given
-        /// in the global configuration file /etc
-        /// /youtube-dl.conf: Do not read the user
-        /// configuration in ~/.config/youtube-
-        /// dl/config (%APPDATA%/youtube-dl/config.txt
-        /// on Windows)
+        /// Do not read configuration files. When
+        /// given in the global configuration file
+        /// /etc/youtube-dl.conf: Do not read the
+        /// user configuration in ~/.config
+        /// /youtube-dl/config (%APPDATA%/youtube-
+        /// dl/config.txt on Windows)
         /// </summary>
         public bool IgnoreConfig { get => ignoreConfig.Value; set => ignoreConfig.Value = value; }
         /// <summary>
-        /// Location of the configuration file; either
-        /// the path to the config or its containing
-        /// directory.
+        /// Location of the configuration file;
+        /// either the path to the config or its
+        /// containing directory.
         /// </summary>
         public string ConfigLocation { get => configLocation.Value; set => configLocation.Value = value; }
         /// <summary>
-        /// Do not extract the videos of a playlist,
-        /// only list them.
+        /// Do not extract the videos of a
+        /// playlist, only list them.
         /// </summary>
         public bool FlatPlaylist { get => flatPlaylist.Value; set => flatPlaylist.Value = value; }
         /// <summary>
@@ -103,7 +106,8 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool MarkWatched { get => markWatched.Value; set => markWatched.Value = value; }
         /// <summary>
-        /// Do not mark videos watched (YouTube only)
+        /// Do not mark videos watched (YouTube
+        /// only)
         /// </summary>
         public bool NoMarkWatched { get => noMarkWatched.Value; set => noMarkWatched.Value = value; }
         /// <summary>

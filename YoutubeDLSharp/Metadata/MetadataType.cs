@@ -1,4 +1,6 @@
 ﻿
+using System.Runtime.Serialization;
+
 namespace YoutubeDLSharp.Metadata
 {
     /// <summary>
@@ -6,6 +8,15 @@ namespace YoutubeDLSharp.Metadata
     /// </summary>
     public enum MetadataType
     {
-        Video, Playlist, MultiVideo, Url, UrlTransparent
+        [EnumMember(Value = "video")]
+        Video,
+        [EnumMember(Value = "playlist")]
+        Playlist,
+        [EnumMember(Value = "multi_video")]
+        MultiVideo,
+        [EnumMember(Value = "url")]
+        Url,
+        [EnumMember(Value = "url_transparent")]
+        UrlTransparent
     }
 }

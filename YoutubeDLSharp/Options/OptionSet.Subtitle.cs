@@ -18,17 +18,18 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool WriteSub { get => writeSub.Value; set => writeSub.Value = value; }
         /// <summary>
-        /// Write automatically generated subtitle file
-        /// (YouTube only)
+        /// Write automatically generated subtitle
+        /// file (YouTube only)
         /// </summary>
         public bool WriteAutoSub { get => writeAutoSub.Value; set => writeAutoSub.Value = value; }
         /// <summary>
-        /// Download all the available subtitles of the
-        /// video
+        /// Download all the available subtitles of
+        /// the video
         /// </summary>
         public bool AllSubs { get => allSubs.Value; set => allSubs.Value = value; }
         /// <summary>
-        /// List all available subtitles for the video
+        /// List all available subtitles for the
+        /// video
         /// </summary>
         public bool ListSubs { get => listSubs.Value; set => listSubs.Value = value; }
         /// <summary>
@@ -39,8 +40,8 @@ namespace YoutubeDLSharp.Options
         public string SubFormat { get => subFormat.Value; set => subFormat.Value = value; }
         /// <summary>
         /// Languages of the subtitles to download
-        /// (optional) separated by commas, use --list-
-        /// subs for available language tags
+        /// (optional) separated by commas, use
+        /// --list-subs for available language tags
         /// </summary>
         public string SubLang { get => subLang.Value; set => subLang.Value = value; }
     }

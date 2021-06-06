@@ -15,12 +15,13 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool WriteThumbnail { get => writeThumbnail.Value; set => writeThumbnail.Value = value; }
         /// <summary>
-        /// Write all thumbnail image formats to disk
+        /// Write all thumbnail image formats to
+        /// disk
         /// </summary>
         public bool WriteAllThumbnails { get => writeAllThumbnails.Value; set => writeAllThumbnails.Value = value; }
         /// <summary>
-        /// Simulate and list all available thumbnail
-        /// formats
+        /// Simulate and list all available
+        /// thumbnail formats
         /// </summary>
         public bool ListThumbnails { get => listThumbnails.Value; set => listThumbnails.Value = value; }
     }

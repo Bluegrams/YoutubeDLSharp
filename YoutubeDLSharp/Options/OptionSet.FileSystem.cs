@@ -9,6 +9,7 @@ namespace YoutubeDLSharp.Options
         private Option<string> batchFile = new Option<string>("-a", "--batch-file");
         private Option<bool> id = new Option<bool>("--id");
         private Option<string> output = new Option<string>("-o", "--output");
+        private Option<string> outputNaPlaceholder = new Option<string>("--output-na-placeholder");
         private Option<int?> autonumberStart = new Option<int?>("--autonumber-start");
         private Option<bool> restrictFilenames = new Option<bool>("--restrict-filenames");
         private Option<bool> noOverwrites = new Option<bool>("-w", "--no-overwrites");
@@ -26,10 +27,10 @@ namespace YoutubeDLSharp.Options
         private Option<bool> rmCacheDir = new Option<bool>("--rm-cache-dir");
 
         /// <summary>
-        /// File containing URLs to download (&#x27;-&#x27; for
-        /// stdin), one URL per line. Lines starting
-        /// with &#x27;#&#x27;, &#x27;;&#x27; or &#x27;]&#x27; are considered as
-        /// comments and ignored.
+        /// File containing URLs to download (&#x27;-&#x27;
+        /// for stdin), one URL per line. Lines
+        /// starting with &#x27;#&#x27;, &#x27;;&#x27; or &#x27;]&#x27; are
+        /// considered as comments and ignored.
         /// </summary>
         public string BatchFile { get => batchFile.Value; set => batchFile.Value = value; }
         /// <summary>
@@ -37,13 +38,19 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool Id { get => id.Value; set => id.Value = value; }
         /// <summary>
-        /// Output filename template, see the &quot;OUTPUT
-        /// TEMPLATE&quot; for all the info
+        /// Output filename template, see the
+        /// &quot;OUTPUT TEMPLATE&quot; for all the info
         /// </summary>
         public string Output { get => output.Value; set => output.Value = value; }
         /// <summary>
-        /// Specify the start value for %(autonumber)s
-        /// (default is 1)
+        /// ER  Placeholder value for unavailable meta
+        /// fields in output filename template
+        /// (default is &quot;NA&quot;)
+        /// </summary>
+        public string OutputNaPlaceholder { get => outputNaPlaceholder.Value; set => outputNaPlaceholder.Value = value; }
+        /// <summary>
+        /// Specify the start value for
+        /// %(autonumber)s (default is 1)
         /// </summary>
         public int? AutonumberStart { get => autonumberStart.Value; set => autonumberStart.Value = value; }
         /// <summary>
@@ -57,14 +64,14 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoOverwrites { get => noOverwrites.Value; set => noOverwrites.Value = value; }
         /// <summary>
-        /// Force resume of partially downloaded files.
-        /// By default, youtube-dl will resume
-        /// downloads if possible.
+        /// Force resume of partially downloaded
+        /// files. By default, youtube-dl will
+        /// resume downloads if possible.
         /// </summary>
         public bool Continue { get => doContinue.Value; set => doContinue.Value = value; }
         /// <summary>
-        /// Do not resume partially downloaded files
-        /// (restart from beginning)
+        /// Do not resume partially downloaded
+        /// files (restart from beginning)
         /// </summary>
         public bool NoContinue { get => noContinue.Value; set => noContinue.Value = value; }
         /// <summary>
@@ -73,17 +80,18 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoPart { get => noPart.Value; set => noPart.Value = value; }
         /// <summary>
-        /// Do not use the Last-modified header to set
-        /// the file modification time
+        /// Do not use the Last-modified header to
+        /// set the file modification time
         /// </summary>
         public bool NoMtime { get => noMtime.Value; set => noMtime.Value = value; }
         /// <summary>
-        /// Write video description to a .description
-        /// file
+        /// Write video description to a
+        /// .description file
         /// </summary>
         public bool WriteDescription { get => writeDescription.Value; set => writeDescription.Value = value; }
         /// <summary>
-        /// Write video metadata to a .info.json file
+        /// Write video metadata to a .info.json
+        /// file
         /// </summary>
         public bool WriteInfoJson { get => writeInfoJson.Value; set => writeInfoJson.Value = value; }
         /// <summary>
@@ -92,24 +100,25 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool WriteAnnotations { get => writeAnnotations.Value; set => writeAnnotations.Value = value; }
         /// <summary>
-        /// JSON file containing the video information
-        /// (created with the &quot;--write-info-json&quot;
-        /// option)
+        /// JSON file containing the video
+        /// information (created with the &quot;--write-
+        /// info-json&quot; option)
         /// </summary>
         public string LoadInfoJson { get => loadInfoJson.Value; set => loadInfoJson.Value = value; }
         /// <summary>
-        /// File to read cookies from and dump cookie
-        /// jar in
+        /// File to read cookies from and dump
+        /// cookie jar in
         /// </summary>
         public string Cookies { get => cookies.Value; set => cookies.Value = value; }
         /// <summary>
-        /// Location in the filesystem where youtube-dl
-        /// can store some downloaded information
-        /// permanently. By default $XDG_CACHE_HOME
-        /// /youtube-dl or ~/.cache/youtube-dl . At the
-        /// moment, only YouTube player files (for
-        /// videos with obfuscated signatures) are
-        /// cached, but that may change.
+        /// Location in the filesystem where
+        /// youtube-dl can store some downloaded
+        /// information permanently. By default
+        /// $XDG_CACHE_HOME/youtube-dl or ~/.cache
+        /// /youtube-dl . At the moment, only
+        /// YouTube player files (for videos with
+        /// obfuscated signatures) are cached, but
+        /// that may change.
         /// </summary>
         public string CacheDir { get => cacheDir.Value; set => cacheDir.Value = value; }
         /// <summary>

@@ -40,8 +40,8 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoWarnings { get => noWarnings.Value; set => noWarnings.Value = value; }
         /// <summary>
-        /// Do not download the video and do not write
-        /// anything to disk
+        /// Do not download the video and do not
+        /// write anything to disk
         /// </summary>
         public bool Simulate { get => simulate.Value; set => simulate.Value = value; }
         /// <summary>
@@ -65,7 +65,8 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool GetThumbnail { get => getThumbnail.Value; set => getThumbnail.Value = value; }
         /// <summary>
-        /// Simulate, quiet but print video description
+        /// Simulate, quiet but print video
+        /// description
         /// </summary>
         public bool GetDescription { get => getDescription.Value; set => getDescription.Value = value; }
         /// <summary>
@@ -73,7 +74,8 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool GetDuration { get => getDuration.Value; set => getDuration.Value = value; }
         /// <summary>
-        /// Simulate, quiet but print output filename
+        /// Simulate, quiet but print output
+        /// filename
         /// </summary>
         public bool GetFilename { get => getFilename.Value; set => getFilename.Value = value; }
         /// <summary>
@@ -81,21 +83,23 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool GetFormat { get => getFormat.Value; set => getFormat.Value = value; }
         /// <summary>
-        /// Simulate, quiet but print JSON information.
-        /// See the &quot;OUTPUT TEMPLATE&quot; for a description
-        /// of available keys.
+        /// Simulate, quiet but print JSON
+        /// information. See the &quot;OUTPUT TEMPLATE&quot;
+        /// for a description of available keys.
         /// </summary>
         public bool DumpJson { get => dumpJson.Value; set => dumpJson.Value = value; }
         /// <summary>
-        /// Simulate, quiet but print JSON information
-        /// for each command-line argument. If the URL
-        /// refers to a playlist, dump the whole
-        /// playlist information in a single line.
+        /// Simulate, quiet but print JSON
+        /// information for each command-line
+        /// argument. If the URL refers to a
+        /// playlist, dump the whole playlist
+        /// information in a single line.
         /// </summary>
         public bool DumpSingleJson { get => dumpSingleJson.Value; set => dumpSingleJson.Value = value; }
         /// <summary>
-        /// Be quiet and print the video information as
-        /// JSON (video is still being downloaded).
+        /// Be quiet and print the video
+        /// information as JSON (video is still
+        /// being downloaded).
         /// </summary>
         public bool PrintJson { get => printJson.Value; set => printJson.Value = value; }
         /// <summary>
@@ -115,8 +119,8 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool Verbose { get => verbose.Value; set => verbose.Value = value; }
         /// <summary>
-        /// Print downloaded pages encoded using base64
-        /// to debug problems (very verbose)
+        /// Print downloaded pages encoded using
+        /// base64 to debug problems (very verbose)
         /// </summary>
         public bool DumpPages { get => dumpPages.Value; set => dumpPages.Value = value; }
         /// <summary>
@@ -130,12 +134,13 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool PrintTraffic { get => printTraffic.Value; set => printTraffic.Value = value; }
         /// <summary>
-        /// Contact the youtube-dl server for debugging
+        /// Contact the youtube-dl server for
+        /// debugging
         /// </summary>
         public bool CallHome { get => callHome.Value; set => callHome.Value = value; }
         /// <summary>
-        /// Do NOT contact the youtube-dl server for
-        /// debugging
+        /// Do NOT contact the youtube-dl server
+        /// for debugging
         /// </summary>
         public bool NoCallHome { get => noCallHome.Value; set => noCallHome.Value = value; }
     }

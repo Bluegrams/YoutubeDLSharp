@@ -17,8 +17,9 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public string Username { get => username.Value; set => username.Value = value; }
         /// <summary>
-        /// Account password. If this option is left
-        /// out, youtube-dl will ask interactively.
+        /// Account password. If this option is
+        /// left out, youtube-dl will ask
+        /// interactively.
         /// </summary>
         public string Password { get => password.Value; set => password.Value = value; }
         /// <summary>
@@ -30,7 +31,7 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool Netrc { get => netrc.Value; set => netrc.Value = value; }
         /// <summary>
-        /// Video password (vimeo, smotri, youku)
+        /// Video password (vimeo, youku)
         /// </summary>
         public string VideoPassword { get => videoPassword.Value; set => videoPassword.Value = value; }
     }

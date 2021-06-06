@@ -21,13 +21,13 @@ namespace YoutubeDLSharp.Tests
         [TestMethod]
         public async Task TestVideoInformationYoutube()
         {
-            string url = "https://www.youtube.com/watch?v=_QdPW8JrYzQ";
+            string url = "https://www.youtube.com/watch?v=C0DPdy98e4c";
             RunResult<VideoData> result = await ydl.RunVideoDataFetch(url);
             Assert.IsTrue(result.Success);
             Assert.AreEqual(MetadataType.Video, result.Data.ResultType);
-            Assert.AreEqual("This is what happens when you reply to spam email | James Veitch", result.Data.Title);
+            Assert.AreEqual("TEST VIDEO", result.Data.Title);
             Assert.AreEqual("Youtube", result.Data.ExtractorKey);
-            Assert.AreEqual(new DateTime(2016, 02, 01), result.Data.UploadDate);
+            Assert.AreEqual(new DateTime(2007, 02, 21), result.Data.UploadDate);
             Assert.IsNotNull(result.Data.Formats);
             Assert.IsNotNull(result.Data.Tags);
             Assert.IsNull(result.Data.Entries);
@@ -55,7 +55,6 @@ namespace YoutubeDLSharp.Tests
             Assert.IsTrue(result.Success);
             Assert.AreEqual(MetadataType.Playlist, result.Data.ResultType);
             Assert.AreEqual("E.Grieg Peer Gynt Suite playlist", result.Data.Title);
-            Assert.AreEqual("YoutubePlaylist", result.Data.ExtractorKey);
             Assert.IsNotNull(result.Data.Entries);
         }
     }

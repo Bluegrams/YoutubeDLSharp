@@ -23,8 +23,8 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool AllFormats { get => allFormats.Value; set => allFormats.Value = value; }
         /// <summary>
-        /// Prefer free video formats unless a specific
-        /// one is requested
+        /// Prefer free video formats unless a
+        /// specific one is requested
         /// </summary>
         public bool PreferFreeFormats { get => preferFreeFormats.Value; set => preferFreeFormats.Value = value; }
         /// <summary>
@@ -41,7 +41,8 @@ namespace YoutubeDLSharp.Options
         /// If a merge is required (e.g.
         /// bestvideo+bestaudio), output to given
         /// container format. One of mkv, mp4, ogg,
-        /// webm, flv. Ignored if no merge is required
+        /// webm, flv. Ignored if no merge is
+        /// required
         /// </summary>
         public DownloadMergeFormat MergeOutputFormat { get => mergeOutputFormat.Value; set => mergeOutputFormat.Value = value; }
     }

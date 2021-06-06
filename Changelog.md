@@ -1,5 +1,9 @@
 # YoutubeDLSharp Changelog
 
+### v.0.3.1 (2021-06)
+- **Fixed:** `MetadataType` in `VideoData`
+- **Changed:** Include new changes in youtube-dl options
+
 ### v.0.3 (2020-09)
 - **New:** Override options in OptionSet & YoutubeDL class.
 - **New:** More download progress information (transfer rate, ...)

@@ -13,15 +13,17 @@ namespace YoutubeDLSharp.Options
         private Option<bool> forceIpv6 = new Option<bool>("-6", "--force-ipv6");
 
         /// <summary>
-        /// Use the specified HTTP/HTTPS/SOCKS proxy.
-        /// To enable SOCKS proxy, specify a proper
-        /// scheme. For example
-        /// socks5://127.0.0.1:1080/. Pass in an empty
-        /// string (--proxy &quot;&quot;) for direct connection
+        /// Use the specified HTTP/HTTPS/SOCKS
+        /// proxy. To enable SOCKS proxy, specify a
+        /// proper scheme. For example
+        /// socks5://127.0.0.1:1080/. Pass in an
+        /// empty string (--proxy &quot;&quot;) for direct
+        /// connection
         /// </summary>
         public string Proxy { get => proxy.Value; set => proxy.Value = value; }
         /// <summary>
-        /// Time to wait before giving up, in seconds
+        /// Time to wait before giving up, in
+        /// seconds
         /// </summary>
         public int? SocketTimeout { get => socketTimeout.Value; set => socketTimeout.Value = value; }
         /// <summary>
