@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using YoutubeDLSharp.Options;
 
@@ -57,6 +59,42 @@ namespace YoutubeDLSharp.Tests
             Assert.AreEqual("127.0.0.1:3128", opts.Proxy);
             Assert.AreEqual("~/Movies/%(title)s.%(ext)s", opts.Output);
             Assert.AreEqual("My Programs/ffmpeg.exe", opts.FfmpegLocation);
+        }
+        
+        [TestMethod]
+        public void TestCustomOptionSetFromString()
+        {
+            void AssertCustomOption(IOption option)
+            {
+                Assert.IsTrue(option.OptionStrings.Any());
+                Assert.IsTrue(option.IsCustom);
+                Assert.IsTrue(option.IsSet);
+                Assert.IsNotNull(option.ToString());
+            }
+
+            const string firstOption = "--my-option";
+            const string secondOption = "--my-valued-option";
+            string[] lines = {
+                firstOption,
+                $"{secondOption} value"
+            };
+            
+            // Assert custom options parsing from string
+            OptionSet opts = OptionSet.FromString(lines);
+            AssertCustomOption(opts.CustomOptions.First(s => s.DefaultOptionString == firstOption));
+            AssertCustomOption(opts.CustomOptions.First(s => s.DefaultOptionString == secondOption));
+
+            // Assert custom options cloning
+            var cloned = opts.OverrideOptions(new OptionSet());
+            AssertCustomOption(cloned.CustomOptions.First(s => s.DefaultOptionString == firstOption));
+            AssertCustomOption(cloned.CustomOptions.First(s => s.DefaultOptionString == secondOption));
+            
+            // Assert custom options override
+            var overrideOpts = opts.OverrideOptions(OptionSet.FromString(new[] { firstOption }));
+            CollectionAssert.AllItemsAreUnique(overrideOpts.CustomOptions);
+            
+            // Assert custom options to string conversion
+            Assert.IsFalse(string.IsNullOrWhiteSpace(opts.ToString()));
         }
 
         [TestMethod]
