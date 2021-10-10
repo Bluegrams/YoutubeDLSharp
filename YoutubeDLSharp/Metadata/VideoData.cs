@@ -98,9 +98,9 @@ namespace YoutubeDLSharp.Metadata
         [JsonProperty("is_live")]
         public bool? IsLive { get; set; }
         [JsonProperty("start_time")]
-        public int? StartTime { get; set; }
+        public float? StartTime { get; set; }
         [JsonProperty("end_time")]
-        public int? EndTime { get; set; }
+        public float? EndTime { get; set; }
 
         public override string ToString()
         {

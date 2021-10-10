@@ -21,7 +21,7 @@ namespace YoutubeDLSharp.Tests
         [TestMethod]
         public async Task TestVideoInformationYoutube()
         {
-            string url = "https://www.youtube.com/watch?v=C0DPdy98e4c";
+            string url = "https://www.youtube.com/watch?v=C0DPdy98e4c&t=9s";
             RunResult<VideoData> result = await ydl.RunVideoDataFetch(url);
             Assert.IsTrue(result.Success);
             Assert.AreEqual(MetadataType.Video, result.Data.ResultType);
