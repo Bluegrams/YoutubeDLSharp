@@ -1,5 +1,9 @@
 # YoutubeDLSharp Changelog
 
+### v.0.4.0 (2021-10)
+- **New:** Support custom options
+- **Fixed:** `start_time` & `end_time` properties in metadata
+
 ### v.0.3.1 (2021-06)
 - **Fixed:** `MetadataType` in `VideoData`
 - **Changed:** Include new changes in youtube-dl options
