@@ -41,6 +41,11 @@ namespace YoutubeDLSharp.Options
                 this.value = value;
             }
         }
+        
+        /// <summary>
+        /// True if this option is custom.
+        /// </summary>
+        public bool IsCustom { get; }
 
         /// <summary>
         /// Creates a new instance of class Option.
@@ -49,6 +54,13 @@ namespace YoutubeDLSharp.Options
         {
             OptionStrings = optionStrings;
             IsSet = false;
+        }
+
+        public Option(bool isCustom, params string[] optionStrings)
+        {
+            OptionStrings = optionStrings;
+            IsSet = false;
+            IsCustom = isCustom;
         }
 
         /// <summary>

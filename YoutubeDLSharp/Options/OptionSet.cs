@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using YoutubeDLSharp.Helpers;
 
 namespace YoutubeDLSharp.Options
 {
@@ -11,6 +12,8 @@ namespace YoutubeDLSharp.Options
     /// </summary>
     public partial class OptionSet : ICloneable
     {
+        private static readonly OptionComparer Comparer = new OptionComparer();
+        
         /// <summary>
         /// The default option set (if no options are explicitly set).
         /// </summary>
@@ -32,17 +35,16 @@ namespace YoutubeDLSharp.Options
         /// <returns></returns>
         public IEnumerable<string> GetOptionFlags()
         {
-            foreach (var opt in GetOptions())
-            {
-                var value = opt.ToString();
-                if (!String.IsNullOrWhiteSpace(value))
-                    yield return value;
-            }
+            return GetKnownOptions()
+                .Concat(CustomOptions)
+                .Select(opt => opt.ToString())
+                .Where(value => !string.IsNullOrWhiteSpace(value));
         }
 
-        internal IEnumerable<IOption> GetOptions()
+        internal IEnumerable<IOption> GetKnownOptions()
         {
-            return this.GetType().GetRuntimeFields()
+            return this.GetType()
+                .GetRuntimeFields()
                 .Where(p => p.FieldType.IsGenericType && p.FieldType.GetGenericTypeDefinition() == typeof(Option<>))
                 .Select(p => p.GetValue(this)).Cast<IOption>();
         }
@@ -54,12 +56,18 @@ namespace YoutubeDLSharp.Options
         /// <returns>A cloned option set with all specified options overriden.</returns>
         public OptionSet OverrideOptions(OptionSet overrideOptions)
         {
-            OptionSet cloned = (OptionSet)this.Clone();
-            var overrideFields = overrideOptions.GetType().GetRuntimeFields()
+            var cloned = (OptionSet) Clone();
+            cloned.CustomOptions = cloned.CustomOptions
+                .Concat(overrideOptions.CustomOptions)
+                .Distinct(Comparer)
+                .ToArray();
+
+            IEnumerable<FieldInfo> overrideFields = overrideOptions.GetType().GetRuntimeFields()
                 .Where(p => p.FieldType.IsGenericType && p.FieldType.GetGenericTypeDefinition() == typeof(Option<>));
+            
             foreach (var field in overrideFields)
             {
-                IOption fieldValue = (IOption)field.GetValue(overrideOptions);
+                var fieldValue = (IOption)field.GetValue(overrideOptions);
                 if (fieldValue.IsSet)
                 {
                     cloned.GetType()
@@ -67,6 +75,8 @@ namespace YoutubeDLSharp.Options
                         .SetValue(cloned, fieldValue);
                 }
             }
+            
+            
             return cloned;
         }
 
@@ -77,26 +87,43 @@ namespace YoutubeDLSharp.Options
         /// <returns>The parsed OptionSet.</returns>
         public static OptionSet FromString(IEnumerable<string> lines)
         {
-            OptionSet optSet = new OptionSet();
-            var options = optSet.GetOptions();
-            int i = 0;
+            var optSet = new OptionSet();
+            
+            var customOptions = GetOptions(lines, optSet.GetKnownOptions())
+                .Where(option => option.IsCustom)
+                .ToArray();
+            optSet.CustomOptions = customOptions;
+            
+            return optSet;
+        }
+
+        private static IEnumerable<IOption> GetOptions(IEnumerable<string> lines, IEnumerable<IOption> options)
+        {
+            IEnumerable<IOption> knownOptions = options.ToList();
+
             foreach (string rawLine in lines)
             {
-                i++;
                 string line = rawLine.Trim();
+                
                 // skip comments
-                if (line.StartsWith("#") || String.IsNullOrWhiteSpace(line))
-                    continue;
-                string flag = line.Split(' ')[0];
-                IOption option = options.Where(o => o.OptionStrings.Contains(flag))
-                                        .FirstOrDefault();
-                if (option != null)
+                if (line.StartsWith("#") || string.IsNullOrWhiteSpace(line))
                 {
-                    option.SetFromString(line);
+                    continue;
                 }
-                else throw new FormatException($"Invalid option in line {i}: {line}");
+
+                string[] segments = line.Split(' ');
+                string flag = segments[0];
+
+                IOption knownOption = knownOptions.FirstOrDefault(o => o.OptionStrings.Contains(flag));
+                IOption customOption = segments.Length > 1 
+                    ? (IOption) new Option<string>(isCustom: true, flag) 
+                    : (IOption) new Option<bool>(isCustom: true, flag);
+
+                var option = knownOption ?? customOption;
+
+                option.SetFromString(line);
+                yield return option;
             }
-            return optSet;
         }
 
         /// <summary>

@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace YoutubeDLSharp.Options
+﻿namespace YoutubeDLSharp.Options
 {
     /// <summary>
     /// Interface for one youtube-dl option.
     /// </summary>
-    interface IOption
+    public interface IOption
     {
         /// <summary>
         /// The default string representation of the option flag.
@@ -24,5 +22,10 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         /// <param name="s">The string (including the option flag).</param>
         void SetFromString(string s);
+
+        /// <summary>
+        /// True if this option is custom.
+        /// </summary>
+        bool IsCustom { get; }
     }
 }
