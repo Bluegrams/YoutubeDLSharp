@@ -22,7 +22,7 @@ namespace YoutubeDLSharp
             RegexOptions.Compiled
         );
         // the regex used to match the beginning of post-processing.
-        private static readonly Regex rgxPost = new Regex(@"\[ffmpeg\]\s+", RegexOptions.Compiled);
+        private static readonly Regex rgxPost = new Regex(@"\[(\w+)\]\s+", RegexOptions.Compiled);
 
         /// <summary>
         /// The path to the Python interpreter.
@@ -100,6 +100,8 @@ namespace YoutubeDLSharp
             process.EnableRaisingEvents = true;
             process.StartInfo = startInfo;
             var tcsOut = new TaskCompletionSource<bool>();
+            // this variable is used for tracking download states
+            bool isDownloading = false;
             process.OutputDataReceived += (o, e) =>
             {
                 if (e.Data == null)
@@ -129,15 +131,18 @@ namespace YoutubeDLSharp
                     {
                         progress?.Report(new DownloadProgress(DownloadState.Downloading));
                     }
-                }
-                else if ((match = rgxPost.Match(e.Data)).Success)
-                {
-                    progress?.Report(new DownloadProgress(DownloadState.PostProcessing, 1));
+                    isDownloading = true;
                 }
                 else if ((match = rgxPlaylist.Match(e.Data)).Success)
                 {
                     var index = int.Parse(match.Groups[1].Value);
                     progress?.Report(new DownloadProgress(DownloadState.PreProcessing, index: index));
+                    isDownloading = false;
+                }
+                else if (isDownloading && (match = rgxPost.Match(e.Data)).Success)
+                {
+                    progress?.Report(new DownloadProgress(DownloadState.PostProcessing, 1));
+                    isDownloading = false;
                 }
                 Debug.WriteLine("[youtube-dl] " + e.Data);
                 OutputReceived?.Invoke(this, e);

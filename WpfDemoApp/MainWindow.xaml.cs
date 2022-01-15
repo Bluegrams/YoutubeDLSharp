@@ -57,17 +57,21 @@ namespace WpfDemoApp
         private async void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
             string url = txtUrl.Text;
-            RunResult<string> result;
             IsNotDownloading = false;
             txtOutput.Clear();
+            // Parse custom arguments
+            OptionSet custom = OptionSet.FromString(txtOptions.Text.Split('\n'));
+            RunResult<string> result;
             if (AudioOnly)
             {
-               result = await YoutubeDL.RunAudioDownload(url, AudioConversionFormat.Mp3,progress: progress,
-                                            output: output);
+                result = await YoutubeDL.RunAudioDownload(
+                    url, AudioConversionFormat.Mp3, progress: progress,
+                    output: output, overrideOptions: custom
+                );
             }
             else
             {
-                result = await YoutubeDL.RunVideoDownload(url, progress: progress, output: output);
+                result = await YoutubeDL.RunVideoDownload(url, progress: progress, output: output, overrideOptions: custom);
             }
             if (result.Success)
             {
@@ -79,6 +83,7 @@ namespace WpfDemoApp
 
         private void showProgress(DownloadProgress p)
         {
+            txtState.Text = p.State.ToString();
             progDownload.Value = p.Progress;
             txtProgress.Text = $"speed: {p.DownloadSpeed} | left: {p.ETA}";
         }

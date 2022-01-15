@@ -1,5 +1,9 @@
 # YoutubeDLSharp Changelog
 
+### v.0.4.1 (2022-01)
+- **New:** Methods for adding, modifying & deleting custom options in `OptionSet`
+- **Fixed:** Download state reporting in `YoutubeDLProcess`
+
 ### v.0.4.0 (2021-10)
 - **New:** Support custom options
 - **Fixed:** `start_time` & `end_time` properties in metadata

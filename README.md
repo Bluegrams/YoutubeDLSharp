@@ -90,6 +90,8 @@ The project includes a demo WPF desktop app under [WpfDemoApp](WpfDemoApp/MainWi
 
 ### Advanced Usage
 
+#### Working with options
+
 YoutubeDLSharp uses the `OptionSet` class to model youtube-dl options.
 The names of the option properties correspond to the names of youtube-dl, so defining a set of options can look like this:
 
@@ -106,6 +108,19 @@ var options = new OptionSet()
 
 For documentation of all options supported by youtube-dl and their effects, visit https://github.com/ytdl-org/youtube-dl#options.
 
+Additionally, YoutubeDLSharp allows you to pass **custom options** to the downloader program.
+This is especially useful when a forked/ modified version of youtube-dl is used.
+Custom can be specified like this:
+
+```csharp
+// add
+options.AddCustomOption<string>("--my-custom-option", "value");
+// set
+options.SetCustomOption<string>("--my-custom-option", "new value");
+```
+
+#### `YoutubeDLProcess`
+
 To run a youtube-dl process with the defined options, you can use the `YoutubeDLProcess` class:
 
 ```csharp
@@ -118,7 +133,7 @@ string[] urls = new[] { "https://github.com/ytdl-org/youtube-dl#options" };
 await ytdlProc.RunAsync(urls, options);
 ```
 
-#### Load/ Save configuration
+#### Loading/ Saving configuration
 
 You can persist a youtube-dl configuration to a file and reload it:
 

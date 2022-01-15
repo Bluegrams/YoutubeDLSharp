@@ -98,6 +98,25 @@ namespace YoutubeDLSharp.Tests
         }
 
         [TestMethod]
+        public void TestCustomOptionSetByMethod()
+        {
+            // Can create custom options (also multiple with same name)
+            OptionSet options = new OptionSet();
+            options.AddCustomOption("--custom-string-option", "hello");
+            options.AddCustomOption("--custom-bool-option", true);
+            options.AddCustomOption("--custom-string-option", "world");
+            Assert.AreEqual("--custom-string-option \"hello\" --custom-bool-option --custom-string-option \"world\"", options.ToString().Trim());
+
+            // Can set values of custom options
+            options.SetCustomOption("--custom-string-option", "new");
+            Assert.AreEqual("--custom-string-option \"new\" --custom-bool-option --custom-string-option \"new\"", options.ToString().Trim());
+
+            // Can delete custom options
+            options.DeleteCustomOption("--custom-string-option");
+            Assert.AreEqual("--custom-bool-option", options.ToString().Trim());
+        }
+
+        [TestMethod]
         public void TestOptionSetOverrideOptions()
         {
             var originalOptions = new OptionSet()
