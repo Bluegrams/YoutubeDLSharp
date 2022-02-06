@@ -175,7 +175,7 @@ namespace YoutubeDLSharp
                 catch { }
             });
             Debug.WriteLine("[youtube-dl] Arguments: " + process.StartInfo.Arguments);
-            if (!process.Start())
+            if (!await Task.Run(() => process.Start()))
                 tcs.TrySetException(new InvalidOperationException("Failed to start youtube-dl process."));
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
