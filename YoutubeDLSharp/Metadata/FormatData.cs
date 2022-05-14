@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace YoutubeDLSharp.Metadata
 {
@@ -25,6 +25,8 @@ namespace YoutubeDLSharp.Metadata
         public int? Height { get; set; }
         [JsonProperty("resolution")]
         public string Resolution { get; set; }
+        [JsonProperty("dynamic_range")]
+        public string HDR { get; set; }
         [JsonProperty("tbr")]
         public double? Bitrate { get; set; }
         [JsonProperty("abr")]
