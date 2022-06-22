@@ -18,6 +18,7 @@ namespace YoutubeDLSharp
     public class YoutubeDL
     {
         private static Regex rgxFile = new Regex("echo\\s\\\"?(.*)\\\"?", RegexOptions.Compiled);
+        private static Regex rgxFilePostProc = new Regex(@"\[download\] Destination: [a-zA-Z]:\\\S+\.\S{3,}", RegexOptions.Compiled);
 
         protected ProcessRunner runner;
 
@@ -93,6 +94,36 @@ namespace YoutubeDLSharp
             process.OutputReceived += (o, e) => output.Add(e.Data);
             (int code, string[] errors) = await runner.RunThrottled(process, urls, options, ct);
             return new RunResult<string[]>(code == 0, errors, output.ToArray());
+        }
+
+        /// <summary>
+        /// Runs youtube-dl with the given option set and additional parameters.
+        /// </summary>
+        /// <param name="url">The video URL passed to youtube-dl.</param>
+        /// <param name="options">The OptionSet of youtube-dl options.</param>
+        /// <param name="ct">A CancellationToken used to cancel the process.</param>
+        /// <param name="progress">A progress provider used to get download progress information.</param>
+        /// <param name="output">A progress provider used to capture the standard output.</param>
+        /// <param name="overrideOptions">Override options of the default option set for this run.</param>
+        /// <returns>A RunResult object containing the path to the downloaded and converted video.</returns>
+        public async Task<RunResult<string>> RunWithOptions(string url, OptionSet options, CancellationToken ct = default, 
+            IProgress<DownloadProgress> progress = null, IProgress<string> output = null)
+        {
+            string outFile = string.Empty;
+            var process = new YoutubeDLProcess(YoutubeDLPath);
+            output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, options)}\n");
+            process.OutputReceived += (o, e) =>
+            {
+                var match = rgxFilePostProc.Match(e.Data);
+                if (match.Success)
+                {
+                    outFile = match.Groups[0].ToString().Replace("[download] Destination:", "").Replace(" ", "");
+                    progress?.Report(new DownloadProgress(DownloadState.Success, data: outFile));
+                }
+                output?.Report(e.Data);
+            };
+            (int code, string[] errors) = await runner.RunThrottled(process, new[] { url }, options, ct, progress);
+            return new RunResult<string>(code == 0, errors, outFile);
         }
 
         /// <summary>
