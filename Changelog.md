@@ -1,5 +1,8 @@
 # YoutubeDLSharp Changelog
 
+### v.0.4.2 (2022-03)
+- **Fixed**: Starting youtube-dl process blocks main thread
+
 ### v.0.4.1 (2022-01)
 - **New:** Methods for adding, modifying & deleting custom options in `OptionSet`
 - **Fixed:** Download state reporting in `YoutubeDLProcess`

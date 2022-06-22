@@ -14,11 +14,16 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>0.4.1</VersionPrefix>
+    <VersionPrefix>0.4.2</VersionPrefix>
     <BuildYear>$([System.DateTime]::Now.ToString(yy))</BuildYear>
     <BuildDay>$([System.DateTime]::Now.DayOfYear)</BuildDay>
     <AssemblyVersion>$(VersionPrefix).$(BuildYear)$(BuildDay)</AssemblyVersion>
     <PackageReleaseNotes>https://github.com/Bluegrams/YoutubeDLSharp/blob/master/Changelog.md</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup>
+	<IncludeSymbols>true</IncludeSymbols>
+	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
