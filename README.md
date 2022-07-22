@@ -23,11 +23,9 @@ For more about the features of youtube-dl, supported websites and anything else,
 
 ## How do I use it?
 
-First, add the package from NuGet:
 
-```
-PM> Install-Package YoutubeDLSharp
-```
+To install - check [Releases](https://github.com/adanvdo/YoutubeDLSharp/releases) for package files and add YoutubeDLSharp.DLL and Xabe.Ffmpeg.DLL to your project references
+To avoid conflicts with bluegrams, this project will not be published to nuget
 
 Now, there are two ways to use YoutubeDLSharp: the class `YoutubeDL` provides high level methods for downloading and converting videos
 while the class `YoutubeDLProcess` allows directer and flexibler access to the youtube-dl process.
