@@ -23,13 +23,14 @@ namespace YoutubeDLSharp.Helpers
         }
 
         public async Task<(int, string[])> RunThrottled(YoutubeDLProcess process, string[] urls, OptionSet options,
-                                       CancellationToken ct, IProgress<DownloadProgress> progress = null)
+                                       CancellationToken ct, IProgress<DownloadProgress> progress = null, IProgress<string> output = null)
         {
             var errors = new List<string>();
             process.ErrorReceived += (o, e) => errors.Add(e.Data);
             await semaphore.WaitAsync(ct);
             try
             {
+                output?.Report($"Arguments: {process.ConvertToArgs(urls, options)}\n");
                 var exitCode = await process.RunAsync(urls, options, ct, progress);
                 return (exitCode, errors.ToArray());
             }

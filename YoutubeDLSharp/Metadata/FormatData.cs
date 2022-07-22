@@ -65,6 +65,8 @@ namespace YoutubeDLSharp.Metadata
         public float? StretchedRatio { get; set; }
         [JsonProperty("no_resume")]
         public bool? NoResume { get; set; }
+        [JsonProperty("duration")]
+        public float? Duration { get; set; }
 
         public override string ToString() => $"[{Extension}] {Format}";
     }
