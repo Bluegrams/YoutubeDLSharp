@@ -255,7 +255,7 @@ namespace YoutubeDLSharp
                 {
                     item++;
                     output?.Report($"MetaData Incomplete - Analyzing [{item}/{formats.Length}]");
-                    if (format.VideoCodec == null && format.AudioCodec == null)
+                    if ((format.VideoCodec == null || format.VideoCodec == "none") && (format.AudioCodec == null || format.AudioCodec == "none"))
                     {
                         float? dur = null;
                         var fInfo = await FFmpeg.GetMediaInfo(format.Url);
