@@ -138,11 +138,14 @@ namespace YoutubeDLSharp
         /// <param name="output">A progress provider used to capture the standard output.</param>
         /// <returns>A RunResult object containing the path to the downloaded and converted video.</returns>
         public async Task<RunResult<string>> RunWithOptions(string url, OptionSet options, CancellationToken ct = default, 
-            IProgress<DownloadProgress> progress = null, IProgress<string> output = null)
+            IProgress<DownloadProgress> progress = null, IProgress<string> output = null, bool showArgs = true)
         {
             string outFile = string.Empty;
             var process = new YoutubeDLProcess(YoutubeDLPath);
-            output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, options)}\n");
+            if (showArgs)
+                output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, options)}\n");
+            else
+                output?.Report($"Starting Download: {url}");
             process.OutputReceived += (o, e) =>
             {
                 var match = rgxFilePostProc.Match(e.Data);
@@ -313,13 +316,14 @@ namespace YoutubeDLSharp
         /// <param name="progress">A progress provider used to get download progress information.</param>
         /// <param name="output">A progress provider used to capture the standard output.</param>
         /// <param name="overrideOptions">Override options of the default option set for this run.</param>
+        /// <param name="outputArgs">Passes full argument list to output when true</param>
         /// <returns>A RunResult object containing the path to the downloaded and converted video.</returns>
         public async Task<RunResult<string>> RunVideoDownload(string url,
             string format = "bestvideo+bestaudio/best",
             DownloadMergeFormat mergeFormat = DownloadMergeFormat.Unspecified,
             VideoRecodeFormat recodeFormat = VideoRecodeFormat.None,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null, OptionSet overrideOptions = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null, bool outputArgs = true)
         {
             var opts = GetDownloadOptions();
             if (overrideOptions != null)
@@ -332,7 +336,10 @@ namespace YoutubeDLSharp
             string outputFile = String.Empty;
             var process = new YoutubeDLProcess(YoutubeDLPath);
             // Report the used ytdl args
-            output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            if (outputArgs)
+                output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            else
+                output?.Report($"Starting Download: {url}");
             process.OutputReceived += (o, e) =>
             {
                 var match = rgxFile.Match(e.Data);
@@ -367,7 +374,7 @@ namespace YoutubeDLSharp
             string format = "bestvideo+bestaudio/best",
             VideoRecodeFormat recodeFormat = VideoRecodeFormat.None,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null, OptionSet overrideOptions = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null, bool outputArgs = true)
         {
             var opts = GetDownloadOptions();
             if (overrideOptions != null)
@@ -384,7 +391,10 @@ namespace YoutubeDLSharp
             var outputFiles = new List<string>();
             var process = new YoutubeDLProcess(YoutubeDLPath);
             // Report the used ytdl args
-            output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            if (outputArgs)
+                output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            else
+                output?.Report($"Starting Download: {url}");
             process.OutputReceived += (o, e) =>
             {
                 var match = rgxFile.Match(e.Data);
@@ -412,7 +422,7 @@ namespace YoutubeDLSharp
         /// <returns>A RunResult object containing the path to the downloaded and converted video.</returns>
         public async Task<RunResult<string>> RunAudioDownload(string url, AudioConversionFormat format,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null, OptionSet overrideOptions = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null, bool outputArgs = true)
         {
             var opts = GetDownloadOptions();
             if (overrideOptions != null)
@@ -426,7 +436,10 @@ namespace YoutubeDLSharp
             var error = new List<string>();
             var process = new YoutubeDLProcess(YoutubeDLPath);
             // Report the used ytdl args
-            output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            if (outputArgs)
+                output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            else
+                output?.Report($"Starting Download: {url}");
             process.OutputReceived += (o, e) =>
             {
                 var match = rgxFile.Match(e.Data);
@@ -458,7 +471,7 @@ namespace YoutubeDLSharp
             int? start = 1, int? end = null,
             int[] items = null, AudioConversionFormat format = AudioConversionFormat.Best,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null, OptionSet overrideOptions = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null, bool outputArgs = true)
         {
             var outputFiles = new List<string>();
             var opts = GetDownloadOptions();
@@ -476,7 +489,10 @@ namespace YoutubeDLSharp
             opts.AudioFormat = format;
             var process = new YoutubeDLProcess(YoutubeDLPath);
             // Report the used ytdl args
-            output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            if (outputArgs)
+                output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            else
+                output?.Report($"Starting Download: {url}");
             process.OutputReceived += (o, e) =>
             {
                 var match = rgxFile.Match(e.Data);

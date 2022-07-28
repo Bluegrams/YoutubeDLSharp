@@ -22,15 +22,18 @@ namespace YoutubeDLSharp.Helpers
             TotalCount = initialCount;
         }
 
-        public async Task<(int, string[])> RunThrottled(YoutubeDLProcess process, string[] urls, OptionSet options,
-                                       CancellationToken ct, IProgress<DownloadProgress> progress = null, IProgress<string> output = null)
+        public async Task<(int, string[])> RunThrottled(YoutubeDLProcess process, string[] urls, OptionSet options, CancellationToken ct, 
+            IProgress<DownloadProgress> progress = null, IProgress<string> output = null, bool showArgs = true)
         {
             var errors = new List<string>();
             process.ErrorReceived += (o, e) => errors.Add(e.Data);
             await semaphore.WaitAsync(ct);
             try
             {
-                output?.Report($"Arguments: {process.ConvertToArgs(urls, options)}\n");
+                if (showArgs)
+                    output?.Report($"Arguments: {process.ConvertToArgs(urls, options)}\n");
+                else
+                    output?.Report($"Starting Download Process: {string.Join(", ", urls)}");
                 var exitCode = await process.RunAsync(urls, options, ct, progress);
                 return (exitCode, errors.ToArray());
             }
