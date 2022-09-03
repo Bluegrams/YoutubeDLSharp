@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Newtonsoft.Json;
 using YoutubeDLSharp.Helpers;
 using YoutubeDLSharp.Metadata;
 using YoutubeDLSharp.Options;
+using Xabe.FFmpeg;
 
 namespace YoutubeDLSharp
 {
@@ -18,6 +20,7 @@ namespace YoutubeDLSharp
     public class YoutubeDL
     {
         private static Regex rgxFile = new Regex("echo\\s\\\"?(.*)\\\"?", RegexOptions.Compiled);
+        private static Regex rgxFilePostProc = new Regex(@"\[download\] Destination: [a-zA-Z]:\\\S+\.\S{3,}", RegexOptions.Compiled);
 
         protected ProcessRunner runner;
 
@@ -25,10 +28,31 @@ namespace YoutubeDLSharp
         /// Path to the youtube-dl executable.
         /// </summary>
         public string YoutubeDLPath { get; set; } = "youtube-dl.exe";
+
+        private string ffmpegPath = "ffmpeg.exe";
         /// <summary>
         /// Path to the FFmpeg executable.
         /// </summary>
-        public string FFmpegPath { get; set; } = "ffmpeg.exe";
+        public string FFmpegPath 
+        {        
+            get { return ffmpegPath; }
+            set { ffmpegPath = value; }
+        }
+
+        private string ffmpegExecutablesPath = "";
+        /// <summary>
+        /// Path to FFmpeg and FFprobe executables
+        /// </summary>
+        public string FFmpegExecutablesPath
+        {
+            get { return ffmpegExecutablesPath; }
+            set
+            {
+                ffmpegExecutablesPath = value;
+                ffmpegPath = Path.Combine(ffmpegExecutablesPath, "ffmpeg.exe");
+                FFmpeg.SetExecutablesPath(ffmpegExecutablesPath);
+            }
+        }
         /// <summary>
         /// Path of the folder where items will be downloaded to.
         /// </summary>
@@ -65,9 +89,15 @@ namespace YoutubeDLSharp
         /// Creates a new instance of the YoutubeDL class.
         /// </summary>
         /// <param name="maxNumberOfProcesses">The maximum number of concurrent youtube-dl processes.</param>
-        public YoutubeDL(byte maxNumberOfProcesses = 4)
+        /// <param name="ytdlPath">The path to youtube-dl.exe</param>
+        /// <param name="ffmpegExecutablesPath">The path to the directory where ffmpeg executables are located</param>
+        public YoutubeDL(byte maxNumberOfProcesses = 4, string ytdlPath = "", string ffmpegExecutablesPath = "")
         {
             runner = new ProcessRunner(maxNumberOfProcesses);
+            if (!string.IsNullOrEmpty(ytdlPath))
+                YoutubeDLPath = ytdlPath;
+            if (!string.IsNullOrEmpty(ffmpegExecutablesPath))
+                FFmpegExecutablesPath = ffmpegExecutablesPath;
         }
 
         /// <summary>
@@ -85,14 +115,49 @@ namespace YoutubeDLSharp
         /// <param name="urls">The video URLs passed to youtube-dl.</param>
         /// <param name="options">The OptionSet of youtube-dl options.</param>
         /// <param name="ct">A CancellationToken used to cancel the process.</param>
+        /// <param name="progress">A progress provider used to get download progress information.</param>
+        /// <param name="output">A progress provider used to capture the standard output.</param>
         /// <returns>A RunResult object containing the output of youtube-dl as an array of string.</returns>
-        public async Task<RunResult<string[]>> RunWithOptions(string[] urls, OptionSet options, CancellationToken ct)
+        public async Task<RunResult<string[]>> RunWithOptions(string[] urls, OptionSet options, CancellationToken ct,
+            IProgress<DownloadProgress> progress = null, IProgress<string> output = null)
         {
-            var output = new List<string>();
+            var outputList = new List<string>();
             var process = new YoutubeDLProcess(YoutubeDLPath);
-            process.OutputReceived += (o, e) => output.Add(e.Data);
-            (int code, string[] errors) = await runner.RunThrottled(process, urls, options, ct);
-            return new RunResult<string[]>(code == 0, errors, output.ToArray());
+            process.OutputReceived += (o, e) => outputList.Add(e.Data);
+            (int code, string[] errors) = await runner.RunThrottled(process, urls, options, ct, progress, output);
+            return new RunResult<string[]>(code == 0, errors, outputList.ToArray());
+        }
+
+        /// <summary>
+        /// Runs youtube-dl with the given option set and additional parameters.
+        /// </summary>
+        /// <param name="url">The video URL passed to youtube-dl.</param>
+        /// <param name="options">The OptionSet of youtube-dl options.</param>
+        /// <param name="ct">A CancellationToken used to cancel the process.</param>
+        /// <param name="progress">A progress provider used to get download progress information.</param>
+        /// <param name="output">A progress provider used to capture the standard output.</param>
+        /// <returns>A RunResult object containing the path to the downloaded and converted video.</returns>
+        public async Task<RunResult<string>> RunWithOptions(string url, OptionSet options, CancellationToken ct = default, 
+            IProgress<DownloadProgress> progress = null, IProgress<string> output = null, bool showArgs = true)
+        {
+            string outFile = string.Empty;
+            var process = new YoutubeDLProcess(YoutubeDLPath);
+            if (showArgs)
+                output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, options)}\n");
+            else
+                output?.Report($"Starting Download: {url}");
+            process.OutputReceived += (o, e) =>
+            {
+                var match = rgxFilePostProc.Match(e.Data);
+                if (match.Success)
+                {
+                    outFile = match.Groups[0].ToString().Replace("[download] Destination:", "").Replace(" ", "");
+                    progress?.Report(new DownloadProgress(DownloadState.Success, data: outFile));
+                }
+                output?.Report(e.Data);
+            };
+            (int code, string[] errors) = await runner.RunThrottled(process, new[] { url }, options, ct, progress);
+            return new RunResult<string>(code == 0, errors, outFile);
         }
 
         /// <summary>
@@ -115,9 +180,13 @@ namespace YoutubeDLSharp
         /// <param name="ct">A CancellationToken used to cancel the process.</param>
         /// <param name="flat">If set to true, does not extract information for each video in a playlist.</param>
         /// <param name="overrideOptions">Override options of the default option set for this run.</param>
+        /// <param name="progress">A progress provider used to get download progress information.</param>
+        /// <param name="output">A progress provider used to capture the standard output.</param>
+        /// <param name="useFfmpegMetaDataFallback">If set to true, Ffmpeg will be used to fetch missing metadata values</param>
         /// <returns>A RunResult object containing a VideoData object with the requested video information.</returns>
         public async Task<RunResult<VideoData>> RunVideoDataFetch(string url,
-            CancellationToken ct = default, bool flat = true, OptionSet overrideOptions = null)
+            CancellationToken ct = default, bool flat = true, OptionSet overrideOptions = null,
+            IProgress<DownloadProgress> progress = null, IProgress<string> output = null, bool useFfmpegMetaDataFallback = false)
         {
             var opts = GetDownloadOptions();
             opts.DumpSingleJson = true;
@@ -129,8 +198,111 @@ namespace YoutubeDLSharp
             VideoData videoData = null;
             var process = new YoutubeDLProcess(YoutubeDLPath);
             process.OutputReceived += (o, e) => videoData = JsonConvert.DeserializeObject<VideoData>(e.Data);
-            (int code, string[] errors) = await runner.RunThrottled(process, new[] { url }, opts, ct);
+            (int code, string[] errors) = await runner.RunThrottled(process, new[] { url }, opts, ct, progress, output);
+            if (code == 0 && useFfmpegMetaDataFallback)
+            {
+                if (videoData.Formats == null && videoData.Entries != null)
+                {
+                    List<FormatData> entryFormats = new List<FormatData>();
+                    for(int i = videoData.Entries.Length - 1; i >= 0; i--)
+                    {
+                        VideoData child = videoData.Entries[i];
+                        if (child.Formats == null)
+                        {
+                            entryFormats.Add(new FormatData()
+                            {
+                                Url = child.Url,
+                                Format = child.Format,
+                                Extension = child.Extension
+                            });
+                        }
+                        else
+                        {
+                            entryFormats.AddRange(videoData.Entries[i].Formats);
+                        }
+                    }
+
+                    var processed = await executeFallback(entryFormats.Distinct().ToArray(), output);
+                    videoData.Formats = processed.ToArray();
+                    if (videoData.Duration == null)
+                    {
+                        var first = videoData.Formats.First(f => f.Duration != null);
+                        if (first != null)
+                            videoData.Duration = first.Duration;
+                    }
+                }
+                else if(videoData.Formats != null && videoData.Formats.Length > 0)
+                {
+                    videoData.Formats = await executeFallback(videoData.Formats, output);
+                    if (videoData.Duration == null) {
+                        var first = videoData.Formats.First(f => f.Duration != null);
+                        if (first != null)
+                            videoData.Duration = first.Duration;
+                    }
+                }
+
+            }
             return new RunResult<VideoData>(code == 0, errors, videoData);
+        }
+
+        private async Task<FormatData[]> executeFallback(FormatData[] formats, IProgress<string> output = null)
+        {
+            if (formats != null && formats.Length > 0 && formats.Where(f => f.VideoCodec == null && f.AudioCodec == null).Count() > 0)
+            {
+                if (string.IsNullOrEmpty(FFmpeg.ExecutablesPath))
+                    throw new Exception("Ffmpeg Executables Path Not Defined");
+                
+                    int item = 0;
+                    output?.Report($"MetaData Incomplete - Analyzing [{item}/{formats.Length}]");
+                foreach (var format in formats)
+                {
+                    item++;
+                    output?.Report($"MetaData Incomplete - Analyzing [{item}/{formats.Length}]");
+                    if ((format.VideoCodec == null || format.VideoCodec == "none") && (format.AudioCodec == null || format.AudioCodec == "none"))
+                    {
+                        float? dur = null;
+                        var fInfo = await FFmpeg.GetMediaInfo(format.Url);
+                        if (fInfo != null)
+                        {
+                            if (fInfo.Duration != null)
+                                dur = (float?)fInfo.Duration.TotalSeconds;
+                            format.FileSize = (long?)fInfo.Size;
+                            if (fInfo.VideoStreams != null && fInfo.VideoStreams.Count() > 0)
+                            {
+                                var vid = fInfo.VideoStreams.First();
+                                if (vid != null)
+                                {
+                                    format.Bitrate = (double?)vid.Bitrate;
+                                    format.VideoCodec = vid.Codec;
+                                    format.Width = (int?)vid.Width;
+                                    format.Height = (int?)vid.Height;
+                                    format.VideoBitrate = (double?)vid.Bitrate;
+                                    format.FrameRate = (float?)vid.Framerate;
+                                }
+                            }
+                            if (fInfo.AudioStreams != null && fInfo.AudioStreams.Count() > 0)
+                            {
+                                var aud = fInfo.AudioStreams.First();
+                                if (aud != null)
+                                {
+                                    if (dur == null && aud.Duration != null)
+                                        dur = (float?)aud.Duration.TotalSeconds;
+                                    format.AudioCodec = aud.Codec;
+                                    format.AudioBitrate = (double?)aud.Bitrate;
+                                    format.AudioSamplingRate = (double?)aud.SampleRate;
+                                }
+                            }
+                            else
+                            {
+                                format.AudioCodec = "none";
+                            }
+                        }
+                        if (format.Duration == null)
+                            format.Duration = dur;
+                    }
+                }                
+            }
+            return formats;
         }
 
         /// <summary>
@@ -144,13 +316,14 @@ namespace YoutubeDLSharp
         /// <param name="progress">A progress provider used to get download progress information.</param>
         /// <param name="output">A progress provider used to capture the standard output.</param>
         /// <param name="overrideOptions">Override options of the default option set for this run.</param>
+        /// <param name="outputArgs">Passes full argument list to output when true</param>
         /// <returns>A RunResult object containing the path to the downloaded and converted video.</returns>
         public async Task<RunResult<string>> RunVideoDownload(string url,
             string format = "bestvideo+bestaudio/best",
             DownloadMergeFormat mergeFormat = DownloadMergeFormat.Unspecified,
             VideoRecodeFormat recodeFormat = VideoRecodeFormat.None,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null, OptionSet overrideOptions = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null, bool outputArgs = true)
         {
             var opts = GetDownloadOptions();
             opts.Format = format;
@@ -163,7 +336,10 @@ namespace YoutubeDLSharp
             string outputFile = String.Empty;
             var process = new YoutubeDLProcess(YoutubeDLPath);
             // Report the used ytdl args
-            output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            if (outputArgs)
+                output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            else
+                output?.Report($"Starting Download: {url}");
             process.OutputReceived += (o, e) =>
             {
                 var match = rgxFile.Match(e.Data);
@@ -198,7 +374,7 @@ namespace YoutubeDLSharp
             string format = "bestvideo+bestaudio/best",
             VideoRecodeFormat recodeFormat = VideoRecodeFormat.None,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null, OptionSet overrideOptions = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null, bool outputArgs = true)
         {
             var opts = GetDownloadOptions();
             opts.NoPlaylist = false;
@@ -215,7 +391,10 @@ namespace YoutubeDLSharp
             var outputFiles = new List<string>();
             var process = new YoutubeDLProcess(YoutubeDLPath);
             // Report the used ytdl args
-            output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            if (outputArgs)
+                output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            else
+                output?.Report($"Starting Download: {url}");
             process.OutputReceived += (o, e) =>
             {
                 var match = rgxFile.Match(e.Data);
@@ -243,7 +422,7 @@ namespace YoutubeDLSharp
         /// <returns>A RunResult object containing the path to the downloaded and converted video.</returns>
         public async Task<RunResult<string>> RunAudioDownload(string url, AudioConversionFormat format,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null, OptionSet overrideOptions = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null, bool outputArgs = true)
         {
             var opts = GetDownloadOptions();
             opts.Format = "bestaudio/best";
@@ -257,7 +436,10 @@ namespace YoutubeDLSharp
             var error = new List<string>();
             var process = new YoutubeDLProcess(YoutubeDLPath);
             // Report the used ytdl args
-            output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            if (outputArgs)
+                output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            else
+                output?.Report($"Starting Download: {url}");
             process.OutputReceived += (o, e) =>
             {
                 var match = rgxFile.Match(e.Data);
@@ -289,7 +471,7 @@ namespace YoutubeDLSharp
             int? start = 1, int? end = null,
             int[] items = null, AudioConversionFormat format = AudioConversionFormat.Best,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
-            IProgress<string> output = null, OptionSet overrideOptions = null)
+            IProgress<string> output = null, OptionSet overrideOptions = null, bool outputArgs = true)
         {
             var outputFiles = new List<string>();
             var opts = GetDownloadOptions();
@@ -307,7 +489,10 @@ namespace YoutubeDLSharp
             }
             var process = new YoutubeDLProcess(YoutubeDLPath);
             // Report the used ytdl args
-            output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            if (outputArgs)
+                output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
+            else
+                output?.Report($"Starting Download: {url}");
             process.OutputReceived += (o, e) =>
             {
                 var match = rgxFile.Match(e.Data);

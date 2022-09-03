@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <Authors>Bluegrams</Authors>
+    <TargetFrameworks>netstandard2.0;net4.8</TargetFrameworks>
+    <Authors>Bluegrams, adanvdo</Authors>
     <Description>A simple .NET wrapper library for youtube-dl.</Description>
-    <Copyright>© 2022 Bluegrams</Copyright>
+    <Copyright>© 2022 Bluegrams, adanvdo</Copyright>
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Bluegrams/YoutubeDLSharp</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/adanvdo/YoutubeDLSharp</PackageProjectUrl>
     <PackageTags>youtube video download youtube-dl yt-dlp</PackageTags>
     <LangVersion>7.3</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -18,7 +18,7 @@
     <BuildYear>$([System.DateTime]::Now.ToString(yy))</BuildYear>
     <BuildDay>$([System.DateTime]::Now.DayOfYear)</BuildDay>
     <AssemblyVersion>$(VersionPrefix).$(BuildYear)$(BuildDay)</AssemblyVersion>
-    <PackageReleaseNotes>https://github.com/Bluegrams/YoutubeDLSharp/blob/master/Changelog.md</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/adanvdo/YoutubeDLSharp/blob/master/Changelog.md</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Xabe.FFmpeg" Version="5.2.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />

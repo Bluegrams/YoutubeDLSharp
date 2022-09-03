@@ -18,7 +18,7 @@ namespace WpfDemoApp
 
         public MainWindow()
         {
-            this.YoutubeDL = new YoutubeDL() { YoutubeDLPath = "yt-dlp.exe" };
+            this.YoutubeDL = new YoutubeDL(4, @".\Exe\yt-dlp.exe", @".\Exe");
             this.DataContext = this;
             InitializeComponent();
             progress = new Progress<DownloadProgress>((p) => showProgress(p));
@@ -91,7 +91,7 @@ namespace WpfDemoApp
         private async void InformationButton_Click(object sender, RoutedEventArgs e)
         {
             string url = txtUrl.Text;
-            RunResult<VideoData> result = await YoutubeDL.RunVideoDataFetch(url);
+            RunResult<VideoData> result = await YoutubeDL.RunVideoDataFetch(url, default, true, null, null, null, true);
             if (result.Success)
             {
                 var infoWindow = new InformationWindow(result.Data);

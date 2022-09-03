@@ -1,9 +1,19 @@
 # YoutubeDLSharp
 
-[![Build status](https://bluegrams.visualstudio.com/vividl/_apis/build/status/youtubedlsharp-ci)](https://bluegrams.visualstudio.com/vividl/_build/latest?definitionId=3)
-[![NuGet](https://img.shields.io/nuget/v/YoutubeDLSharp.svg)](https://www.nuget.org/packages/YoutubeDLSharp/)
+**A Modified Version of Bluegrams/YoutubeDLSharp**
 
 A simple .NET wrapper library for [youtube-dl](https://github.com/ytdl-org/youtube-dl).
+
+## adanvdo vs bluegrams - what's the difference?
+
+This repo has been modified based on use with [yt-dlp](https://github.com/yt-dlp/yt-dlp)  
+99% of the code is identical to bluegrams, with the following differences.
+
+- Target Framework Updated to .NET 4.8
+- Added Ffmpeg wrapper [Xabe.FFmpeg](https://github.com/tomaszzmuda/Xabe.FFmpeg) 
+- Added Progress Reporting Support to `RunVideoDataFetch` and `RunWithOptions`
+- Added a Second `RunWithOptions` that returns a `RunResult<string>` object instead of `RunResult<string[]>`
+- Added fallback to ffmpeg for formats missing valid metadata
 
 ## What is it?
 
@@ -13,11 +23,9 @@ For more about the features of youtube-dl, supported websites and anything else,
 
 ## How do I use it?
 
-First, add the package from NuGet:
 
-```
-PM> Install-Package YoutubeDLSharp
-```
+To install - check [Releases](https://github.com/adanvdo/YoutubeDLSharp/releases) for package files and add YoutubeDLSharp.DLL and Xabe.Ffmpeg.DLL to your project references
+To avoid conflicts with bluegrams, this project will not be published to nuget
 
 Now, there are two ways to use YoutubeDLSharp: the class `YoutubeDL` provides high level methods for downloading and converting videos
 while the class `YoutubeDLProcess` allows directer and flexibler access to the youtube-dl process.
@@ -74,6 +82,28 @@ As youtube-dl also allows you to extract extensive metadata for videos, you can 
 
 ```csharp
 var res = await ytdl.RunVideoDataFetch("https://www.youtube.com/watch?v=_QdPW8JrYzQ");
+// get some video information
+VideoData video = res.Data;
+string title = video.Title;
+string uploader = video.Uploader;
+long? views = video.ViewCount;
+// all available download formats
+FormatData[] formats = video.Formats;
+// ...
+```
+
+Sometimes youtube-dl / yt-dlp can return incomplete metadata.  You can set `RunVideoDataFetch` to fall-back to ffmpeg to obtain missing metadata information.
+
+```csharp
+/// <param name="url">The video URL passed to youtube-dl.</param>
+/// <param name="ct">A CancellationToken used to cancel the process.</param>
+/// <param name="flat">If set to true, does not extract information for each video in a playlist.</param>
+/// <param name="overrideOptions">Override options of the default option set for this run.</param>
+/// <param name="progress">A progress provider used to get download progress information.</param>
+/// <param name="output">A progress provider used to capture the standard output.</param>
+/// <param name="useFfmpegMetaDataFallback">If set to true, Ffmpeg will be used to fetch missing metadata values</param>
+/// <returns>A RunResult object containing a VideoData object with the requested video information.</returns>
+var res = await ytdl.RunVideoDataFetch("https://www.youtube.com/watch?v=_QdPW8JrYzQ", default, true, null, null, null, true);
 // get some video information
 VideoData video = res.Data;
 string title = video.Title;
