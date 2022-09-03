@@ -120,12 +120,12 @@ namespace YoutubeDLSharp
             CancellationToken ct = default, bool flat = true, OptionSet overrideOptions = null)
         {
             var opts = GetDownloadOptions();
+            opts.DumpSingleJson = true;
+            opts.FlatPlaylist = flat;
             if (overrideOptions != null)
             {
                 opts = opts.OverrideOptions(overrideOptions);
             }
-            opts.DumpSingleJson = true;
-            opts.FlatPlaylist = flat;
             VideoData videoData = null;
             var process = new YoutubeDLProcess(YoutubeDLPath);
             process.OutputReceived += (o, e) => videoData = JsonConvert.DeserializeObject<VideoData>(e.Data);
@@ -153,13 +153,13 @@ namespace YoutubeDLSharp
             IProgress<string> output = null, OptionSet overrideOptions = null)
         {
             var opts = GetDownloadOptions();
+            opts.Format = format;
+            opts.MergeOutputFormat = mergeFormat;
+            opts.RecodeVideo = recodeFormat;
             if (overrideOptions != null)
             {
                 opts = opts.OverrideOptions(overrideOptions);
             }
-            opts.Format = format;
-            opts.MergeOutputFormat = mergeFormat;
-            opts.RecodeVideo = recodeFormat;
             string outputFile = String.Empty;
             var process = new YoutubeDLProcess(YoutubeDLPath);
             // Report the used ytdl args
@@ -201,10 +201,6 @@ namespace YoutubeDLSharp
             IProgress<string> output = null, OptionSet overrideOptions = null)
         {
             var opts = GetDownloadOptions();
-            if (overrideOptions != null)
-            {
-                opts = opts.OverrideOptions(overrideOptions);
-            }
             opts.NoPlaylist = false;
             opts.PlaylistStart = start;
             opts.PlaylistEnd = end;
@@ -212,6 +208,10 @@ namespace YoutubeDLSharp
                 opts.PlaylistItems = String.Join(",", items);
             opts.Format = format;
             opts.RecodeVideo = recodeFormat;
+            if (overrideOptions != null)
+            {
+                opts = opts.OverrideOptions(overrideOptions);
+            }
             var outputFiles = new List<string>();
             var process = new YoutubeDLProcess(YoutubeDLPath);
             // Report the used ytdl args
@@ -246,13 +246,13 @@ namespace YoutubeDLSharp
             IProgress<string> output = null, OptionSet overrideOptions = null)
         {
             var opts = GetDownloadOptions();
+            opts.Format = "bestaudio/best";
+            opts.ExtractAudio = true;
+            opts.AudioFormat = format;
             if (overrideOptions != null)
             {
                 opts = opts.OverrideOptions(overrideOptions);
             }
-            opts.Format = "bestaudio/best";
-            opts.ExtractAudio = true;
-            opts.AudioFormat = format;
             string outputFile = String.Empty;
             var error = new List<string>();
             var process = new YoutubeDLProcess(YoutubeDLPath);
@@ -293,10 +293,6 @@ namespace YoutubeDLSharp
         {
             var outputFiles = new List<string>();
             var opts = GetDownloadOptions();
-            if (overrideOptions != null)
-            {
-                opts = opts.OverrideOptions(overrideOptions);
-            }
             opts.NoPlaylist = false;
             opts.PlaylistStart = start;
             opts.PlaylistEnd = end;
@@ -305,6 +301,10 @@ namespace YoutubeDLSharp
             opts.Format = "bestaudio/best";
             opts.ExtractAudio = true;
             opts.AudioFormat = format;
+            if (overrideOptions != null)
+            {
+                opts = opts.OverrideOptions(overrideOptions);
+            }
             var process = new YoutubeDLProcess(YoutubeDLPath);
             // Report the used ytdl args
             output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
@@ -334,16 +334,13 @@ namespace YoutubeDLSharp
                 IgnoreConfig = true,
                 NoPlaylist = true,
                 HlsPreferNative = true,
-                ExternalDownloaderArgs = "-nostats -loglevel 0",
+                ExternalDownloaderArgs = "ffmpeg:-nostats -loglevel 0",
                 Output = Path.Combine(OutputFolder, OutputFileTemplate),
                 RestrictFilenames = this.RestrictFilenames,
                 NoContinue = this.OverwriteFiles,
                 NoOverwrites = !this.OverwriteFiles,
                 NoPart = true,
                 FfmpegLocation = Utils.GetFullPath(this.FFmpegPath),
-                /* TODO This is used to retrieve the final file path.
-                 * Could be replaced by https://github.com/ytdl-org/youtube-dl/pull/22769.
-                 */
                 Exec = "echo {}"
             };
         }

@@ -18,7 +18,7 @@ namespace YoutubeDLSharp.Tests
         public static void Initialize(TestContext context)
         {
             ydl = new YoutubeDL();
-            ydl.YoutubeDLPath = "Lib\\youtube-dl.exe";
+            ydl.YoutubeDLPath = "Lib\\yt-dlp.exe";
             ydl.FFmpegPath = "Lib\\ffmpeg.exe";
             downloadedFiles = new List<string>();
         }
@@ -55,12 +55,12 @@ namespace YoutubeDLSharp.Tests
             ydl.OutputFolder = "Lib";
             ydl.OutputFileTemplate = "%(extractor)s_%(title)s_%(upload_date)s.%(ext)s";
             ydl.RestrictFilenames = true;
-            var result = await ydl.RunVideoDownload(URL, format: "best", recodeFormat: VideoRecodeFormat.Mp4);
+            var result = await ydl.RunVideoDownload(URL, format: "bestvideo", recodeFormat: VideoRecodeFormat.Mp4);
             Assert.IsTrue(result.Success);
             Assert.AreEqual(String.Empty, String.Join("", result.ErrorOutput));
             string file = result.Data;
             Assert.IsTrue(File.Exists(file));
-            Assert.AreEqual("Lib", Path.GetDirectoryName(file));
+            Assert.IsTrue(Path.GetDirectoryName(file).EndsWith("Lib"));
             Assert.AreEqual(".mp4", Path.GetExtension(file));
             Assert.AreEqual("youtube_TEST_VIDEO_20070221", Path.GetFileNameWithoutExtension(file));
             downloadedFiles.Add(file);
@@ -75,7 +75,7 @@ namespace YoutubeDLSharp.Tests
                 RestrictFilenames = true,
                 RecodeVideo = VideoRecodeFormat.Mp4
             };
-            var result = await ydl.RunVideoDownload(URL, format: "best", overrideOptions: overrideOptions);
+            var result = await ydl.RunVideoDownload(URL, format: "bestvideo", overrideOptions: overrideOptions);
             Assert.IsTrue(result.Success);
             Assert.AreEqual(String.Empty, String.Join("", result.ErrorOutput));
             string file = result.Data;

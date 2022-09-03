@@ -19,7 +19,7 @@
     <None Update="Lib\ffmpeg.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Lib\youtube-dl.exe">
+    <None Update="Lib\yt-dlp.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

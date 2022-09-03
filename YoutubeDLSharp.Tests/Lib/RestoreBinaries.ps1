@@ -17,12 +17,13 @@ else {
 }
 
 # Download youtube-dl
-if (!(Test-Path (Join-Path $PSScriptRoot "youtube-dl.exe"))) {
-	echo "Downloading youtube-dl..."
-	$ytdl_url = "https://yt-dl.org/latest/youtube-dl.exe"
-	$ytdl_exe = Join-Path $PSScriptRoot "youtube-dl.exe"
+if (!(Test-Path (Join-Path $PSScriptRoot "yt-dlp.exe"))) {
+	echo "Downloading yt-dlp..."
+	$ytdl_url = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe"
+	$ytdl_exe = Join-Path $PSScriptRoot "yt-dlp.exe"
 	Invoke-WebRequest -Uri $ytdl_url -OutFile $ytdl_exe
-	echo "youtube-dl version: $(& $ytdl_exe --version)"
+	$version = $(& $ytdl_exe --version)
+	echo "yt-dlp version: $version"
 }
 else {
 	echo "youtube-dl already restored."
