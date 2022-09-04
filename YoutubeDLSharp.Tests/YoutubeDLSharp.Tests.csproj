@@ -15,13 +15,4 @@
     <ProjectReference Include="..\YoutubeDLSharp\YoutubeDLSharp.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Lib\ffmpeg.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Lib\yt-dlp.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
