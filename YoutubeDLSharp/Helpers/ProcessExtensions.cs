@@ -12,11 +12,6 @@ namespace YoutubeDLSharp.Helpers
     /// </summary>
     internal static class ProcessExtensions
     {
-#if NET45
-        private static readonly bool _isWindows = true;
-#else
-        private static readonly bool _isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-#endif
         private static readonly TimeSpan _defaultTimeout = TimeSpan.FromSeconds(30);
 
         public static void KillTree(this Process process)
@@ -27,7 +22,7 @@ namespace YoutubeDLSharp.Helpers
         public static void KillTree(this Process process, TimeSpan timeout)
         {
             string stdout;
-            if (_isWindows)
+            if (OSHelper.IsWindows)
             {
                 RunProcessAndWaitForExit(
                     "taskkill",

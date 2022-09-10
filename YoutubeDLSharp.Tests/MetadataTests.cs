@@ -13,9 +13,10 @@ namespace YoutubeDLSharp.Tests
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
+            PrepTests.DownloadBinaries();
             ydl = new YoutubeDL();
-            ydl.YoutubeDLPath = "Lib\\yt-dlp.exe";
-            ydl.FFmpegPath = "Lib\\ffmpeg.exe";
+            ydl.YoutubeDLPath = "yt-dlp.exe";
+            ydl.FFmpegPath = "ffmpeg.exe";
         }
 
         [TestMethod]

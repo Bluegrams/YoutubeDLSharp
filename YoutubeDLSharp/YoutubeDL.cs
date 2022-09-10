@@ -346,5 +346,16 @@ namespace YoutubeDLSharp
         }
 
         #endregion
+
+        /// <summary>
+        /// Downloads the latest YT-DLP binary
+        /// </summary>
+        /// <param name="directoryPath">Optional directory path of where you want the YT-DLP binary saved</param>
+        public static void DownloadYtDlpBinary(string directoryPath = "") { DownloadHelper.DownloadYtDlp(directoryPath); }
+        /// <summary>
+        /// Downloads the latest FFmpeg binary
+        /// </summary>
+        /// <param name="directoryPath">Optional directory path of where you want the FFmpeg binary saved</param>
+        public static void DownloadFFmpegBinary(string directoryPath = "") { DownloadHelper.DownloadFFmpeg(directoryPath); }
     }
 }
