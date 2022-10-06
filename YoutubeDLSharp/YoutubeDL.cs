@@ -241,7 +241,7 @@ namespace YoutubeDLSharp
         /// <param name="output">A progress provider used to capture the standard output.</param>
         /// <param name="overrideOptions">Override options of the default option set for this run.</param>
         /// <returns>A RunResult object containing the path to the downloaded and converted video.</returns>
-        public async Task<RunResult<string>> RunAudioDownload(string url, AudioConversionFormat format,
+        public async Task<RunResult<string>> RunAudioDownload(string url, AudioConversionFormat format = AudioConversionFormat.Best,
             CancellationToken ct = default, IProgress<DownloadProgress> progress = null,
             IProgress<string> output = null, OptionSet overrideOptions = null)
         {
