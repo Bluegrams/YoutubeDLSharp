@@ -11,14 +11,14 @@ namespace YoutubeDLSharp.Helpers
     /// </summary>
     public class ProcessRunner
     {
-        private const int MAX_COUNT = 100;
-        private SemaphoreSlim semaphore;
+        private const int MaxCount = 100;
+        private readonly SemaphoreSlim _semaphore;
 
         public byte TotalCount { get; private set; }
 
         public ProcessRunner(byte initialCount)
         {
-            semaphore = new SemaphoreSlim(initialCount, MAX_COUNT);
+            _semaphore = new SemaphoreSlim(initialCount, MaxCount);
             TotalCount = initialCount;
         }
 
@@ -26,8 +26,8 @@ namespace YoutubeDLSharp.Helpers
                                        CancellationToken ct, IProgress<DownloadProgress> progress = null)
         {
             var errors = new List<string>();
-            process.ErrorReceived += (o, e) => errors.Add(e.Data);
-            await semaphore.WaitAsync(ct);
+            process.ErrorReceived += (_, e) => errors.Add(e.Data);
+            await _semaphore.WaitAsync(ct);
             try
             {
                 var exitCode = await process.RunAsync(urls, options, ct, progress);
@@ -35,33 +35,33 @@ namespace YoutubeDLSharp.Helpers
             }
             finally
             {
-                semaphore.Release();
+                _semaphore.Release();
             }
         }
 
-        private void incrementCount(byte incr)
+        private void IncrementCount(byte incr)
         {
-            semaphore.Release(incr);
+            _semaphore.Release(incr);
             TotalCount += incr;
         }
 
-        private async Task decrementCount(byte decr)
+        private async Task DecrementCount(byte decr)
         {
-            Task[] decrs = new Task[decr];
-            for (int i = 0; i < decr; i++)
-                decrs[i] = semaphore.WaitAsync();
+            var decrs = new Task[decr];
+            for (var i = 0; i < decr; i++)
+                decrs[i] = _semaphore.WaitAsync();
             TotalCount -= decr;
             await Task.WhenAll(decrs);
         }
 
         public async Task SetTotalCount(byte count)
         {
-            if (count < 1 || count > MAX_COUNT)
-                throw new ArgumentException($"Number of threads must be between 1 and {MAX_COUNT}.");
+            if (count is < 1 or > MaxCount)
+                throw new ArgumentException($"Number of threads must be between 1 and {MaxCount}.");
             if (count > TotalCount)
-                incrementCount((byte)(count - TotalCount));
+                IncrementCount((byte)(count - TotalCount));
             else if (count < TotalCount)
-                await decrementCount((byte)(TotalCount - count));
+                await DecrementCount((byte)(TotalCount - count));
         }
     }
 }

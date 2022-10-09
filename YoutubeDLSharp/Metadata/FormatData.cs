@@ -65,6 +65,5 @@ public class FormatData
     public float? StretchedRatio { get; set; }
     [JsonPropertyName("no_resume")]
     public bool? NoResume { get; set; }
-
     public override string ToString() => $"[{Extension}] {Format}";
 }

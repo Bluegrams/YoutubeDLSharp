@@ -12,23 +12,22 @@ namespace YoutubeDLSharp.Helpers;
 /// </summary>
 internal static class ProcessExtensions
 {
-    private static readonly TimeSpan _defaultTimeout = TimeSpan.FromSeconds(30);
+    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(30);
 
     public static void KillTree(this Process process)
     {
-        process.KillTree(_defaultTimeout);
+        process.KillTree(DefaultTimeout);
     }
 
     public static void KillTree(this Process process, TimeSpan timeout)
     {
-        string stdout;
         if (OsHelper.IsWindows)
         {
             RunProcessAndWaitForExit(
                 "taskkill",
                 $"/T /F /PID {process.Id}",
                 timeout,
-                out stdout);
+                out _);
         }
         else
         {
@@ -44,33 +43,25 @@ internal static class ProcessExtensions
 
     private static void GetAllChildIdsUnix(int parentId, ISet<int> children, TimeSpan timeout)
     {
-        string stdout;
         var exitCode = RunProcessAndWaitForExit(
             "pgrep",
             $"-P {parentId}",
             timeout,
-            out stdout);
+            out var stdout);
 
-        if (exitCode == 0 && !string.IsNullOrEmpty(stdout))
+        if (exitCode != 0 || string.IsNullOrEmpty(stdout)) return;
+        using var reader = new StringReader(stdout);
+        while (true)
         {
-            using (var reader = new StringReader(stdout))
+            var text = reader.ReadLine();
+            if (text == null)
             {
-                while (true)
-                {
-                    var text = reader.ReadLine();
-                    if (text == null)
-                    {
-                        return;
-                    }
-
-                    int id;
-                    if (int.TryParse(text, out id))
-                    {
-                        children.Add(id);
-                        GetAllChildIdsUnix(id, children, timeout);
-                    }
-                }
+                return;
             }
+
+            if (!int.TryParse(text, out var id)) continue;
+            children.Add(id);
+            GetAllChildIdsUnix(id, children, timeout);
         }
     }
 

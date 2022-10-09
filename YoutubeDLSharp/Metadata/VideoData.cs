@@ -13,7 +13,7 @@ public class VideoData
     [JsonProperty("_type")]
     public MetadataType ResultType { get; set; }
     [JsonProperty("id")]
-    public string ID { get; set; }
+    public string Id { get; set; }
     [JsonProperty("title")]
     public string Title { get; set; }
     [JsonProperty("formats")]
@@ -38,7 +38,7 @@ public class VideoData
     [JsonProperty("alt_title")]
     public string AltTitle { get; set; }
     [JsonProperty("display_id")]
-    public string DisplayID { get; set; }
+    public string DisplayId { get; set; }
     [JsonProperty("thumbnails")]
     public ThumbnailData[] Thumbnails { get; set; }
     [JsonProperty("thumbnail")]
@@ -60,13 +60,13 @@ public class VideoData
     [JsonConverter(typeof(CustomDateTimeConverter))]
     public DateTime? UploadDate { get; set; }
     [JsonProperty("uploader_id")]
-    public string UploaderID { get; set; }
+    public string UploaderId { get; set; }
     [JsonProperty("uploader_url")]
     public string UploaderUrl { get; set; }
     [JsonProperty("channel")]
     public string Channel { get; set; }
     [JsonProperty("channel_id")]
-    public string ChannelID { get; set; }
+    public string ChannelId { get; set; }
     [JsonProperty("channel_url")]
     public string ChannelUrl { get; set; }
     [JsonProperty("location")]
@@ -100,8 +100,7 @@ public class VideoData
     [JsonProperty("start_time")]
     public float? StartTime { get; set; }
     [JsonProperty("end_time")]
-    public float? EndTime { get; set; }
-
+    public float? EndTime { get; set; } 
     public override string ToString()
     {
         return JsonConvert.SerializeObject(this, Formatting.Indented);
@@ -109,7 +108,7 @@ public class VideoData
 }
 
 internal class CustomDateTimeConverter : IsoDateTimeConverter
-{
+{ 
     public CustomDateTimeConverter()
     {
         DateTimeFormat = "yyyyMMdd";

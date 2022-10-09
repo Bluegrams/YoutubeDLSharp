@@ -25,8 +25,8 @@ public class RunResult<T>
     /// </summary>
     public RunResult(bool success, string[] error, T result)
     {
-        this.Success = success;
-        this.ErrorOutput = error;
-        this.Data = result;
+        Success = success;
+        ErrorOutput = error;
+        Data = result;
     }
 }

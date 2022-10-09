@@ -5,7 +5,7 @@ namespace YoutubeDLSharp.Metadata;
 public class ThumbnailData
 {
     [JsonPropertyName("id")]
-    public string ID { get; set; }
+    public string Id { get; set; }
     [JsonPropertyName("url")]
     public string Url { get; set; }
     [JsonPropertyName("preference")]
