@@ -25,6 +25,8 @@ public class FormatData
     public int? Height { get; set; }
     [JsonPropertyName("resolution")]
     public string Resolution { get; set; }
+    [JsonPropertyName("dynamic_range")]
+    public string Hdr { get; set; }
     [JsonPropertyName("tbr")]
     public double? Bitrate { get; set; }
     [JsonPropertyName("abr")]
