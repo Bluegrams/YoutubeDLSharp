@@ -3,104 +3,100 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using YoutubeDLSharp;
-using YoutubeDLSharp.Metadata;
 using YoutubeDLSharp.Options;
 
 namespace WpfDemoApp
 {
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : INotifyPropertyChanged
     {
-        private bool isNotDownloading = true;
-        private bool audioOnly = false;
+        private bool _isNotDownloading = true;
+        private bool _audioOnly;
 
-        private IProgress<DownloadProgress> progress;
-        private IProgress<string> output;
+        private readonly IProgress<DownloadProgress> _progress;
+        private readonly IProgress<string> _output;
 
         public MainWindow()
         {
-            this.YoutubeDL = new YoutubeDL() { YoutubeDLPath = "yt-dlp.exe" };
-            this.DataContext = this;
+            DataContext = this;
             InitializeComponent();
-            progress = new Progress<DownloadProgress>((p) => showProgress(p));
-            output = new Progress<string>((s) => txtOutput.AppendText(s + Environment.NewLine));
+            _progress = new Progress<DownloadProgress>(ShowProgress);
+            _output = new Progress<string>(s => TxtOutput.AppendText(s + Environment.NewLine));
         }
 
-        public YoutubeDL YoutubeDL { get; }
+        private YoutubeDl YoutubeDl { get; } = new() { YoutubeDlPath = "yt-dlp" };
 
         public bool IsNotDownloading
         {
-            get => isNotDownloading;
+            get => _isNotDownloading;
             set
             {
-                isNotDownloading = value;
-                propertyChanged();
+                _isNotDownloading = value;
+                PropertyChangedVoid();
             }
         }
 
         public bool AudioOnly
         {
-            get => audioOnly;
+            get => _audioOnly;
             set
             {
-                audioOnly = value;
-                propertyChanged();
+                _audioOnly = value;
+                PropertyChangedVoid();
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void propertyChanged([CallerMemberName] string property = null)
+        private void PropertyChangedVoid([CallerMemberName] string property = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
         private async void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
-            string url = txtUrl.Text;
+            var url = TxtUrl.Text;
             IsNotDownloading = false;
-            txtOutput.Clear();
+            TxtOutput.Clear();
             // Parse custom arguments
-            OptionSet custom = OptionSet.FromString(txtOptions.Text.Split('\n'));
+            var custom = OptionSet.FromString(TxtOptions.Text.Split('\n'));
             RunResult<string> result;
             if (AudioOnly)
             {
-                result = await YoutubeDL.RunAudioDownload(
-                    url, AudioConversionFormat.Mp3, progress: progress,
-                    output: output, overrideOptions: custom
+                result = await YoutubeDl.RunAudioDownload(
+                    url, AudioConversionFormat.Mp3, progress: _progress,
+                    output: _output, overrideOptions: custom
                 );
             }
             else
-            {
-                result = await YoutubeDL.RunVideoDownload(url, progress: progress, output: output, overrideOptions: custom);
-            }
+                result = await YoutubeDl.RunVideoDownload(url, progress: _progress, output: _output,
+                    overrideOptions: custom);
+
             if (result.Success)
-            {
                 MessageBox.Show($"Successfully downloaded \"{url}\" to:\n\"{result.Data}\".", "YoutubeDLSharp");
-            }
-            else showErrorMessage(url, String.Join("\n", result.ErrorOutput));
+            else ShowErrorMessage(url, String.Join("\n", result.ErrorOutput));
             IsNotDownloading = true;
         }
 
-        private void showProgress(DownloadProgress p)
+        private void ShowProgress(DownloadProgress p)
         {
-            txtState.Text = p.State.ToString();
-            progDownload.Value = p.Progress;
-            txtProgress.Text = $"speed: {p.DownloadSpeed} | left: {p.ETA}";
+            TxtState.Text = p.State.ToString();
+            ProgDownload.Value = p.Progress;
+            TxtProgress.Text = $"speed: {p.DownloadSpeed} | left: {p.Eta}";
         }
 
         private async void InformationButton_Click(object sender, RoutedEventArgs e)
         {
-            string url = txtUrl.Text;
-            RunResult<VideoData> result = await YoutubeDL.RunVideoDataFetch(url);
+            var url = TxtUrl.Text;
+            var result = await YoutubeDl.RunVideoDataFetch(url);
             if (result.Success)
             {
                 var infoWindow = new InformationWindow(result.Data);
                 infoWindow.ShowDialog();
             }
-            else showErrorMessage(url, String.Join("\n", result.ErrorOutput));
+            else ShowErrorMessage(url, string.Join("\n", result.ErrorOutput));
         }
 
-        private void showErrorMessage(string url, string error)
+        private void ShowErrorMessage(string url, string error)
             => MessageBox.Show($"Failed to process '{url}'. Output:\n\n{error}", "YoutubeDLSharp - ERROR",
                 MessageBoxButton.OK, MessageBoxImage.Error);
     }

@@ -1,46 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace YoutubeDLSharp.Helpers
+namespace YoutubeDLSharp.Helpers;
+
+internal static class OsHelper
 {
-    internal static class OSHelper
-    {
-        public static bool IsWindows { get => GetOSVersion() == OSVersion.Windows; }
+    public static bool IsWindows => GetOsVersion() == OsVersion.Windows;
 
-        /// <summary>
-        /// Gets the <see cref="OSVersion"/> depending on what platform you are on
-        /// </summary>
-        /// <returns>Returns the OS Version</returns>
-        /// <exception cref="Exception"></exception>
-        internal static OSVersion GetOSVersion()
+    /// <summary>
+    /// Gets the <see cref="OsVersion"/> depending on what platform you are on
+    /// </summary>
+    /// <returns>Returns the OS Version</returns>
+    /// <exception cref="Exception"></exception>
+    internal static OsVersion GetOsVersion()
+    { 
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-#if NET45
-            return OSVersion.Windows;
-#else
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return OSVersion.Windows;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                return OSVersion.OSX;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                return OSVersion.Linux;
-            }
-            else { throw new Exception("Your OS isn't supported"); }
-#endif
+            return OsVersion.Windows;
         }
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            return OsVersion.Osx;
+        }
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            return OsVersion.Linux;
+        }
+
+        throw new Exception("Your OS isn't supported");
     }
-    internal enum OSVersion
-    {
-        Windows,
-        OSX,
-        Linux
-    }
+}
+internal enum OsVersion
+{
+    Windows,
+    Osx,
+    Linux
 }

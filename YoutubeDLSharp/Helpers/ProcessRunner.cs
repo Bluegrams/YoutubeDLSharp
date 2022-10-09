@@ -22,7 +22,7 @@ namespace YoutubeDLSharp.Helpers
             TotalCount = initialCount;
         }
 
-        public async Task<(int, string[])> RunThrottled(YoutubeDLProcess process, string[] urls, OptionSet options,
+        public async Task<(int, string[])> RunThrottled(YoutubeDlProcess process, string[] urls, OptionSet options,
                                        CancellationToken ct, IProgress<DownloadProgress> progress = null)
         {
             var errors = new List<string>();

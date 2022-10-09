@@ -1,6 +1,3 @@
-﻿using System.Windows;
+﻿namespace WpfDemoApp;
 
-namespace WpfDemoApp
-{
-    public partial class App : Application { }
-}
+public partial class App { }

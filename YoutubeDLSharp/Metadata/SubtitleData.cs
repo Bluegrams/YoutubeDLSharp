@@ -1,14 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace YoutubeDLSharp.Metadata
+namespace YoutubeDLSharp.Metadata;
+
+public class SubtitleData
 {
-    public class SubtitleData
-    {
-        [JsonProperty("ext")]
-        public string Ext { get; set; }
-        [JsonProperty("data")]
-        public string Data { get; set; }
-        [JsonProperty("url")]
-        public string Url { get; set; }
-    }
+    [JsonPropertyName("ext")]
+    public string Ext { get; set; }
+    [JsonPropertyName("data")]
+    public string Data { get; set; }
+    [JsonPropertyName("url")]
+    public string Url { get; set; }
 }

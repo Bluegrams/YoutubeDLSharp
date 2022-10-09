@@ -1,71 +1,70 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace YoutubeDLSharp.Metadata
+namespace YoutubeDLSharp.Metadata;
+
+/// <summary>
+/// Represents information for one available download format for one video as extracted by youtube-dl.
+/// </summary>
+public class FormatData
 {
-    /// <summary>
-    /// Represents information for one available download format for one video as extracted by youtube-dl.
-    /// </summary>
-    public class FormatData
-    {
-        [JsonProperty("url")]
-        public string Url { get; set; }
-        [JsonProperty("manifest_url")]
-        public string ManifestUrl { get; set; }
-        [JsonProperty("ext")]
-        public string Extension { get; set; }
-        [JsonProperty("format")]
-        public string Format { get; set; }
-        [JsonProperty("format_id")]
-        public string FormatId { get; set; }
-        [JsonProperty("format_note")]
-        public string FormatNote { get; set; }
-        [JsonProperty("width")]
-        public int? Width { get; set; }
-        [JsonProperty("height")]
-        public int? Height { get; set; }
-        [JsonProperty("resolution")]
-        public string Resolution { get; set; }
-        [JsonProperty("tbr")]
-        public double? Bitrate { get; set; }
-        [JsonProperty("abr")]
-        public double? AudioBitrate { get; set; }
-        [JsonProperty("acodec")]
-        public string AudioCodec { get; set; }
-        [JsonProperty("asr")]
-        public double? AudioSamplingRate { get; set; }
-        [JsonProperty("vbr")]
-        public double? VideoBitrate { get; set; }
-        [JsonProperty("fps")]
-        public float? FrameRate { get; set; }
-        [JsonProperty("vcodec")]
-        public string VideoCodec { get; set; }
-        [JsonProperty("container")]
-        public string ContainerFormat { get; set; }
-        [JsonProperty("filesize")]
-        public long? FileSize { get; set; }
-        [JsonProperty("filesize_approx")]
-        public long? ApproximateFileSize { get; set; }
-        [JsonProperty("player_url")]
-        public string PlayerUrl { get; set; }
-        [JsonProperty("protocol")]
-        public string Protocol { get; set; }
-        [JsonProperty("fragment_base_url")]
-        public string FragmentBaseUrl { get; set; }
-        [JsonProperty("preference")]
-        public int? Preference { get; set; }
-        [JsonProperty("language")]
-        public string Language { get; set; }
-        [JsonProperty("language_preference")]
-        public int? LanguagePreference { get; set; }
-        [JsonProperty("quality")]
-        public int? Quality { get; set; }
-        [JsonProperty("source_preference")]
-        public int? SourcePreference { get; set; }
-        [JsonProperty("stretched_ratio")]
-        public float? StretchedRatio { get; set; }
-        [JsonProperty("no_resume")]
-        public bool? NoResume { get; set; }
+    [JsonPropertyName("url")]
+    public string Url { get; set; }
+    [JsonPropertyName("manifest_url")]
+    public string ManifestUrl { get; set; }
+    [JsonPropertyName("ext")]
+    public string Extension { get; set; }
+    [JsonPropertyName("format")]
+    public string Format { get; set; }
+    [JsonPropertyName("format_id")]
+    public string FormatId { get; set; }
+    [JsonPropertyName("format_note")]
+    public string FormatNote { get; set; }
+    [JsonPropertyName("width")]
+    public int? Width { get; set; }
+    [JsonPropertyName("height")]
+    public int? Height { get; set; }
+    [JsonPropertyName("resolution")]
+    public string Resolution { get; set; }
+    [JsonPropertyName("tbr")]
+    public double? Bitrate { get; set; }
+    [JsonPropertyName("abr")]
+    public double? AudioBitrate { get; set; }
+    [JsonPropertyName("acodec")]
+    public string AudioCodec { get; set; }
+    [JsonPropertyName("asr")]
+    public double? AudioSamplingRate { get; set; }
+    [JsonPropertyName("vbr")]
+    public double? VideoBitrate { get; set; }
+    [JsonPropertyName("fps")]
+    public float? FrameRate { get; set; }
+    [JsonPropertyName("vcodec")]
+    public string VideoCodec { get; set; }
+    [JsonPropertyName("container")]
+    public string ContainerFormat { get; set; }
+    [JsonPropertyName("filesize")]
+    public long? FileSize { get; set; }
+    [JsonPropertyName("filesize_approx")]
+    public long? ApproximateFileSize { get; set; }
+    [JsonPropertyName("player_url")]
+    public string PlayerUrl { get; set; }
+    [JsonPropertyName("protocol")]
+    public string Protocol { get; set; }
+    [JsonPropertyName("fragment_base_url")]
+    public string FragmentBaseUrl { get; set; }
+    [JsonPropertyName("preference")]
+    public int? Preference { get; set; }
+    [JsonPropertyName("language")]
+    public string Language { get; set; }
+    [JsonPropertyName("language_preference")]
+    public int? LanguagePreference { get; set; }
+    [JsonPropertyName("quality")]
+    public int? Quality { get; set; }
+    [JsonPropertyName("source_preference")]
+    public int? SourcePreference { get; set; }
+    [JsonPropertyName("stretched_ratio")]
+    public float? StretchedRatio { get; set; }
+    [JsonPropertyName("no_resume")]
+    public bool? NoResume { get; set; }
 
-        public override string ToString() => $"[{Extension}] {Format}";
-    }
+    public override string ToString() => $"[{Extension}] {Format}";
 }

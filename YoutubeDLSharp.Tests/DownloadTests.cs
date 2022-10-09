@@ -1,98 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using YoutubeDLSharp.Options;
 
-namespace YoutubeDLSharp.Tests
+namespace YoutubeDLSharp.Tests;
+
+[TestClass]
+public class DownloadTests
 {
-    [TestClass]
-    public class DownloadTests
+    private const string Url = "https://www.youtube.com/watch?v=C0DPdy98e4c";
+    private static YoutubeDl _ydl;
+    private static List<string> _downloadedFiles;
+
+    [ClassInitialize]
+    public static async Task Initialize(TestContext context)
     {
-        private const string URL = "https://www.youtube.com/watch?v=C0DPdy98e4c";
-        private static YoutubeDL ydl;
-        private static List<string> downloadedFiles;
-
-        [ClassInitialize]
-        public static void Initialize(TestContext context)
+        await PrepTests.DownloadBinaries();
+        _ydl = new YoutubeDl
         {
-            PrepTests.DownloadBinaries();
-            ydl = new YoutubeDL();
-            ydl.YoutubeDLPath = "yt-dlp.exe";
-            ydl.FFmpegPath = "ffmpeg.exe";
-            downloadedFiles = new List<string>();
-        }
+            YoutubeDlPath = "yt-dlp",
+            FFmpegPath = "ffmpeg"
+        };
+        _downloadedFiles = new List<string>();
+    }
 
-        [TestMethod]
-        public async Task TestVideoDownloadSimple()
-        {
-            var result = await ydl.RunVideoDownload(URL, mergeFormat: DownloadMergeFormat.Mkv);
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(String.Empty, String.Join("", result.ErrorOutput));
-            string file = result.Data;
-            Assert.IsTrue(File.Exists(file));
-            Assert.AreEqual(".mkv", Path.GetExtension(file));
-            Assert.AreEqual("TEST VIDEO", Path.GetFileNameWithoutExtension(file));
-            downloadedFiles.Add(file);
-        }
+    [TestMethod]
+    public async Task TestVideoDownloadSimple()
+    {
+        var result = await _ydl.RunVideoDownload(Url, mergeFormat: DownloadMergeFormat.Mkv);
+        Assert.IsTrue(result.Success);
+        Assert.AreEqual(string.Empty, string.Join("", result.ErrorOutput));
+        var file = result.Data;
+        Assert.IsTrue(File.Exists(file));
+        Assert.AreEqual(".mkv", Path.GetExtension(file));
+        Assert.AreEqual("TEST VIDEO", Path.GetFileNameWithoutExtension(file));
+        _downloadedFiles.Add(file);
+    }
 
-        [TestMethod]
-        public async Task TestAudioDownloadSimple()
-        {
-            var result = await ydl.RunAudioDownload(URL, AudioConversionFormat.Mp3);
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(String.Empty, String.Join("", result.ErrorOutput));
-            string file = result.Data;
-            Assert.IsTrue(File.Exists(file));
-            Assert.AreEqual(".mp3", Path.GetExtension(file));
-            Assert.AreEqual("TEST VIDEO", Path.GetFileNameWithoutExtension(file));
-            downloadedFiles.Add(file);
-        }
+    [TestMethod]
+    public async Task TestAudioDownloadSimple()
+    {
+        var result = await _ydl.RunAudioDownload(Url, AudioConversionFormat.Mp3);
+        Assert.IsTrue(result.Success);
+        Assert.AreEqual(string.Empty, string.Join("", result.ErrorOutput));
+        var file = result.Data;
+        Assert.IsTrue(File.Exists(file));
+        Assert.AreEqual(".mp3", Path.GetExtension(file));
+        Assert.AreEqual("TEST VIDEO", Path.GetFileNameWithoutExtension(file));
+        _downloadedFiles.Add(file);
+    }
 
-        [TestMethod]
-        public async Task TestVideoDownloadWithOptions()
-        {
-            ydl.OutputFolder = "Lib";
-            ydl.OutputFileTemplate = "%(extractor)s_%(title)s_%(upload_date)s.%(ext)s";
-            ydl.RestrictFilenames = true;
-            var result = await ydl.RunVideoDownload(URL, format: "bestvideo", recodeFormat: VideoRecodeFormat.Mp4);
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(String.Empty, String.Join("", result.ErrorOutput));
-            string file = result.Data;
-            Assert.IsTrue(File.Exists(file));
-            Assert.IsTrue(Path.GetDirectoryName(file).EndsWith("Lib"));
-            Assert.AreEqual(".mp4", Path.GetExtension(file));
-            Assert.AreEqual("youtube_TEST_VIDEO_20070221", Path.GetFileNameWithoutExtension(file));
-            downloadedFiles.Add(file);
-        }
+    [TestMethod]
+    public async Task TestVideoDownloadWithOptions()
+    {
+        _ydl.OutputFolder = "Lib";
+        _ydl.OutputFileTemplate = "%(extractor)s_%(title)s_%(upload_date)s.%(ext)s";
+        _ydl.RestrictFilenames = true;
+        var result = await _ydl.RunVideoDownload(Url, format: "bestvideo", recodeFormat: VideoRecodeFormat.Mp4);
+        Assert.IsTrue(result.Success);
+        Assert.AreEqual(string.Empty, string.Join("", result.ErrorOutput));
+        var file = result.Data;
+        Assert.IsTrue(File.Exists(file));
+        Assert.IsTrue(Path.GetDirectoryName(file).EndsWith("Lib"));
+        Assert.AreEqual(".mp4", Path.GetExtension(file));
+        Assert.AreEqual("youtube_TEST_VIDEO_20070221", Path.GetFileNameWithoutExtension(file));
+        _downloadedFiles.Add(file);
+    }
 
-        [TestMethod]
-        public async Task TestVideoDownloadWithOverrideOptions()
+    [TestMethod]
+    public async Task TestVideoDownloadWithOverrideOptions()
+    {
+        var overrideOptions = new OptionSet()
         {
-            var overrideOptions = new OptionSet()
-            {
-                Output = "%(extractor)s_%(title)s_%(upload_date)s.%(ext)s",
-                RestrictFilenames = true,
-                RecodeVideo = VideoRecodeFormat.Mp4
-            };
-            var result = await ydl.RunVideoDownload(URL, format: "bestvideo", overrideOptions: overrideOptions);
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(String.Empty, String.Join("", result.ErrorOutput));
-            string file = result.Data;
-            Assert.IsTrue(File.Exists(file));
-            Assert.AreEqual(".mp4", Path.GetExtension(file));
-            Assert.AreEqual("youtube_TEST_VIDEO_20070221", Path.GetFileNameWithoutExtension(file));
-            downloadedFiles.Add(file);
-        }
+            Output = "%(extractor)s_%(title)s_%(upload_date)s.%(ext)s",
+            RestrictFilenames = true,
+            RecodeVideo = VideoRecodeFormat.Mp4
+        };
+        var result = await _ydl.RunVideoDownload(Url, format: "bestvideo", overrideOptions: overrideOptions);
+        Assert.IsTrue(result.Success);
+        Assert.AreEqual(string.Empty, string.Join("", result.ErrorOutput));
+        var file = result.Data;
+        Assert.IsTrue(File.Exists(file));
+        Assert.AreEqual(".mp4", Path.GetExtension(file));
+        Assert.AreEqual("youtube_TEST_VIDEO_20070221", Path.GetFileNameWithoutExtension(file));
+        _downloadedFiles.Add(file);
+    }
 
-        [ClassCleanup]
-        public static void Cleanup()
+    [ClassCleanup]
+    public static void Cleanup()
+    {
+        foreach (var file in _downloadedFiles)
         {
-            foreach (var file in downloadedFiles)
-            {
-                File.Delete(file);
-            }
+            File.Delete(file);
         }
     }
 }

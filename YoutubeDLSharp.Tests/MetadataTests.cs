@@ -8,22 +8,24 @@ namespace YoutubeDLSharp.Tests
     [TestClass]
     public class MetadataTests
     {
-        private static YoutubeDL ydl;
+        private static YoutubeDl _ydl;
 
         [ClassInitialize]
-        public static void Initialize(TestContext context)
+        public static async Task Initialize(TestContext context)
         {
-            PrepTests.DownloadBinaries();
-            ydl = new YoutubeDL();
-            ydl.YoutubeDLPath = "yt-dlp.exe";
-            ydl.FFmpegPath = "ffmpeg.exe";
+            await PrepTests.DownloadBinaries();
+            _ydl = new YoutubeDl
+            {
+                YoutubeDlPath = "yt-dlp",
+                FFmpegPath = "ffmpeg"
+            };
         }
 
         [TestMethod]
         public async Task TestVideoInformationYoutube()
         {
-            string url = "https://www.youtube.com/watch?v=C0DPdy98e4c&t=9s";
-            RunResult<VideoData> result = await ydl.RunVideoDataFetch(url);
+            const string url = "https://www.youtube.com/watch?v=C0DPdy98e4c&t=9s";
+            var result = await _ydl.RunVideoDataFetch(url);
             Assert.IsTrue(result.Success);
             Assert.AreEqual(MetadataType.Video, result.Data.ResultType);
             Assert.AreEqual("TEST VIDEO", result.Data.Title);
@@ -37,8 +39,8 @@ namespace YoutubeDLSharp.Tests
         [TestMethod]
         public async Task TestVideoInformationVimeo()
         {
-            string url = "https://vimeo.com/23608259";
-            RunResult<VideoData> result = await ydl.RunVideoDataFetch(url);
+            const string url = "https://vimeo.com/23608259";
+            var result = await _ydl.RunVideoDataFetch(url);
             Assert.IsTrue(result.Success);
             Assert.AreEqual(MetadataType.Video, result.Data.ResultType);
             Assert.AreEqual("Cats in Tanks", result.Data.Title);
@@ -51,8 +53,8 @@ namespace YoutubeDLSharp.Tests
         [TestMethod]
         public async Task TestPlaylistInformation()
         {
-            string url = "https://www.youtube.com/playlist?list=PLD8804CB40CAB0EA5";
-            RunResult<VideoData> result = await ydl.RunVideoDataFetch(url);
+            const string url = "https://www.youtube.com/playlist?list=PLD8804CB40CAB0EA5";
+            var result = await _ydl.RunVideoDataFetch(url);
             Assert.IsTrue(result.Success);
             Assert.AreEqual(MetadataType.Playlist, result.Data.ResultType);
             Assert.AreEqual("E.Grieg Peer Gynt Suite playlist", result.Data.Title);

@@ -20,7 +20,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="txtUrl" Margin="0,12" FontSize="14"/>
+            <TextBox x:Name="TxtUrl" Margin="0,12" FontSize="14"/>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
@@ -36,17 +36,17 @@
                         Content="Information" Click="InformationButton_Click"/>
             </Grid>
             <Expander Grid.Row="2" Header="Custom Arguments">
-                <TextBox x:Name="txtOptions" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="60"/>
+                <TextBox x:Name="TxtOptions" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="60"/>
             </Expander>
             <StackPanel Grid.Row="3" Margin="0,12">
-                <ProgressBar x:Name="progDownload" Height="20" Margin="0"
+                <ProgressBar x:Name="ProgDownload" Height="20" Margin="0"
                              Maximum="1"/>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="txtState" Margin="0,0,8,0"/>
-                    <TextBlock x:Name="txtProgress" Text="speed:  | left:"/>
+                    <TextBlock x:Name="TxtState" Margin="0,0,8,0"/>
+                    <TextBlock x:Name="TxtProgress" Text="speed:  | left:"/>
                 </StackPanel>
             </StackPanel>
-            <TextBox x:Name="txtOutput" Grid.Row="4" IsReadOnly="True"
+            <TextBox x:Name="TxtOutput" Grid.Row="4" IsReadOnly="True"
                      Height="100" VerticalScrollBarVisibility="Visible"/>
         </Grid>
     </DockPanel>

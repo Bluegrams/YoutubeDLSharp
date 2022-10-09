@@ -1,22 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace YoutubeDLSharp.Metadata
+namespace YoutubeDLSharp.Metadata;
+
+public class ThumbnailData
 {
-    public class ThumbnailData
-    {
-        [JsonProperty("id")]
-        public string ID { get; set; }
-        [JsonProperty("url")]
-        public string Url { get; set; }
-        [JsonProperty("preference")]
-        public int? Preference { get; set; }
-        [JsonProperty("width")]
-        public int? Width { get; set; }
-        [JsonProperty("height")]
-        public int? Height { get; set; }
-        [JsonProperty("resolution")]
-        public string Resolution { get; set; }
-        [JsonProperty("filesize")]
-        public int? Filesize { get; set; }
-    }
+    [JsonPropertyName("id")]
+    public string ID { get; set; }
+    [JsonPropertyName("url")]
+    public string Url { get; set; }
+    [JsonPropertyName("preference")]
+    public int? Preference { get; set; }
+    [JsonPropertyName("width")]
+    public int? Width { get; set; }
+    [JsonPropertyName("height")]
+    public int? Height { get; set; }
+    [JsonPropertyName("resolution")]
+    public string Resolution { get; set; }
+    [JsonPropertyName("filesize")]
+    public int? Filesize { get; set; }
 }
