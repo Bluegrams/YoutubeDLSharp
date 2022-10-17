@@ -17,8 +17,8 @@ namespace YoutubeDLSharp.Options
         private Option<string> minFilesize = new Option<string>("--min-filesize");
         private Option<string> maxFilesize = new Option<string>("--max-filesize");
         private Option<DateTime> date = new Option<DateTime>("--date");
-        private Option<DateTime> datebefore = new Option<DateTime>("--datebefore");
-        private Option<DateTime> dateafter = new Option<DateTime>("--dateafter");
+        private Option<DateTime> dateBefore = new Option<DateTime>("--datebefore");
+        private Option<DateTime> dateAfter = new Option<DateTime>("--dateafter");
         private Option<long?> minViews = new Option<long?>("--min-views");
         private Option<long?> maxViews = new Option<long?>("--max-views");
         private Option<string> matchFilter = new Option<string>("--match-filter");
@@ -83,12 +83,12 @@ namespace YoutubeDLSharp.Options
         /// Download only videos uploaded on or
         /// before this date (i.e. inclusive)
         /// </summary>
-        public DateTime DateBefore { get => datebefore.Value; set => datebefore.Value = value; }
+        public DateTime DateBefore { get => dateBefore.Value; set => dateBefore.Value = value; }
         /// <summary>
         /// Download only videos uploaded on or
         /// after this date (i.e. inclusive)
         /// </summary>
-        public DateTime DateAfter { get => dateafter.Value; set => dateafter.Value = value; }
+        public DateTime DateAfter { get => dateAfter.Value; set => dateAfter.Value = value; }
         /// <summary>
         /// Do not download any videos with less
         /// than COUNT views
