@@ -99,6 +99,8 @@ namespace YoutubeDLSharp.Metadata
         public double? AverageRating { get; set; }
         [JsonProperty("comment_count")]
         public long? CommentCount { get; set; }
+        [JsonProperty("comments")]
+        public CommentData[] Comments { get; set; }
         [JsonProperty("age_limit")]
         public int? AgeLimit { get; set; }
         [JsonProperty("webpage_url")]
@@ -119,6 +121,8 @@ namespace YoutubeDLSharp.Metadata
         public float? StartTime { get; set; }
         [JsonProperty("end_time")]
         public float? EndTime { get; set; }
+        [JsonProperty("chapters")]
+        public ChapterData[] Chapters { get; set; }
         [JsonProperty("playable_in_embed")]
         public string PlayableInEmbed { get; set; }
         [JsonProperty("availability")]

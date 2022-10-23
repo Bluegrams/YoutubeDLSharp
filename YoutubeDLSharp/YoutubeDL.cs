@@ -114,14 +114,19 @@ namespace YoutubeDLSharp
         /// <param name="url">The URL of the video to fetch information for.</param>
         /// <param name="ct">A CancellationToken used to cancel the process.</param>
         /// <param name="flat">If set to true, does not extract information for each video in a playlist.</param>
+        /// <param name="fetchComments">If set to true, fetch comment data for the given video.</param>
         /// <param name="overrideOptions">Override options of the default option set for this run.</param>
         /// <returns>A RunResult object containing a VideoData object with the requested video information.</returns>
         public async Task<RunResult<VideoData>> RunVideoDataFetch(string url,
-            CancellationToken ct = default, bool flat = true, OptionSet overrideOptions = null)
+            CancellationToken ct = default,
+            bool flat = true,
+            bool fetchComments = false,
+            OptionSet overrideOptions = null)
         {
             var opts = GetDownloadOptions();
             opts.DumpSingleJson = true;
             opts.FlatPlaylist = flat;
+            opts.WriteComments = fetchComments;
             if (overrideOptions != null)
             {
                 opts = opts.OverrideOptions(overrideOptions);
