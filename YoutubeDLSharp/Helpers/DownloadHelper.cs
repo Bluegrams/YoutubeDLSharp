@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using System.Net;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -13,17 +8,22 @@ using System.Net.Http;
 
 namespace YoutubeDLSharp.Helpers
 {
-    internal class DownloadHelper
+    internal static class DownloadHelper
     {
+        private const string BASE_GITHUB_URL = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp";
+        private const string FFMPEG_API_URL = "https://ffbinaries.com/api/v1/version/latest";
+        private static readonly HttpClient client = new HttpClient();
+
         /// <summary>
         /// Downloads the YT-DLP binary depending on OS
         /// </summary>
         /// <param name="directoryPath">The optional directory of where it should be saved to</param>
         /// <exception cref="Exception"></exception>
-        internal static void DownloadYtDlp(string directoryPath = "")
+        internal static async Task DownloadYtDlp(string directoryPath = "")
         {
-            const string BASE_GITHUB_URL = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp";
-            string downloadUrl = "";
+            if (string.IsNullOrEmpty(directoryPath)) { directoryPath = Directory.GetCurrentDirectory(); }
+
+            string downloadUrl;
             switch (OSHelper.GetOSVersion())
             {
                 case OSVersion.Windows:
@@ -39,10 +39,8 @@ namespace YoutubeDLSharp.Helpers
                     throw new Exception("Your OS isn't supported");
             }
 
-            if (string.IsNullOrEmpty(directoryPath)) { directoryPath = Directory.GetCurrentDirectory(); }
-
             var downloadLocation = Path.Combine(directoryPath, Path.GetFileName(downloadUrl));
-            var data = Task.Run(() => DownloadFileBytesAsync(downloadUrl)).Result;
+            var data = await DownloadFileBytesAsync(downloadUrl);
             File.WriteAllBytes(downloadLocation, data);
         }
 
@@ -51,22 +49,14 @@ namespace YoutubeDLSharp.Helpers
         /// </summary>
         /// <param name="directoryPath">The optional directory of where it should be saved to</param>
         /// <exception cref="Exception"></exception>
-        internal static void DownloadFFmpeg(string directoryPath = "")
+        internal static async Task DownloadFFmpeg(string directoryPath = "")
         {
             if (string.IsNullOrEmpty(directoryPath)) { directoryPath = Directory.GetCurrentDirectory(); }
-            const string FFMPEG_API_URL = "https://ffbinaries.com/api/v1/version/latest";
-            var httpRequest = (HttpWebRequest)WebRequest.Create(FFMPEG_API_URL);
-            httpRequest.Accept = "application/json";
 
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            string jsonData;
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                jsonData = streamReader.ReadToEnd();
-            }
-            var result = JsonConvert.DeserializeObject<JToken>(jsonData);
+            string response = await client.GetStringAsync(FFMPEG_API_URL);
+            var result = JsonConvert.DeserializeObject<JToken>(response);
 
-            string ffmpegURL = "";
+            string ffmpegURL;
             switch (OSHelper.GetOSVersion())
             {
                 case OSVersion.Windows:
@@ -81,7 +71,7 @@ namespace YoutubeDLSharp.Helpers
                 default:
                     throw new Exception("Your OS isn't supported");
             }
-            var data = Task.Run(() => DownloadFileBytesAsync(ffmpegURL)).Result;
+            var data = await DownloadFileBytesAsync(ffmpegURL);
 
             using (var stream = new MemoryStream(data))
             {
@@ -104,13 +94,10 @@ namespace YoutubeDLSharp.Helpers
         /// <exception cref="InvalidOperationException"></exception>
         private static async Task<byte[]> DownloadFileBytesAsync(string uri)
         {
-            Uri uriResult;
-
-            if (!Uri.TryCreate(uri, UriKind.Absolute, out uriResult))
+            if (!Uri.TryCreate(uri, UriKind.Absolute, out Uri uriResult))
                 throw new InvalidOperationException("URI is invalid.");
 
-            var httpClient = new HttpClient();
-            byte[] fileBytes = await httpClient.GetByteArrayAsync(uri);
+            byte[] fileBytes = await client.GetByteArrayAsync(uri);
             return fileBytes;
         }
 

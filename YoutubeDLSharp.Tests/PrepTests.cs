@@ -11,17 +11,17 @@ namespace YoutubeDLSharp.Tests
     {
         private static bool _didDownloadBinaries = false;
 
-        internal static void DownloadBinaries()
+        internal static async Task DownloadBinaries()
         {
             if (_didDownloadBinaries == false)
             {
                 if (!File.Exists("yt-dlp.exe"))
                 {
-                    YoutubeDL.DownloadYtDlpBinary();
+                    await YoutubeDL.DownloadYtDlpBinary();
                 }
                 if (!File.Exists("ffmpeg.exe"))
                 {
-                    YoutubeDL.DownloadFFmpegBinary();
+                    await YoutubeDL.DownloadFFmpegBinary();
                 }
                 _didDownloadBinaries = true;
             }

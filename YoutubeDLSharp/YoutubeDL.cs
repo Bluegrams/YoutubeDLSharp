@@ -356,11 +356,14 @@ namespace YoutubeDLSharp
         /// Downloads the latest YT-DLP binary
         /// </summary>
         /// <param name="directoryPath">Optional directory path of where you want the YT-DLP binary saved</param>
-        public static void DownloadYtDlpBinary(string directoryPath = "") { DownloadHelper.DownloadYtDlp(directoryPath); }
+        public static async Task DownloadYtDlpBinary(string directoryPath = "")
+            => await DownloadHelper.DownloadYtDlp(directoryPath);
+
         /// <summary>
         /// Downloads the latest FFmpeg binary
         /// </summary>
         /// <param name="directoryPath">Optional directory path of where you want the FFmpeg binary saved</param>
-        public static void DownloadFFmpegBinary(string directoryPath = "") { DownloadHelper.DownloadFFmpeg(directoryPath); }
+        public static async Task DownloadFFmpegBinary(string directoryPath = "")
+            => await DownloadHelper.DownloadFFmpeg(directoryPath);
     }
 }

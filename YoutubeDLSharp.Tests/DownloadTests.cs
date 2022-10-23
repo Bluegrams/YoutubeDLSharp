@@ -15,9 +15,9 @@ namespace YoutubeDLSharp.Tests
         private static List<string> downloadedFiles;
 
         [ClassInitialize]
-        public static void Initialize(TestContext context)
+        public static async Task Initialize(TestContext context)
         {
-            PrepTests.DownloadBinaries();
+            await PrepTests.DownloadBinaries();
             ydl = new YoutubeDL();
             ydl.YoutubeDLPath = "yt-dlp.exe";
             ydl.FFmpegPath = "ffmpeg.exe";
