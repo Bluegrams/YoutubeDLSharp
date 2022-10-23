@@ -10,7 +10,7 @@ using YoutubeDLSharp.Options;
 namespace YoutubeDLSharp
 {
     /// <summary>
-    /// A low-level wrapper for the youtube-dl executable.
+    /// A low-level wrapper for the yt-dlp executable.
     /// </summary>
     public class YoutubeDLProcess
     {
@@ -26,30 +26,30 @@ namespace YoutubeDLSharp
 
         /// <summary>
         /// The path to the Python interpreter.
-        /// If this property is non-empty, youtube-dl will be run using the Python interpreter.
-        /// In this case, ExecutablePath should point to a non-binary, Python version of youtube-dl.
+        /// If this property is non-empty, yt-dlp will be run using the Python interpreter.
+        /// In this case, ExecutablePath should point to a non-binary, Python version of yt-dlp.
         /// </summary>
         public string PythonPath { get; set; }
 
         /// <summary>
-        /// The path to the youtube-dl executable.
+        /// The path to the yt-dlp executable.
         /// </summary>
         public string ExecutablePath { get; set; }
 
         /// <summary>
-        /// Occurs each time youtube-dl writes to the standard output.
+        /// Occurs each time yt-dlp writes to the standard output.
         /// </summary>
         public event EventHandler<DataReceivedEventArgs> OutputReceived;
         /// <summary>
-        /// Occurs each time youtube-dl writes to the error output.
+        /// Occurs each time yt-dlp writes to the error output.
         /// </summary>
         public event EventHandler<DataReceivedEventArgs> ErrorReceived;
 
         /// <summary>
         /// Creates a new instance of the YoutubeDLProcess class.
         /// </summary>
-        /// <param name="executablePath">The path to the youtube-dl executable.</param>
-        public YoutubeDLProcess(string executablePath = "youtube-dl.exe")
+        /// <param name="executablePath">The path to the yt-dlp executable.</param>
+        public YoutubeDLProcess(string executablePath = "yt-dlp.exe")
         {
             this.ExecutablePath = executablePath;
         }
@@ -58,22 +58,22 @@ namespace YoutubeDLSharp
             => (urls != null ? String.Join(" ", urls) : String.Empty) + options.ToString();
 
         /// <summary>
-        /// Invokes youtube-dl with the specified parameters and options.
+        /// Invokes yt-dlp with the specified parameters and options.
         /// </summary>
-        /// <param name="urls">The video URLs to be passed to youtube-dl.</param>
-        /// <param name="options">An OptionSet specifying the options to be passed to youtube-dl.</param>
-        /// <returns>The exit code of the youtube-dl process.</returns>
+        /// <param name="urls">The video URLs to be passed to yt-dlp.</param>
+        /// <param name="options">An OptionSet specifying the options to be passed to yt-dlp.</param>
+        /// <returns>The exit code of the yt-dlp process.</returns>
         public async Task<int> RunAsync(string[] urls, OptionSet options)
             => await RunAsync(urls, options, CancellationToken.None);
 
         /// <summary>
-        /// Invokes youtube-dl with the specified parameters and options.
+        /// Invokes yt-dlp with the specified parameters and options.
         /// </summary>
-        /// <param name="urls">The video URLs to be passed to youtube-dl.</param>
-        /// <param name="options">An OptionSet specifying the options to be passed to youtube-dl.</param>
+        /// <param name="urls">The video URLs to be passed to yt-dlp.</param>
+        /// <param name="options">An OptionSet specifying the options to be passed to yt-dlp.</param>
         /// <param name="ct">A CancellationToken used to cancel the download.</param>
         /// <param name="progress">A progress provider used to get download progress information.</param>
-        /// <returns>The exit code of the youtube-dl process.</returns>
+        /// <returns>The exit code of the yt-dlp process.</returns>
         public async Task<int> RunAsync(string[] urls, OptionSet options,
             CancellationToken ct, IProgress<DownloadProgress> progress = null)
         {
@@ -144,7 +144,7 @@ namespace YoutubeDLSharp
                     progress?.Report(new DownloadProgress(DownloadState.PostProcessing, 1));
                     isDownloading = false;
                 }
-                Debug.WriteLine("[youtube-dl] " + e.Data);
+                Debug.WriteLine("[yt-dlp] " + e.Data);
                 OutputReceived?.Invoke(this, e);
             };
             var tcsError = new TaskCompletionSource<bool>();
@@ -155,7 +155,7 @@ namespace YoutubeDLSharp
                     tcsError.SetResult(true);
                     return;
                 }
-                Debug.WriteLine("[youtube-dl ERROR] " + e.Data);
+                Debug.WriteLine("[yt-dlp ERROR] " + e.Data);
                 progress?.Report(new DownloadProgress(DownloadState.Error, data: e.Data));
                 ErrorReceived?.Invoke(this, e);
             };
@@ -181,9 +181,9 @@ namespace YoutubeDLSharp
                 }
                 catch { }
             });
-            Debug.WriteLine("[youtube-dl] Arguments: " + process.StartInfo.Arguments);
+            Debug.WriteLine("[yt-dlp] Arguments: " + process.StartInfo.Arguments);
             if (!await Task.Run(() => process.Start()))
-                tcs.TrySetException(new InvalidOperationException("Failed to start youtube-dl process."));
+                tcs.TrySetException(new InvalidOperationException("Failed to start yt-dlp process."));
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             progress?.Report(new DownloadProgress(DownloadState.PreProcessing));

@@ -6,7 +6,7 @@ using System.Text;
 namespace YoutubeDLSharp.Options
 {
     /// <summary>
-    /// Represents a youtube-dl/ yt-dlp option that can be set multiple times.
+    /// Represents a yt-dlp option that can be set multiple times.
     /// </summary>
     /// <typeparam name="T">The type of the option.</typeparam>
     public class MultiOption<T> : IOption

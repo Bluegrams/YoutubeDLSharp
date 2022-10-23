@@ -7,7 +7,7 @@ using System.Reflection;
 namespace YoutubeDLSharp.Options
 {
     /// <summary>
-    /// Represents a set of options for youtube-dl.
+    /// Represents a set of options for yt-dlp.
     /// </summary>
     public partial class OptionSet : ICloneable
     {
@@ -126,7 +126,7 @@ namespace YoutubeDLSharp.Options
         }
 
         /// <summary>
-        /// Loads an option set from a youtube-dl config file.
+        /// Loads an option set from a yt-dlp config file.
         /// </summary>
         /// <param name="path">The path to the config file.</param>
         /// <returns>The loaded OptionSet.</returns>

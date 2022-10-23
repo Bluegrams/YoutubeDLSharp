@@ -6,7 +6,7 @@ using Newtonsoft.Json.Converters;
 namespace YoutubeDLSharp.Metadata
 {
     /// <summary>
-    /// Represents the video metadata for one video as extracted by youtube-dl/ yt-dlp.
+    /// Represents the video metadata for one video as extracted by yt-dlp.
     /// Explanation can be found at https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/extractor/common.py#L91.
     /// </summary>
     public class VideoData

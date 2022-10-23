@@ -2,7 +2,7 @@
 namespace YoutubeDLSharp
 {
     /// <summary>
-    /// Encapsulates the output of a youtube-dl download operation.
+    /// Encapsulates the output of a yt-dlp download operation.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class RunResult<T>

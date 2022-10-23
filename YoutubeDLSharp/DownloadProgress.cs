@@ -29,15 +29,15 @@ namespace YoutubeDLSharp
         /// </summary>
         public float Progress { get; }
         /// <summary>
-        /// The total download size string as outputted by youtube-dl.
+        /// The total download size string as outputted by yt-dlp.
         /// </summary>
         public string TotalDownloadSize { get; }
         /// <summary>
-        /// The download speed string as outputted by youtube-dl.
+        /// The download speed string as outputted by yt-dlp.
         /// </summary>
         public string DownloadSpeed { get; }
         /// <summary>
-        /// The estimated remaining time of the download as outputted by youtube-dl.
+        /// The estimated remaining time of the download as outputted by yt-dlp.
         /// </summary>
         public string ETA { get; }
         /// <summary>

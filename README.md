@@ -3,13 +3,13 @@
 [![Build status](https://bluegrams.visualstudio.com/vividl/_apis/build/status/youtubedlsharp-ci)](https://bluegrams.visualstudio.com/vividl/_build/latest?definitionId=3)
 [![NuGet](https://img.shields.io/nuget/v/YoutubeDLSharp.svg)](https://www.nuget.org/packages/YoutubeDLSharp/)
 
-A simple .NET wrapper library for [youtube-dl](https://github.com/ytdl-org/youtube-dl).
+A simple .NET wrapper library for [youtube-dl](https://github.com/ytdl-org/youtube-dl) and [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 
 ## What is it?
 
-YoutubeDLSharp is a wrapper for the popular command-line video downloader youtube-dl.
-It allows you to use the extensive features of youtube-dl in a .NET project.
-For more about the features of youtube-dl, supported websites and anything else, visit its project page at http://ytdl-org.github.io/youtube-dl/.
+YoutubeDLSharp is a wrapper for the popular command-line video downloaders youtube-dl and yt-dlp.
+It allows you to use the extensive features of youtube-dl/ yt-dlp in a .NET project.
+For more about the features of youtube-dl/ yt-dlp, supported websites and anything else, visit their project pages at http://ytdl-org.github.io/youtube-dl/ and https://github.com/yt-dlp/yt-dlp.
 
 ## How do I use it?
 
@@ -28,8 +28,8 @@ In the simplest case, initializing the downloader and downloading a video can be
 
 ```csharp
 var ytdl = new YoutubeDL();
-// set the path of the youtube-dl and FFmpeg if they're not in PATH or current directory
-ytdl.YoutubeDLPath = "path\\to\\youtube-dl.exe";
+// set the path of yt-dlp and FFmpeg if they're not in PATH or current directory
+ytdl.YoutubeDLPath = "path\\to\\yt-dlp.exe";
 ytdl.FFmpegPath = "path\\to\\ffmpeg.exe";
 // optional: set a different download folder
 ytdl.OutputFolder = "some\\directory\\for\\video\\downloads";
@@ -92,7 +92,7 @@ The project includes a demo WPF desktop app under [WpfDemoApp](WpfDemoApp/MainWi
 
 #### Working with options
 
-YoutubeDLSharp uses the `OptionSet` class to model youtube-dl options.
+YoutubeDLSharp uses the `OptionSet` class to model youtube-dl/ yt-dlp options.
 The names of the option properties correspond to the names of youtube-dl, so defining a set of options can look like this:
 
 ```csharp
@@ -106,7 +106,7 @@ var options = new OptionSet()
 }
 ```
 
-For documentation of all options supported by youtube-dl and their effects, visit https://github.com/ytdl-org/youtube-dl#options.
+For documentation of all options supported by yt-dlp and their effects, visit https://github.com/yt-dlp/yt-dlp#usage-and-options.
 
 Additionally, YoutubeDLSharp allows you to pass **custom options** to the downloader program.
 This is especially useful when a forked/ modified version of youtube-dl is used.
@@ -135,7 +135,7 @@ await ytdlProc.RunAsync(urls, options);
 
 #### Loading/ Saving configuration
 
-You can persist a youtube-dl configuration to a file and reload it:
+You can persist a youtube-dl/ yt-dlp configuration to a file and reload it:
 
 ```csharp
 // Save to file
@@ -146,15 +146,15 @@ saveOptions.WriteConfigFile("path\\to\\file");
 OptionSet loadOptions = OptionSet.LoadConfigFile("path\\to\\file");
 ```
 
-The file format is compatible with the format used by youtube-dl itself.
-For more, read https://github.com/ytdl-org/youtube-dl#configuration.
+The file format is compatible with the format used by youtube-dl/ yt-dlp itself.
+For more, read https://github.com/yt-dlp/yt-dlp#configuration.
 
 ## Issues & Contributing
 
-You are very welcome to contribute by reporting issues, fixing bugs or resolving inconsistencies to youtube-dl.
+You are very welcome to contribute by reporting issues, fixing bugs or resolving inconsistencies to youtube-dl/ yt-dlp.
 If you want to contribute a new feature to the library, please open an issue with your suggestion before starting to implement it.
 
-All issues related to downloading specific videos, support for websites or downloading/ conversion features should better be reported to https://github.com/ytdl-org/youtube-dl/issues.
+All issues related to downloading specific videos, support for websites or downloading/ conversion features should better be reported to https://github.com/yt-dlp/yt-dlp/issues.
 
 ## License
 

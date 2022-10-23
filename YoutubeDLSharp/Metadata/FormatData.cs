@@ -3,7 +3,7 @@
 namespace YoutubeDLSharp.Metadata
 {
     /// <summary>
-    /// Represents information for one available download format for one video as extracted by youtube-dl/ yt-dlp.
+    /// Represents information for one available download format for one video as extracted by yt-dlp.
     /// </summary>
     public class FormatData
     {

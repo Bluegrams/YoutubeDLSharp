@@ -9,7 +9,7 @@
     </Window.Resources>
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem ContentStringFormat="youtube-dl Version: {0}"
+            <StatusBarItem ContentStringFormat="yt-dlp Version: {0}"
                            Content="{Binding YoutubeDL.Version, Mode=OneWay}"/>
         </StatusBar>
         <Grid Margin="4">

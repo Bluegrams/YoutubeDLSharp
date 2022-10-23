@@ -13,7 +13,7 @@ using YoutubeDLSharp.Options;
 namespace YoutubeDLSharp
 {
     /// <summary>
-    /// A class providing methods for downloading videos using youtube-dl.
+    /// A class providing methods for downloading videos using yt-dlp.
     /// </summary>
     public class YoutubeDL
     {
@@ -22,9 +22,9 @@ namespace YoutubeDLSharp
         protected ProcessRunner runner;
 
         /// <summary>
-        /// Path to the youtube-dl executable.
+        /// Path to the yt-dlp executable.
         /// </summary>
-        public string YoutubeDLPath { get; set; } = "youtube-dl.exe";
+        public string YoutubeDLPath { get; set; } = "yt-dlp.exe";
         /// <summary>
         /// Path to the FFmpeg executable.
         /// </summary>
@@ -34,29 +34,25 @@ namespace YoutubeDLSharp
         /// </summary>
         public string OutputFolder { get; set; } = Environment.CurrentDirectory;
         /// <summary>
-        /// Template of the name of the downloaded file on youtube-dl style.
-        /// See https://github.com/ytdl-org/youtube-dl#output-template.
+        /// Template of the name of the downloaded file on yt-dlp style.
+        /// See https://github.com/yt-dlp/yt-dlp#output-template.
         /// </summary>
         public string OutputFileTemplate { get; set; } = "%(title)s.%(ext)s";
         /// <summary>
         /// If set to true, file names a re restricted to ASCII characters.
         /// </summary>
         public bool RestrictFilenames { get; set; } = false;
-
-        /* TODO IMPORTANT This flag does not work fully as expected:
-         * Does not guarantee overwrites (see https://github.com/ytdl-org/youtube-dl/pull/20405)
-         * Always overwrites post-processed files
-         * (see https://github.com/ytdl-org/youtube-dl/issues/5173, https://github.com/ytdl-org/youtube-dl/issues/333)
-         */
+        /// <summary>
+        /// If set to true, force overwriting of files.
+        /// </summary>
         public bool OverwriteFiles { get; set; } = true;
-
         /// <summary>
         /// If set to true, download errors are ignored and downloading is continued.
         /// </summary>
         public bool IgnoreDownloadErrors { get; set; } = true;
 
         /// <summary>
-        /// Gets the product version of the youtube-dl executable file.
+        /// Gets the product version of the yt-dlp executable file.
         /// </summary>
         public string Version
             => FileVersionInfo.GetVersionInfo(Utils.GetFullPath(YoutubeDLPath)).FileVersion;
@@ -64,7 +60,7 @@ namespace YoutubeDLSharp
         /// <summary>
         /// Creates a new instance of the YoutubeDL class.
         /// </summary>
-        /// <param name="maxNumberOfProcesses">The maximum number of concurrent youtube-dl processes.</param>
+        /// <param name="maxNumberOfProcesses">The maximum number of concurrent yt-dlp processes.</param>
         public YoutubeDL(byte maxNumberOfProcesses = 4)
         {
             runner = new ProcessRunner(maxNumberOfProcesses);
@@ -80,12 +76,12 @@ namespace YoutubeDLSharp
         #region Process methods
 
         /// <summary>
-        /// Runs youtube-dl with the given option set.
+        /// Runs yt-dlp with the given option set.
         /// </summary>
-        /// <param name="urls">The video URLs passed to youtube-dl.</param>
-        /// <param name="options">The OptionSet of youtube-dl options.</param>
+        /// <param name="urls">The video URLs passed to yt-dlp.</param>
+        /// <param name="options">The OptionSet of yt-dlp options.</param>
         /// <param name="ct">A CancellationToken used to cancel the process.</param>
-        /// <returns>A RunResult object containing the output of youtube-dl as an array of string.</returns>
+        /// <returns>A RunResult object containing the output of yt-dlp as an array of string.</returns>
         public async Task<RunResult<string[]>> RunWithOptions(string[] urls, OptionSet options, CancellationToken ct)
         {
             var output = new List<string>();
@@ -96,9 +92,9 @@ namespace YoutubeDLSharp
         }
 
         /// <summary>
-        /// Runs an update of youtube-dl.
+        /// Runs an update of yt-dlp.
         /// </summary>
-        /// <returns>The output of youtube-dl as string.</returns>
+        /// <returns>The output of yt-dlp as string.</returns>
         public async Task<string> RunUpdate()
         {
             string output = String.Empty;
@@ -142,7 +138,7 @@ namespace YoutubeDLSharp
         /// Runs a download of the specified video with an optional conversion afterwards.
         /// </summary>
         /// <param name="url">The URL of the video to be downloaded.</param>
-        /// <param name="format">A format selection string in youtube-dl style.</param>
+        /// <param name="format">A format selection string in yt-dlp style.</param>
         /// <param name="mergeFormat">If a merge is required, the container format of the merged downloads.</param>
         /// <param name="recodeFormat">The video format the output will be recoded to after download.</param>
         /// <param name="ct">A CancellationToken used to cancel the download.</param>
@@ -190,7 +186,7 @@ namespace YoutubeDLSharp
         /// <param name="start">The index of the first playlist video to download (starting at 1).</param>
         /// <param name="end">The index of the last playlist video to dowload (if null, download to end).</param>
         /// <param name="items">An array of indices of playlist video to download.</param>
-        /// <param name="format">A format selection string in youtube-dl style.</param>
+        /// <param name="format">A format selection string in yt-dlp style.</param>
         /// <param name="recodeFormat">The video format the output will be recoded to after download.</param>
         /// <param name="ct">A CancellationToken used to cancel the download.</param>
         /// <param name="progress">A progress provider used to get download progress information.</param>
@@ -342,7 +338,7 @@ namespace YoutubeDLSharp
                 DownloaderArgs = "ffmpeg:-nostats -loglevel 0",
                 Output = Path.Combine(OutputFolder, OutputFileTemplate),
                 RestrictFilenames = this.RestrictFilenames,
-                NoContinue = this.OverwriteFiles,
+                ForceOverwrites = this.OverwriteFiles,
                 NoOverwrites = !this.OverwriteFiles,
                 NoPart = true,
                 FfmpegLocation = Utils.GetFullPath(this.FFmpegPath),

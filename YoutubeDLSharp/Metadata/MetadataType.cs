@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace YoutubeDLSharp.Metadata
 {
     /// <summary>
-    /// Possible types of media fetched by youtube-dl.
+    /// Possible types of media fetched by yt-dlp.
     /// </summary>
     public enum MetadataType
     {
