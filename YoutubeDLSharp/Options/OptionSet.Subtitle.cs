@@ -8,43 +8,51 @@ namespace YoutubeDLSharp.Options
 {
     public partial class OptionSet
     {
-        private Option<bool> writeSub = new Option<bool>("--write-sub");
-        private Option<bool> writeAutoSub = new Option<bool>("--write-auto-sub");
-        private Option<bool> allSubs = new Option<bool>("--all-subs");
+        private Option<bool> writeSubs = new Option<bool>("--write-subs");
+        private Option<bool> noWriteSubs = new Option<bool>("--no-write-subs");
+        private Option<bool> writeAutoSubs = new Option<bool>("--write-auto-subs");
+        private Option<bool> noWriteAutoSubs = new Option<bool>("--no-write-auto-subs");
         private Option<bool> listSubs = new Option<bool>("--list-subs");
         private Option<string> subFormat = new Option<string>("--sub-format");
-        private Option<string> subLang = new Option<string>("--sub-lang");
+        private Option<string> subLangs = new Option<string>("--sub-langs");
 
         /// <summary>
         /// Write subtitle file
         /// </summary>
-        public bool WriteSub { get => writeSub.Value; set => writeSub.Value = value; }
+        public bool WriteSubs { get => writeSubs.Value; set => writeSubs.Value = value; }
         /// <summary>
-        /// Write automatically generated subtitle
-        /// file (YouTube only)
+        /// Do not write subtitle file (default)
         /// </summary>
-        public bool WriteAutoSub { get => writeAutoSub.Value; set => writeAutoSub.Value = value; }
+        public bool NoWriteSubs { get => noWriteSubs.Value; set => noWriteSubs.Value = value; }
         /// <summary>
-        /// Download all the available subtitles of
-        /// the video
+        /// Write automatically generated subtitle file
+        /// (Alias: --write-automatic-subs)
         /// </summary>
-        public bool AllSubs { get => allSubs.Value; set => allSubs.Value = value; }
+        public bool WriteAutoSubs { get => writeAutoSubs.Value; set => writeAutoSubs.Value = value; }
         /// <summary>
-        /// List all available subtitles for the
-        /// video
+        /// Do not write auto-generated subtitles
+        /// (default) (Alias: --no-write-automatic-subs)
+        /// </summary>
+        public bool NoWriteAutoSubs { get => noWriteAutoSubs.Value; set => noWriteAutoSubs.Value = value; }
+        /// <summary>
+        /// List available subtitles of each video.
+        /// Simulate unless --no-simulate is used
         /// </summary>
         public bool ListSubs { get => listSubs.Value; set => listSubs.Value = value; }
         /// <summary>
-        /// Subtitle format, accepts formats
-        /// preference, for example: &quot;srt&quot; or
-        /// &quot;ass/srt/best&quot;
+        /// Subtitle format; accepts formats preference,
+        /// e.g. &quot;srt&quot; or &quot;ass/srt/best&quot;
         /// </summary>
         public string SubFormat { get => subFormat.Value; set => subFormat.Value = value; }
         /// <summary>
-        /// Languages of the subtitles to download
-        /// (optional) separated by commas, use
-        /// --list-subs for available language tags
+        /// Languages of the subtitles to download (can
+        /// be regex) or &quot;all&quot; separated by commas, e.g.
+        /// --sub-langs &quot;en.*,ja&quot;. You can prefix the
+        /// language code with a &quot;-&quot; to exclude it from
+        /// the requested languages, e.g. --sub-langs
+        /// all,-live_chat. Use --list-subs for a list
+        /// of available language tags
         /// </summary>
-        public string SubLang { get => subLang.Value; set => subLang.Value = value; }
+        public string SubLangs { get => subLangs.Value; set => subLangs.Value = value; }
     }
 }

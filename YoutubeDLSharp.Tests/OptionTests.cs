@@ -70,6 +70,26 @@ namespace YoutubeDLSharp.Tests
                 DateAfter = new DateTime(2019, 01, 01),
                 DateBefore = new DateTime(2019, 10, 20)
             };
+            CollectionAssert.AreEquivalent(expected, options.GetOptionFlags().ToArray());
+        }
+
+        [TestMethod]
+        public void TestMultiOption()
+        {
+            var expected = new[]
+            {
+                "--exec \"echo {}\"", "--exec \"pwd\""
+            };
+            var options = new OptionSet()
+            {
+                Exec = new[]
+                {
+                    "echo {}",
+                    "pwd"
+                }
+            };
+            var actual = options.GetOptionFlags().ToArray();
+            CollectionAssert.AreEquivalent(expected, actual);
         }
     }
 }

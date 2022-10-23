@@ -1,12 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Globalization;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace YoutubeDLSharp.Options
 {
     /// <summary>
-    /// Represents one youtube-dl option.
+    /// Represents one youtube-dl/ yt-dlp option.
     /// </summary>
     /// <typeparam name="T">The type of the option.</typeparam>
     public class Option<T> : IOption
@@ -36,7 +35,6 @@ namespace YoutubeDLSharp.Options
             get => value;
             set
             {
-                
                 this.IsSet = !object.Equals(value, default(T));
                 this.value = value;
             }
@@ -73,40 +71,16 @@ namespace YoutubeDLSharp.Options
             string stringValue = s.Substring(split[0].Length).Trim().Trim('"');
             if (!OptionStrings.Contains(split[0]))
                 throw new ArgumentException("Given string does not match required format.");
-            if (Value is bool)
-            {
-                Value = (T)(object)OptionStrings.Contains(s);
-            }
-            else if (Value is Enum)
-            {
-                string titleCase = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(stringValue);
-                Value = (T)Enum.Parse(typeof(T), titleCase);
-            }
-            else if (Value is DateTime)
-            {
-                Value = (T)(object)DateTime.ParseExact(stringValue, "yyyyMMdd", null);
-            }
-            else
-            {
-                TypeConverter conv = TypeDescriptor.GetConverter(typeof(T));
-                Value = (T)conv.ConvertFrom(stringValue);
-            }
+            Value = Utils.OptionValueFromString<T>(stringValue);
         }
 
         public override string ToString()
         {
             if (!IsSet) return String.Empty;
-            string val;
-            if (Value is bool)
-                val = String.Empty;
-            else if (Value is Enum)
-                val = $" \"{Value.ToString().ToLower()}\"";
-            else if (Value is DateTime dateTime)
-                val = $" {dateTime.ToString("yyyyMMdd")}";
-            else if (Value is string)
-                val = $" \"{Value}\"";
-            else val = " " + Value;
+            string val = Utils.OptionValueToString(Value);
             return DefaultOptionString + val;
         }
+
+        public IEnumerable<string> ToStringCollection() => new[] { ToString() };
     }
 }

@@ -60,7 +60,28 @@ namespace YoutubeDLSharp.Tests
             Assert.AreEqual("~/Movies/%(title)s.%(ext)s", opts.Output);
             Assert.AreEqual("My Programs/ffmpeg.exe", opts.FfmpegLocation);
         }
-        
+
+        [TestMethod]
+        public void TestOptionSetWithMultiOptionsFromString()
+        {
+            string[] lines = new[]
+            {
+                "--config-locations ~/config",
+                "--config-locations /etc/yt-dlp/config",
+                "--postprocessor-args ffmpeg:-vcodec h264_nvenc",
+                "--no-part",
+                "--verbose",
+                "--postprocessor-args ffmpeg_i1:-hwaccel cuda -hwaccel_output_format cuda",
+                "--retries 20"
+            };
+            OptionSet opts = OptionSet.FromString(lines);
+            CollectionAssert.AreEquivalent(new[] { "~/config", "/etc/yt-dlp/config" }, (string[])opts.ConfigLocations);
+            CollectionAssert.AreEquivalent(new[] { "ffmpeg:-vcodec h264_nvenc", "ffmpeg_i1:-hwaccel cuda -hwaccel_output_format cuda" }, (string[])opts.PostprocessorArgs);
+            Assert.IsTrue(opts.NoPart);
+            Assert.IsTrue(opts.Verbose);
+            Assert.AreEqual(20, opts.Retries);
+        }
+
         [TestMethod]
         public void TestCustomOptionSetFromString()
         {

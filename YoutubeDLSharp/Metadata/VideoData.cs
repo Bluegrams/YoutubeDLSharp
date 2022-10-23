@@ -6,7 +6,8 @@ using Newtonsoft.Json.Converters;
 namespace YoutubeDLSharp.Metadata
 {
     /// <summary>
-    /// Represents the video metadata for one video as extracted by youtube-dl.
+    /// Represents the video metadata for one video as extracted by youtube-dl/ yt-dlp.
+    /// Explanation can be found at https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/extractor/common.py#L91.
     /// </summary>
     public class VideoData
     {
@@ -51,6 +52,8 @@ namespace YoutubeDLSharp.Metadata
         public string License { get; set; }
         [JsonProperty("creator")]
         public string Creator { get; set; }
+        [JsonProperty("release_timestamp")]
+        public long? ReleaseTimestamp { get; set; }
         [JsonProperty("release_date")]
         [JsonConverter(typeof(CustomDateTimeConverter))]
         public DateTime? ReleaseDate { get; set; }
@@ -59,6 +62,11 @@ namespace YoutubeDLSharp.Metadata
         [JsonProperty("upload_date")]
         [JsonConverter(typeof(CustomDateTimeConverter))]
         public DateTime? UploadDate { get; set; }
+        [JsonProperty("modified_timestemp")]
+        public long? ModifiedTimestamp { get; set; }
+        [JsonProperty("modified_date")]
+        [JsonConverter(typeof(CustomDateTimeConverter))]
+        public DateTime? ModifiedDate { get; set; }
         [JsonProperty("uploader_id")]
         public string UploaderID { get; set; }
         [JsonProperty("uploader_url")]
@@ -69,6 +77,8 @@ namespace YoutubeDLSharp.Metadata
         public string ChannelID { get; set; }
         [JsonProperty("channel_url")]
         public string ChannelUrl { get; set; }
+        [JsonProperty("channel_follower_count")]
+        public long? ChannelFollowerCount { get; set; }
         [JsonProperty("location")]
         public string Location { get; set; }
         [JsonProperty("subtitles")]
@@ -77,6 +87,8 @@ namespace YoutubeDLSharp.Metadata
         public float? Duration { get; set; }
         [JsonProperty("view_count")]
         public long? ViewCount { get; set; }
+        [JsonProperty("concurrent_view_count")]
+        public long? ConcurrentViewCount { get; set; }
         [JsonProperty("like_count")]
         public long? LikeCount { get; set; }
         [JsonProperty("dislike_count")]
@@ -95,12 +107,22 @@ namespace YoutubeDLSharp.Metadata
         public string[] Categories { get; set; }
         [JsonProperty("tags")]
         public string[] Tags { get; set; }
+        [JsonProperty("cast")]
+        public string[] Cast { get; set; }
         [JsonProperty("is_live")]
         public bool? IsLive { get; set; }
+        [JsonProperty("was_live")]
+        public bool? WasLive { get; set; }
+        [JsonProperty("live_status")]
+        public string LiveStatus { get; set; }
         [JsonProperty("start_time")]
         public float? StartTime { get; set; }
         [JsonProperty("end_time")]
         public float? EndTime { get; set; }
+        [JsonProperty("playable_in_embed")]
+        public string PlayableInEmbed { get; set; }
+        [JsonProperty("availability")]
+        public string Availability { get; set; }
 
         public override string ToString()
         {

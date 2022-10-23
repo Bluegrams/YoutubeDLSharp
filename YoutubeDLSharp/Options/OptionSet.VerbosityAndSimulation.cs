@@ -11,30 +11,28 @@ namespace YoutubeDLSharp.Options
         private Option<bool> quiet = new Option<bool>("-q", "--quiet");
         private Option<bool> noWarnings = new Option<bool>("--no-warnings");
         private Option<bool> simulate = new Option<bool>("-s", "--simulate");
+        private Option<bool> noSimulate = new Option<bool>("--no-simulate");
+        private Option<bool> ignoreNoFormatsError = new Option<bool>("--ignore-no-formats-error");
+        private Option<bool> noIgnoreNoFormatsError = new Option<bool>("--no-ignore-no-formats-error");
         private Option<bool> skipDownload = new Option<bool>("--skip-download");
-        private Option<bool> getUrl = new Option<bool>("-g", "--get-url");
-        private Option<bool> getTitle = new Option<bool>("-e", "--get-title");
-        private Option<bool> getId = new Option<bool>("--get-id");
-        private Option<bool> getThumbnail = new Option<bool>("--get-thumbnail");
-        private Option<bool> getDescription = new Option<bool>("--get-description");
-        private Option<bool> getDuration = new Option<bool>("--get-duration");
-        private Option<bool> getFilename = new Option<bool>("--get-filename");
-        private Option<bool> getFormat = new Option<bool>("--get-format");
+        private MultiOption<string> print = new MultiOption<string>("-O", "--print");
+        private MultiOption<string> printToFile = new MultiOption<string>("--print-to-file");
         private Option<bool> dumpJson = new Option<bool>("-j", "--dump-json");
         private Option<bool> dumpSingleJson = new Option<bool>("-J", "--dump-single-json");
-        private Option<bool> printJson = new Option<bool>("--print-json");
+        private Option<bool> forceWriteArchive = new Option<bool>("--force-write-archive");
         private Option<bool> newline = new Option<bool>("--newline");
         private Option<bool> noProgress = new Option<bool>("--no-progress");
+        private Option<bool> progress = new Option<bool>("--progress");
         private Option<bool> consoleTitle = new Option<bool>("--console-title");
+        private Option<string> progressTemplate = new Option<string>("--progress-template");
         private Option<bool> verbose = new Option<bool>("-v", "--verbose");
         private Option<bool> dumpPages = new Option<bool>("--dump-pages");
         private Option<bool> writePages = new Option<bool>("--write-pages");
         private Option<bool> printTraffic = new Option<bool>("--print-traffic");
-        private Option<bool> callHome = new Option<bool>("-C", "--call-home");
-        private Option<bool> noCallHome = new Option<bool>("--no-call-home");
 
         /// <summary>
-        /// Activate quiet mode
+        /// Activate quiet mode. If used with --verbose,
+        /// print the log to stderr
         /// </summary>
         public bool Quiet { get => quiet.Value; set => quiet.Value = value; }
         /// <summary>
@@ -42,68 +40,74 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoWarnings { get => noWarnings.Value; set => noWarnings.Value = value; }
         /// <summary>
-        /// Do not download the video and do not
-        /// write anything to disk
+        /// Do not download the video and do not write
+        /// anything to disk
         /// </summary>
         public bool Simulate { get => simulate.Value; set => simulate.Value = value; }
         /// <summary>
-        /// Do not download the video
+        /// Download the video even if printing/listing
+        /// options are used
+        /// </summary>
+        public bool NoSimulate { get => noSimulate.Value; set => noSimulate.Value = value; }
+        /// <summary>
+        /// Ignore &quot;No video formats&quot; error. Useful for
+        /// extracting metadata even if the videos are
+        /// not actually available for download
+        /// (experimental)
+        /// </summary>
+        public bool IgnoreNoFormatsError { get => ignoreNoFormatsError.Value; set => ignoreNoFormatsError.Value = value; }
+        /// <summary>
+        /// Throw error when no downloadable video
+        /// formats are found (default)
+        /// </summary>
+        public bool NoIgnoreNoFormatsError { get => noIgnoreNoFormatsError.Value; set => noIgnoreNoFormatsError.Value = value; }
+        /// <summary>
+        /// Do not download the video but write all
+        /// related files (Alias: --no-download)
         /// </summary>
         public bool SkipDownload { get => skipDownload.Value; set => skipDownload.Value = value; }
         /// <summary>
-        /// Simulate, quiet but print URL
+        /// Field name or output template to print to
+        /// screen, optionally prefixed with when to
+        /// print it, separated by a &quot;:&quot;. Supported
+        /// values of &quot;WHEN&quot; are the same as that of
+        /// --use-postprocessor, and &quot;video&quot; (default).
+        /// Implies --quiet. Implies --simulate unless
+        /// --no-simulate or later stages of WHEN are
+        /// used. This option can be used multiple times
         /// </summary>
-        public bool GetUrl { get => getUrl.Value; set => getUrl.Value = value; }
+        public MultiValue<string> Print { get => print.Value; set => print.Value = value; }
         /// <summary>
-        /// Simulate, quiet but print title
+        /// FILE
+        /// Append given template to the file. The
+        /// values of WHEN and TEMPLATE are same as that
+        /// of --print. FILE uses the same syntax as the
+        /// output template. This option can be used
+        /// multiple times
         /// </summary>
-        public bool GetTitle { get => getTitle.Value; set => getTitle.Value = value; }
+        public MultiValue<string> PrintToFile { get => printToFile.Value; set => printToFile.Value = value; }
         /// <summary>
-        /// Simulate, quiet but print id
-        /// </summary>
-        public bool GetId { get => getId.Value; set => getId.Value = value; }
-        /// <summary>
-        /// Simulate, quiet but print thumbnail URL
-        /// </summary>
-        public bool GetThumbnail { get => getThumbnail.Value; set => getThumbnail.Value = value; }
-        /// <summary>
-        /// Simulate, quiet but print video
-        /// description
-        /// </summary>
-        public bool GetDescription { get => getDescription.Value; set => getDescription.Value = value; }
-        /// <summary>
-        /// Simulate, quiet but print video length
-        /// </summary>
-        public bool GetDuration { get => getDuration.Value; set => getDuration.Value = value; }
-        /// <summary>
-        /// Simulate, quiet but print output
-        /// filename
-        /// </summary>
-        public bool GetFilename { get => getFilename.Value; set => getFilename.Value = value; }
-        /// <summary>
-        /// Simulate, quiet but print output format
-        /// </summary>
-        public bool GetFormat { get => getFormat.Value; set => getFormat.Value = value; }
-        /// <summary>
-        /// Simulate, quiet but print JSON
-        /// information. See the &quot;OUTPUT TEMPLATE&quot;
-        /// for a description of available keys.
+        /// Quiet, but print JSON information for each
+        /// video. Simulate unless --no-simulate is
+        /// used. See &quot;OUTPUT TEMPLATE&quot; for a
+        /// description of available keys
         /// </summary>
         public bool DumpJson { get => dumpJson.Value; set => dumpJson.Value = value; }
         /// <summary>
-        /// Simulate, quiet but print JSON
-        /// information for each command-line
-        /// argument. If the URL refers to a
-        /// playlist, dump the whole playlist
-        /// information in a single line.
+        /// Quiet, but print JSON information for each
+        /// url or infojson passed. Simulate unless
+        /// --no-simulate is used. If the URL refers to
+        /// a playlist, the whole playlist information
+        /// is dumped in a single line
         /// </summary>
         public bool DumpSingleJson { get => dumpSingleJson.Value; set => dumpSingleJson.Value = value; }
         /// <summary>
-        /// Be quiet and print the video
-        /// information as JSON (video is still
-        /// being downloaded).
+        /// Force download archive entries to be written
+        /// as far as no errors occur, even if -s or
+        /// another simulation option is used (Alias:
+        /// --force-download-archive)
         /// </summary>
-        public bool PrintJson { get => printJson.Value; set => printJson.Value = value; }
+        public bool ForceWriteArchive { get => forceWriteArchive.Value; set => forceWriteArchive.Value = value; }
         /// <summary>
         /// Output progress bar as new lines
         /// </summary>
@@ -113,37 +117,44 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoProgress { get => noProgress.Value; set => noProgress.Value = value; }
         /// <summary>
+        /// Show progress bar, even if in quiet mode
+        /// </summary>
+        public bool Progress { get => progress.Value; set => progress.Value = value; }
+        /// <summary>
         /// Display progress in console titlebar
         /// </summary>
         public bool ConsoleTitle { get => consoleTitle.Value; set => consoleTitle.Value = value; }
+        /// <summary>
+        /// PLATE
+        /// Template for progress outputs, optionally
+        /// prefixed with one of &quot;download:&quot; (default),
+        /// &quot;download-title:&quot; (the console title),
+        /// &quot;postprocess:&quot;,  or &quot;postprocess-title:&quot;.
+        /// The video&#x27;s fields are accessible under the
+        /// &quot;info&quot; key and the progress attributes are
+        /// accessible under &quot;progress&quot; key. E.g.
+        /// --console-title --progress-template
+        /// &quot;download-
+        /// title:%(info.id)s-%(progress.eta)s&quot;
+        /// </summary>
+        public string ProgressTemplate { get => progressTemplate.Value; set => progressTemplate.Value = value; }
         /// <summary>
         /// Print various debugging information
         /// </summary>
         public bool Verbose { get => verbose.Value; set => verbose.Value = value; }
         /// <summary>
-        /// Print downloaded pages encoded using
-        /// base64 to debug problems (very verbose)
+        /// Print downloaded pages encoded using base64
+        /// to debug problems (very verbose)
         /// </summary>
         public bool DumpPages { get => dumpPages.Value; set => dumpPages.Value = value; }
         /// <summary>
-        /// Write downloaded intermediary pages to
-        /// files in the current directory to debug
-        /// problems
+        /// Write downloaded intermediary pages to files
+        /// in the current directory to debug problems
         /// </summary>
         public bool WritePages { get => writePages.Value; set => writePages.Value = value; }
         /// <summary>
         /// Display sent and read HTTP traffic
         /// </summary>
         public bool PrintTraffic { get => printTraffic.Value; set => printTraffic.Value = value; }
-        /// <summary>
-        /// Contact the youtube-dl server for
-        /// debugging
-        /// </summary>
-        public bool CallHome { get => callHome.Value; set => callHome.Value = value; }
-        /// <summary>
-        /// Do NOT contact the youtube-dl server
-        /// for debugging
-        /// </summary>
-        public bool NoCallHome { get => noCallHome.Value; set => noCallHome.Value = value; }
     }
 }

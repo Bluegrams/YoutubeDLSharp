@@ -1,4 +1,6 @@
-﻿namespace YoutubeDLSharp.Options
+﻿using System.Collections.Generic;
+
+namespace YoutubeDLSharp.Options
 {
     /// <summary>
     /// Interface for one youtube-dl option.
@@ -22,6 +24,12 @@
         /// </summary>
         /// <param name="s">The string (including the option flag).</param>
         void SetFromString(string s);
+        /// <summary>
+        /// Converts the option to a collection of string representations.
+        /// This is relevant for MultiOption instances that can have multiple values.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<string> ToStringCollection();
 
         /// <summary>
         /// True if this option is custom.

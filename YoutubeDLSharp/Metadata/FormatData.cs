@@ -3,7 +3,7 @@
 namespace YoutubeDLSharp.Metadata
 {
     /// <summary>
-    /// Represents information for one available download format for one video as extracted by youtube-dl.
+    /// Represents information for one available download format for one video as extracted by youtube-dl/ yt-dlp.
     /// </summary>
     public class FormatData
     {
@@ -25,6 +25,8 @@ namespace YoutubeDLSharp.Metadata
         public int? Height { get; set; }
         [JsonProperty("resolution")]
         public string Resolution { get; set; }
+        [JsonProperty("dynamic_range")]
+        public string DynamicRange { get; set; }
         [JsonProperty("tbr")]
         public double? Bitrate { get; set; }
         [JsonProperty("abr")]
@@ -33,6 +35,8 @@ namespace YoutubeDLSharp.Metadata
         public string AudioCodec { get; set; }
         [JsonProperty("asr")]
         public double? AudioSamplingRate { get; set; }
+        [JsonProperty("audio_channels")]
+        public int? AudioChannels { get; set; }
         [JsonProperty("vbr")]
         public double? VideoBitrate { get; set; }
         [JsonProperty("fps")]
@@ -51,6 +55,8 @@ namespace YoutubeDLSharp.Metadata
         public string Protocol { get; set; }
         [JsonProperty("fragment_base_url")]
         public string FragmentBaseUrl { get; set; }
+        [JsonProperty("is_from_start")]
+        public bool? IsFromStart { get; set; }
         [JsonProperty("preference")]
         public int? Preference { get; set; }
         [JsonProperty("language")]
@@ -65,6 +71,8 @@ namespace YoutubeDLSharp.Metadata
         public float? StretchedRatio { get; set; }
         [JsonProperty("no_resume")]
         public bool? NoResume { get; set; }
+        [JsonProperty("has_drm")]
+        public bool? HasDRM { get; set; }
 
         public override string ToString() => $"[{Extension}] {Format}";
     }

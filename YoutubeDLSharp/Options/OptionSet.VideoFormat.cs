@@ -9,42 +9,99 @@ namespace YoutubeDLSharp.Options
     public partial class OptionSet
     {
         private Option<string> format = new Option<string>("-f", "--format");
-        private Option<bool> allFormats = new Option<bool>("--all-formats");
+        private Option<string> formatSort = new Option<string>("-S", "--format-sort");
+        private Option<bool> formatSortForce = new Option<bool>("--format-sort-force");
+        private Option<bool> noFormatSortForce = new Option<bool>("--no-format-sort-force");
+        private Option<bool> videoMultistreams = new Option<bool>("--video-multistreams");
+        private Option<bool> noVideoMultistreams = new Option<bool>("--no-video-multistreams");
+        private Option<bool> audioMultistreams = new Option<bool>("--audio-multistreams");
+        private Option<bool> noAudioMultistreams = new Option<bool>("--no-audio-multistreams");
         private Option<bool> preferFreeFormats = new Option<bool>("--prefer-free-formats");
+        private Option<bool> noPreferFreeFormats = new Option<bool>("--no-prefer-free-formats");
+        private Option<bool> checkFormats = new Option<bool>("--check-formats");
+        private Option<bool> checkAllFormats = new Option<bool>("--check-all-formats");
+        private Option<bool> noCheckFormats = new Option<bool>("--no-check-formats");
         private Option<bool> listFormats = new Option<bool>("-F", "--list-formats");
-        private Option<bool> youtubeSkipDashManifest = new Option<bool>("--youtube-skip-dash-manifest");
         private Option<DownloadMergeFormat> mergeOutputFormat = new Option<DownloadMergeFormat>("--merge-output-format");
 
         /// <summary>
-        /// Video format code, see the &quot;FORMAT
-        /// SELECTION&quot; for all the info
+        /// Video format code, see &quot;FORMAT SELECTION&quot;
+        /// for more details
         /// </summary>
         public string Format { get => format.Value; set => format.Value = value; }
         /// <summary>
-        /// Download all available video formats
+        /// Sort the formats by the fields given, see
+        /// &quot;Sorting Formats&quot; for more details
         /// </summary>
-        public bool AllFormats { get => allFormats.Value; set => allFormats.Value = value; }
+        public string FormatSort { get => formatSort.Value; set => formatSort.Value = value; }
         /// <summary>
-        /// Prefer free video formats unless a
-        /// specific one is requested
+        /// Force user specified sort order to have
+        /// precedence over all fields, see &quot;Sorting
+        /// Formats&quot; for more details (Alias: --S-force)
+        /// </summary>
+        public bool FormatSortForce { get => formatSortForce.Value; set => formatSortForce.Value = value; }
+        /// <summary>
+        /// Some fields have precedence over the user
+        /// specified sort order (default)
+        /// </summary>
+        public bool NoFormatSortForce { get => noFormatSortForce.Value; set => noFormatSortForce.Value = value; }
+        /// <summary>
+        /// Allow multiple video streams to be merged
+        /// into a single file
+        /// </summary>
+        public bool VideoMultistreams { get => videoMultistreams.Value; set => videoMultistreams.Value = value; }
+        /// <summary>
+        /// Only one video stream is downloaded for each
+        /// output file (default)
+        /// </summary>
+        public bool NoVideoMultistreams { get => noVideoMultistreams.Value; set => noVideoMultistreams.Value = value; }
+        /// <summary>
+        /// Allow multiple audio streams to be merged
+        /// into a single file
+        /// </summary>
+        public bool AudioMultistreams { get => audioMultistreams.Value; set => audioMultistreams.Value = value; }
+        /// <summary>
+        /// Only one audio stream is downloaded for each
+        /// output file (default)
+        /// </summary>
+        public bool NoAudioMultistreams { get => noAudioMultistreams.Value; set => noAudioMultistreams.Value = value; }
+        /// <summary>
+        /// Prefer video formats with free containers
+        /// over non-free ones of same quality. Use with
+        /// &quot;-S ext&quot; to strictly prefer free containers
+        /// irrespective of quality
         /// </summary>
         public bool PreferFreeFormats { get => preferFreeFormats.Value; set => preferFreeFormats.Value = value; }
         /// <summary>
-        /// List all available formats of requested
-        /// videos
+        /// Don&#x27;t give any special preference to free
+        /// containers (default)
+        /// </summary>
+        public bool NoPreferFreeFormats { get => noPreferFreeFormats.Value; set => noPreferFreeFormats.Value = value; }
+        /// <summary>
+        /// Make sure formats are selected only from
+        /// those that are actually downloadable
+        /// </summary>
+        public bool CheckFormats { get => checkFormats.Value; set => checkFormats.Value = value; }
+        /// <summary>
+        /// Check all formats for whether they are
+        /// actually downloadable
+        /// </summary>
+        public bool CheckAllFormats { get => checkAllFormats.Value; set => checkAllFormats.Value = value; }
+        /// <summary>
+        /// Do not check that the formats are actually
+        /// downloadable
+        /// </summary>
+        public bool NoCheckFormats { get => noCheckFormats.Value; set => noCheckFormats.Value = value; }
+        /// <summary>
+        /// List available formats of each video.
+        /// Simulate unless --no-simulate is used
         /// </summary>
         public bool ListFormats { get => listFormats.Value; set => listFormats.Value = value; }
         /// <summary>
-        /// Do not download the DASH manifests and
-        /// related data on YouTube videos
-        /// </summary>
-        public bool YoutubeSkipDashManifest { get => youtubeSkipDashManifest.Value; set => youtubeSkipDashManifest.Value = value; }
-        /// <summary>
-        /// If a merge is required (e.g.
-        /// bestvideo+bestaudio), output to given
-        /// container format. One of mkv, mp4, ogg,
-        /// webm, flv. Ignored if no merge is
-        /// required
+        /// Containers that may be used when merging
+        /// formats, separated by &quot;/&quot;, e.g. &quot;mp4/mkv&quot;.
+        /// Ignored if no merge is required. (currently
+        /// supported: avi, flv, mkv, mov, mp4, webm)
         /// </summary>
         public DownloadMergeFormat MergeOutputFormat { get => mergeOutputFormat.Value; set => mergeOutputFormat.Value = value; }
     }

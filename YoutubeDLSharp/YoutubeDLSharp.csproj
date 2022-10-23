@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net45;net6.0</TargetFrameworks>
     <Authors>Bluegrams</Authors>
     <Description>A simple .NET wrapper library for youtube-dl.</Description>
     <Copyright>© 2022 Bluegrams</Copyright>
@@ -30,9 +30,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-		<Reference Include="System.IO.Compression" />
-		<Reference Include="System.Net.Http" />
-	</ItemGroup>
+	<PackageReference Include="System.ValueTuple" Version="4.5.0" />
+	<Reference Include="System.IO.Compression" />
+	<Reference Include="System.Net.Http" />
+  </ItemGroup>
 
 </Project>

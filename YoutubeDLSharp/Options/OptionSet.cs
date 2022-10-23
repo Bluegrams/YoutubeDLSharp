@@ -36,7 +36,7 @@ namespace YoutubeDLSharp.Options
         {
             return GetKnownOptions()
                 .Concat(CustomOptions)
-                .Select(opt => opt.ToString())
+                .SelectMany(opt => opt.ToStringCollection())
                 .Where(value => !string.IsNullOrWhiteSpace(value));
         }
 
@@ -44,7 +44,7 @@ namespace YoutubeDLSharp.Options
         {
             return this.GetType()
                 .GetRuntimeFields()
-                .Where(p => p.FieldType.IsGenericType && p.FieldType.GetGenericTypeDefinition() == typeof(Option<>))
+                .Where(p => p.FieldType.IsGenericType && p.FieldType.GetInterfaces().Contains(typeof(IOption)))
                 .Select(p => p.GetValue(this)).Cast<IOption>();
         }
 

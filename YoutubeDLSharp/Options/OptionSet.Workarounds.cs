@@ -9,68 +9,69 @@ namespace YoutubeDLSharp.Options
     public partial class OptionSet
     {
         private Option<string> encoding = new Option<string>("--encoding");
-        private Option<bool> noCheckCertificate = new Option<bool>("--no-check-certificate");
+        private Option<bool> legacyServerConnect = new Option<bool>("--legacy-server-connect");
+        private Option<bool> noCheckCertificates = new Option<bool>("--no-check-certificates");
         private Option<bool> preferInsecure = new Option<bool>("--prefer-insecure");
-        private Option<string> userAgent = new Option<string>("--user-agent");
-        private Option<string> referer = new Option<string>("--referer");
-        private Option<string> addHeader = new Option<string>("--add-header");
+        private MultiOption<string> addHeader = new MultiOption<string>("--add-header");
         private Option<bool> bidiWorkaround = new Option<bool>("--bidi-workaround");
+        private Option<int?> sleepRequests = new Option<int?>("--sleep-requests");
         private Option<int?> sleepInterval = new Option<int?>("--sleep-interval");
         private Option<int?> maxSleepInterval = new Option<int?>("--max-sleep-interval");
+        private Option<int?> sleepSubtitles = new Option<int?>("--sleep-subtitles");
 
         /// <summary>
-        /// Force the specified encoding
-        /// (experimental)
+        /// Force the specified encoding (experimental)
         /// </summary>
         public string Encoding { get => encoding.Value; set => encoding.Value = value; }
         /// <summary>
+        /// Explicitly allow HTTPS connection to servers
+        /// that do not support RFC 5746 secure
+        /// renegotiation
+        /// </summary>
+        public bool LegacyServerConnect { get => legacyServerConnect.Value; set => legacyServerConnect.Value = value; }
+        /// <summary>
         /// Suppress HTTPS certificate validation
         /// </summary>
-        public bool NoCheckCertificate { get => noCheckCertificate.Value; set => noCheckCertificate.Value = value; }
+        public bool NoCheckCertificates { get => noCheckCertificates.Value; set => noCheckCertificates.Value = value; }
         /// <summary>
-        /// Use an unencrypted connection to
-        /// retrieve information about the video.
-        /// (Currently supported only for YouTube)
+        /// Use an unencrypted connection to retrieve
+        /// information about the video (Currently
+        /// supported only for YouTube)
         /// </summary>
         public bool PreferInsecure { get => preferInsecure.Value; set => preferInsecure.Value = value; }
         /// <summary>
-        /// Specify a custom user agent
+        /// Specify a custom HTTP header and its value,
+        /// separated by a colon &quot;:&quot;. You can use this
+        /// option multiple times
         /// </summary>
-        public string UserAgent { get => userAgent.Value; set => userAgent.Value = value; }
-        /// <summary>
-        /// Specify a custom referer, use if the
-        /// video access is restricted to one
-        /// domain
-        /// </summary>
-        public string Referer { get => referer.Value; set => referer.Value = value; }
-        /// <summary>
-        /// Specify a custom HTTP header and its
-        /// value, separated by a colon &#x27;:&#x27;. You
-        /// can use this option multiple times
-        /// </summary>
-        public string AddHeader { get => addHeader.Value; set => addHeader.Value = value; }
+        public MultiValue<string> AddHeader { get => addHeader.Value; set => addHeader.Value = value; }
         /// <summary>
         /// Work around terminals that lack
-        /// bidirectional text support. Requires
-        /// bidiv or fribidi executable in PATH
+        /// bidirectional text support. Requires bidiv
+        /// or fribidi executable in PATH
         /// </summary>
         public bool BidiWorkaround { get => bidiWorkaround.Value; set => bidiWorkaround.Value = value; }
         /// <summary>
+        /// Number of seconds to sleep between requests
+        /// during data extraction
+        /// </summary>
+        public int? SleepRequests { get => sleepRequests.Value; set => sleepRequests.Value = value; }
+        /// <summary>
         /// Number of seconds to sleep before each
-        /// download when used alone or a lower
-        /// bound of a range for randomized sleep
-        /// before each download (minimum possible
-        /// number of seconds to sleep) when used
-        /// along with --max-sleep-interval.
+        /// download. This is the minimum time to sleep
+        /// when used along with --max-sleep-interval
+        /// (Alias: --min-sleep-interval)
         /// </summary>
         public int? SleepInterval { get => sleepInterval.Value; set => sleepInterval.Value = value; }
         /// <summary>
-        /// Upper bound of a range for randomized
-        /// sleep before each download (maximum
-        /// possible number of seconds to sleep).
-        /// Must only be used along with --min-
-        /// sleep-interval.
+        /// Maximum number of seconds to sleep. Can only
+        /// be used along with --min-sleep-interval
         /// </summary>
         public int? MaxSleepInterval { get => maxSleepInterval.Value; set => maxSleepInterval.Value = value; }
+        /// <summary>
+        /// Number of seconds to sleep before each
+        /// subtitle download
+        /// </summary>
+        public int? SleepSubtitles { get => sleepSubtitles.Value; set => sleepSubtitles.Value = value; }
     }
 }

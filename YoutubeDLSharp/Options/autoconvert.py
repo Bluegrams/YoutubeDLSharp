@@ -7,7 +7,9 @@ import html
 
 TYPE_MAP = {
     "LimitRate": "long?",
+    "ThrottledRate": "long?",
     "Retries": "int?",
+    "FileAccessRetries": "int?",
     "FragmentRetries": "int?",
     "BufferSize": "long?",
     "HttpChunkSize": "long?",
@@ -26,8 +28,14 @@ TYPE_MAP = {
     "MinViews": "long?",
     "MaxViews": "long?",
     "AgeLimit": "byte?",
+    "SleepRequests": "int?",
     "SleepInterval": "int?",
-    "MaxSleepInterval":  "int?"
+    "MaxSleepInterval":  "int?",
+    "SleepSubtitles": "int?",
+    "SkipPlaylistAfterErrors": "int?",
+    "ConcurrentFragments": "int?",
+    "TrimFilenames": "int?",
+    "ExtractorRetries": "int?",
 }
 TRANSLATE_MAP = {
     "Twofactor": "TwoFactor",
@@ -53,14 +61,16 @@ CODE_TEMPLATE = [
     "}",
     ""
 ]
+OPT_INDENT = 4
 INSERT_LINE = 10
 INDENT = 8
-option_attr_string = "private Option<{0}> {1} = new Option<{0}>(\"{2}\");"
+option_attr_string = "private {3}Option<{0}> {1} = new {3}Option<{0}>(\"{2}\");"
 option_prop_string = "public {0} {2} {{ get => {1}.Value; set => {1}.Value = value; }}"
 
 IN_FILE = sys.argv[1]
-IN_INDENT = 37
-EMPTY_LINE = "\n\n"
+DEPRECATED_IN_FILE = sys.argv[2] if len(sys.argv) > 2 else None
+IN_INDENT = 35
+DEPRECATED_IN_INDENT = 33
 
 
 # helper methods
@@ -79,9 +89,13 @@ def infer_type(name, s):
     else:
         return "string"
 
-def build_attr(ctype, name, literals):
+def build_attr(ctype: str, multi: bool, name, literals):
     attr_name = name[:1].lower() + name[1:]
-    return INDENT*" " + option_attr_string.format(ctype, attr_name, "\", \"".join(literals))
+    if multi:
+        multi_str = "Multi"
+    else:
+        multi_str = ""
+    return INDENT*" " + option_attr_string.format(ctype, attr_name, "\", \"".join(literals), multi_str)
 
 def build_summary(descr_lines):
     prop_list = [
@@ -92,44 +106,65 @@ def build_summary(descr_lines):
         prop_list.insert(1+i, INDENT*" " + "/// " + html.escape(line.strip()))
     return prop_list
 
-def build_prop(ctype, name, descr_lines=None):
+def build_prop(ctype: str, multi: bool, name, descr_lines=None, deprecated=False):
+    if multi:
+        ctype = f"MultiValue<{ctype}>"
     attr_name = name[:1].lower() + name[1:]
     prop_list = []
     if descr_lines:
         prop_list.extend(build_summary(descr_lines))
+    if deprecated:
+        depr_string = descr_lines[0].replace("\"", "\\\"")
+        prop_list.append(INDENT*" " + f"[Obsolete(\"{depr_string}\")]")
     prop_list.append(INDENT*" " + option_prop_string.format(ctype, attr_name, name))
     return prop_list
 
 # analyze file
 
-def convert_to_file(lines, name):
-    file = "OptionSet.{}.cs".format(name)
+def extract_data(lines, name):
     items = []
     current_item = []
     current_descr = []
     for line in lines:
         if line.startswith(" "*(IN_INDENT)):
             current_descr.append(line[IN_INDENT:]) 
-        elif line.strip().startswith("-"):
+        elif line.startswith(" "*OPT_INDENT + "-"):
             if current_item:
                 items.append((current_item, current_descr))
             current_item = [s.strip() for s in line[:IN_INDENT].split(',')]
             current_descr = [line[IN_INDENT:]]    
     items.append((current_item, current_descr))
     print("%s : Found %d items." % (name, len(items)))
+    return {"name": name, "items": items}
+
+def extract_deprecated_data(lines):
+    items = []
+    for line in lines:
+        item = [s.strip() for s in line[:DEPRECATED_IN_INDENT].split(',')]
+        descr = line[DEPRECATED_IN_INDENT:].strip()
+        if not descr.startswith("Default"):
+            descr = f"Deprecated in favor of: {descr}."
+            items.append((item, [descr]))
+    print("Deprecated : Found %d items." % len(items))
+    return {"name": "Deprecated", "items": items}
+    
+def convert_to_file(data, deprecated=False):
     # build code
     attrs = []
     props = []
-    for item in items:
+    for item in data["items"]:
         literals = [s.split()[0] for s in item[0]]
         name = prepare_name(literals[-1])
         ctype = infer_type(name, item[0][-1])
-        attrs.append(build_attr(ctype, name, literals))
-        props.extend(build_prop(ctype, name, item[1]))
+        # check if option can be set multiple times
+        multi = "multiple times" in " ".join(item[1])
+        attrs.append(build_attr(ctype, multi, name, literals))
+        props.extend(build_prop(ctype, multi, name, item[1], deprecated=deprecated))
     # insert code
     code = list(CODE_TEMPLATE)
     code[INSERT_LINE:INSERT_LINE] = attrs + [""] + props
     # write to file
+    file = "OptionSet.{}.cs".format(data["name"])
     with open(file, 'wb') as f:
         f.write("\r\n".join(code).encode('utf-8-sig'))
 
@@ -139,8 +174,19 @@ with open(IN_FILE, 'r') as f:
     all_text = f.read()
     # forward-compatibility w. yt-dlp
     all_text = re.sub(r"\n\s+Adobe Pass Options:", "", all_text)
-    all_text = all_text.split(EMPTY_LINE)[1:]
+    all_text = re.split(r"\n\n\s(?=\s\w)", all_text)
+# collect data
+all_items = []
 for par in all_text:
     lines = [line for line in par.splitlines() if line.startswith(" ")]
     name = re.sub("(Options)?:", "", prepare_name(lines[0].strip()))
-    convert_to_file(lines[1:], name)
+    all_items.append(extract_data(lines[1:], name))
+# write to files
+for item_data in all_items:
+    convert_to_file(item_data)
+# additionally, read deprecated options if needed
+if DEPRECATED_IN_FILE is not None:
+    with open(DEPRECATED_IN_FILE, 'r') as f:
+        lines = f.readlines()
+    data = extract_deprecated_data(lines)
+    convert_to_file(data, deprecated=True)

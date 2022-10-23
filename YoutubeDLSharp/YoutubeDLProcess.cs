@@ -171,7 +171,14 @@ namespace YoutubeDLSharp
             {
                 if (!tcs.Task.IsCompleted)
                     tcs.TrySetCanceled();
-                try { if (!process.HasExited) process.KillTree(); }
+                try
+                {
+#if NET6_0
+                    if (!process.HasExited) process.Kill(true);
+#else
+                    if (!process.HasExited) process.KillTree();
+#endif
+                }
                 catch { }
             });
             Debug.WriteLine("[youtube-dl] Arguments: " + process.StartInfo.Arguments);

@@ -334,7 +334,7 @@ namespace YoutubeDLSharp
                 IgnoreConfig = true,
                 NoPlaylist = true,
                 HlsPreferNative = true,
-                ExternalDownloaderArgs = "ffmpeg:-nostats -loglevel 0",
+                DownloaderArgs = "ffmpeg:-nostats -loglevel 0",
                 Output = Path.Combine(OutputFolder, OutputFileTemplate),
                 RestrictFilenames = this.RestrictFilenames,
                 NoContinue = this.OverwriteFiles,

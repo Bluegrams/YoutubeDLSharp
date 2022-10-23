@@ -12,20 +12,23 @@ namespace YoutubeDLSharp.Options
         private Option<string> password = new Option<string>("-p", "--password");
         private Option<string> twoFactor = new Option<string>("-2", "--twofactor");
         private Option<bool> netrc = new Option<bool>("-n", "--netrc");
+        private Option<string> netrcLocation = new Option<string>("--netrc-location");
         private Option<string> videoPassword = new Option<string>("--video-password");
         private Option<string> apMso = new Option<string>("--ap-mso");
         private Option<string> apUsername = new Option<string>("--ap-username");
         private Option<string> apPassword = new Option<string>("--ap-password");
         private Option<bool> apListMso = new Option<bool>("--ap-list-mso");
+        private Option<string> clientCertificate = new Option<string>("--client-certificate");
+        private Option<string> clientCertificateKey = new Option<string>("--client-certificate-key");
+        private Option<string> clientCertificatePassword = new Option<string>("--client-certificate-password");
 
         /// <summary>
         /// Login with this account ID
         /// </summary>
         public string Username { get => username.Value; set => username.Value = value; }
         /// <summary>
-        /// Account password. If this option is
-        /// left out, youtube-dl will ask
-        /// interactively.
+        /// Account password. If this option is left
+        /// out, yt-dlp will ask interactively
         /// </summary>
         public string Password { get => password.Value; set => password.Value = value; }
         /// <summary>
@@ -37,13 +40,19 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool Netrc { get => netrc.Value; set => netrc.Value = value; }
         /// <summary>
+        /// Location of .netrc authentication data;
+        /// either the path or its containing directory.
+        /// Defaults to ~/.netrc
+        /// </summary>
+        public string NetrcLocation { get => netrcLocation.Value; set => netrcLocation.Value = value; }
+        /// <summary>
         /// Video password (vimeo, youku)
         /// </summary>
         public string VideoPassword { get => videoPassword.Value; set => videoPassword.Value = value; }
         /// <summary>
         /// Adobe Pass multiple-system operator (TV
-        /// provider) identifier, use --ap-list-mso
-        /// for a list of available MSOs
+        /// provider) identifier, use --ap-list-mso for
+        /// a list of available MSOs
         /// </summary>
         public string ApMso { get => apMso.Value; set => apMso.Value = value; }
         /// <summary>
@@ -51,15 +60,32 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public string ApUsername { get => apUsername.Value; set => apUsername.Value = value; }
         /// <summary>
-        /// Multiple-system operator account
-        /// password. If this option is left out,
-        /// youtube-dl will ask interactively.
+        /// Multiple-system operator account password.
+        /// If this option is left out, yt-dlp will ask
+        /// interactively
         /// </summary>
         public string ApPassword { get => apPassword.Value; set => apPassword.Value = value; }
         /// <summary>
-        /// List all supported multiple-system
-        /// operators
+        /// List all supported multiple-system operators
         /// </summary>
         public bool ApListMso { get => apListMso.Value; set => apListMso.Value = value; }
+        /// <summary>
+        /// Path to client certificate file in PEM
+        /// format. May include the private key
+        /// </summary>
+        public string ClientCertificate { get => clientCertificate.Value; set => clientCertificate.Value = value; }
+        /// <summary>
+        /// E
+        /// Path to private key file for client
+        /// certificate
+        /// </summary>
+        public string ClientCertificateKey { get => clientCertificateKey.Value; set => clientCertificateKey.Value = value; }
+        /// <summary>
+        /// ASSWORD
+        /// Password for client certificate private key,
+        /// if encrypted. If not provided, and the key
+        /// is encrypted, yt-dlp will ask interactively
+        /// </summary>
+        public string ClientCertificatePassword { get => clientCertificatePassword.Value; set => clientCertificatePassword.Value = value; }
     }
 }
