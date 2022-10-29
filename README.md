@@ -11,7 +11,7 @@ YoutubeDLSharp is a wrapper for the popular command-line video downloaders youtu
 It allows you to use the extensive features of youtube-dl/ yt-dlp in a .NET project.
 For more about the features of youtube-dl/ yt-dlp, supported websites and anything else, visit their project pages at http://ytdl-org.github.io/youtube-dl/ and https://github.com/yt-dlp/yt-dlp.
 
-## How do I use it?
+## How do I install it?
 
 First, add the package from NuGet:
 
@@ -19,7 +19,21 @@ First, add the package from NuGet:
 PM> Install-Package YoutubeDLSharp
 ```
 
-Now, there are two ways to use YoutubeDLSharp: the class `YoutubeDL` provides high level methods for downloading and converting videos
+Next, you would want to have the binaries for yt-dlp and FFmpeg available.
+If you don't have them set up already, you can either...
+
+- ...download them from their respective download pages manually: [[yt-dlp Download]](https://github.com/yt-dlp/yt-dlp/releases/latest) [[FFmpeg Download]](https://ffmpeg.org/download.html)
+- ...use the built-in download methods:
+    ```csharp
+    using YoutubeDLSharp;
+
+    await YoutubeDL.DownloadYtDlpBinary();
+    await YoutubeDL.DownloadFFmpegBinary();
+    ```
+
+## How do I use it?
+
+There are two ways to use YoutubeDLSharp: the class `YoutubeDL` provides high level methods for downloading and converting videos
 while the class `YoutubeDLProcess` allows directer and flexibler access to the youtube-dl process.
 
 ### Convenient Approach
@@ -104,6 +118,20 @@ var options = new OptionSet()
     RecodeVideo = VideoRecodeFormat.Mp4,
     Exec = "echo {}"
 }
+```
+
+Some options of yt-dlp can be set multiple times.
+This is reflected in `YoutubeDLSharp` by passing an array of values to the corresponding option properties:
+
+```csharp
+var options = new OptionSet()
+{
+    PostprocessorArgs = new[]
+    {
+        "ffmpeg:-vcodec h264_nvenc",
+        "ffmpeg_i1:-hwaccel cuda -hwaccel_output_format cuda"
+    }
+};
 ```
 
 For documentation of all options supported by yt-dlp and their effects, visit https://github.com/yt-dlp/yt-dlp#usage-and-options.

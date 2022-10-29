@@ -30,8 +30,8 @@ namespace YoutubeDLSharp.Options
         private Option<bool> hlsUseMpegts = new Option<bool>("--hls-use-mpegts");
         private Option<bool> noHlsUseMpegts = new Option<bool>("--no-hls-use-mpegts");
         private MultiOption<string> downloadSections = new MultiOption<string>("--download-sections");
-        private MultiOption<string> downloader = new MultiOption<string>("--downloader");
-        private MultiOption<string> downloaderArgs = new MultiOption<string>("--downloader-args");
+        private MultiOption<string> downloader = new MultiOption<string>("--downloader", "--external-downloader");
+        private MultiOption<string> downloaderArgs = new MultiOption<string>("--downloader-args", "--external-downloader-args");
 
         /// <summary>
         /// Number of fragments of a dash/hlsnative
