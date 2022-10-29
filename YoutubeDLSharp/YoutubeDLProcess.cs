@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,7 +39,12 @@ namespace YoutubeDLSharp
         public string ExecutablePath { get; set; }
 
         /// <summary>
-        /// Occurs each time youtube-dl writes to the standard output.
+        /// Windows only. If set to true, start process via cmd.exe to support Unicode chars.
+        /// </summary>
+        public bool UseWindowsEncodingWorkaround { get; set; } = true;
+
+        /// <summary>
+        /// Occurs each time yt-dlp writes to the standard output.
         /// </summary>
         public event EventHandler<DataReceivedEventArgs> OutputReceived;
         /// <summary>
@@ -55,7 +62,7 @@ namespace YoutubeDLSharp
         }
 
         internal string ConvertToArgs(string[] urls, OptionSet options)
-            => (urls != null ? String.Join(" ", urls) : String.Empty) + options.ToString();
+            => (urls != null ? String.Join(" ", urls.Select(s => $"\"{s}\"")) : String.Empty) + options.ToString();
 
         /// <summary>
         /// Invokes youtube-dl with the specified parameters and options.
@@ -84,10 +91,22 @@ namespace YoutubeDLSharp
                 CreateNoWindow = true,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
-                RedirectStandardError = true
+                RedirectStandardError = true,
+                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = Encoding.UTF8,
 
             };
-            if (!String.IsNullOrEmpty(PythonPath))
+            if (OSHelper.IsWindows && UseWindowsEncodingWorkaround)
+            {
+                startInfo.FileName = "cmd.exe";
+                string runCommand;
+                if (!String.IsNullOrEmpty(PythonPath))
+                    runCommand = $"{PythonPath} \"{ExecutablePath}\" {ConvertToArgs(urls, options)}";
+                else
+                    runCommand = $"{ExecutablePath} {ConvertToArgs(urls, options)}";
+                startInfo.Arguments = $"/C chcp 65001 >nul 2>&1 && {runCommand}";
+            }
+            else if (!String.IsNullOrEmpty(PythonPath))
             {
                 startInfo.FileName = PythonPath;
                 startInfo.Arguments = $"\"{ExecutablePath}\" {ConvertToArgs(urls, options)}";

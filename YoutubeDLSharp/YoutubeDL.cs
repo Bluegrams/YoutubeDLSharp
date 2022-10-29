@@ -17,7 +17,7 @@ namespace YoutubeDLSharp
     /// </summary>
     public class YoutubeDL
     {
-        private static Regex rgxFile = new Regex("echo\\s\\\"?(.*)\\\"?", RegexOptions.Compiled);
+        private static readonly Regex rgxFile = new Regex(@"^outfile:\s\""?(.*)\""?", RegexOptions.Compiled);
 
         protected ProcessRunner runner;
 
@@ -341,10 +341,7 @@ namespace YoutubeDLSharp
                 NoOverwrites = !this.OverwriteFiles,
                 NoPart = true,
                 FfmpegLocation = Utils.GetFullPath(this.FFmpegPath),
-                /* TODO This is used to retrieve the final file path.
-                 * Could be replaced by https://github.com/ytdl-org/youtube-dl/pull/22769.
-                 */
-                Exec = "echo {}"
+                Exec = "echo outfile: {}"
             };
         }
 
