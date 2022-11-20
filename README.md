@@ -5,6 +5,10 @@
 
 A simple .NET wrapper library for [youtube-dl](https://github.com/ytdl-org/youtube-dl) and [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 
+| For **yt-dlp** | For **youtube-dl** |
+| --- | --- |
+| **[Versions >= v.1.0](https://github.com/Bluegrams/YoutubeDLSharp/tree/master) (HERE)**  | [Versions v.0.x](https://github.com/Bluegrams/YoutubeDLSharp/tree/v.0.x)
+
 ## What is it?
 
 YoutubeDLSharp is a wrapper for the popular command-line video downloaders youtube-dl and yt-dlp.
