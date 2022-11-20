@@ -3,7 +3,11 @@
 [![Build status](https://bluegrams.visualstudio.com/vividl/_apis/build/status/youtubedlsharp-ci)](https://bluegrams.visualstudio.com/vividl/_build/latest?definitionId=3)
 [![NuGet](https://img.shields.io/nuget/v/YoutubeDLSharp.svg)](https://www.nuget.org/packages/YoutubeDLSharp/)
 
-A simple .NET wrapper library for [youtube-dl](https://github.com/ytdl-org/youtube-dl).
+A simple .NET wrapper library for [youtube-dl](https://github.com/ytdl-org/youtube-dl) and [yt-dlp](https://github.com/yt-dlp/yt-dlp).
+
+| For **yt-dlp** | For **youtube-dl** |
+| --- | --- |
+| [Versions >= v.1.0](https://github.com/Bluegrams/YoutubeDLSharp/tree/master) | **[Versions v.0.x](https://github.com/Bluegrams/YoutubeDLSharp/tree/v.0.x) (HERE)** 
 
 ## What is it?
 

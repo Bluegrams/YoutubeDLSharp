@@ -44,7 +44,7 @@ namespace YoutubeDLSharp
         public bool UseWindowsEncodingWorkaround { get; set; } = true;
 
         /// <summary>
-        /// Occurs each time yt-dlp writes to the standard output.
+        /// Occurs each time youtube-dl writes to the standard output.
         /// </summary>
         public event EventHandler<DataReceivedEventArgs> OutputReceived;
         /// <summary>

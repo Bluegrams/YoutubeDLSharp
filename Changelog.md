@@ -1,5 +1,8 @@
 # YoutubeDLSharp Changelog
 
+### v.0.4.3 (2022-11)
+- **Fixed**: Windows issues with non-ASCII chars in output.
+
 ### v.0.4.2 (2022-03)
 - **Fixed**: Starting youtube-dl process blocks main thread
 

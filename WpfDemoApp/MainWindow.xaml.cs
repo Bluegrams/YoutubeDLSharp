@@ -18,7 +18,7 @@ namespace WpfDemoApp
 
         public MainWindow()
         {
-            this.YoutubeDL = new YoutubeDL() { YoutubeDLPath = "yt-dlp.exe" };
+            this.YoutubeDL = new YoutubeDL();
             this.DataContext = this;
             InitializeComponent();
             progress = new Progress<DownloadProgress>((p) => showProgress(p));
