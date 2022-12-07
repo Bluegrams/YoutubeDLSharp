@@ -1,18 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using YoutubeDLSharp.Converters;
+using DateTimeConverter = YoutubeDLSharp.Converters.DateTimeConverter;
 
 namespace YoutubeDLSharp.Metadata
 {
+    //https://github.com/yt-dlp/yt-dlp/blob/9c53b9a1b6b8914e4322263c97c26999f2e5832e/yt_dlp/extractor/common.py#L105-L403
+
     /// <summary>
     /// Represents the video metadata for one video as extracted by yt-dlp.
     /// Explanation can be found at https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/extractor/common.py#L91.
     /// </summary>
     public class VideoData
     {
+        [JsonConverter(typeof(MetadataJsonConverter))] ////In .net 6, switch to JsonStringEnumConverter
         [JsonProperty("_type")]
         public MetadataType ResultType { get; set; }
+        [JsonProperty("extractor")]
+        public string Extractor { get; set; }
+        [JsonProperty("extractor_key")]
+        public string ExtractorKey { get; set; }
+
+        // If data refers to a playlist:
+        [JsonProperty("entries")]
+        public VideoData[] Entries { get; set; }
+
         [JsonProperty("id")]
         public string ID { get; set; }
         [JsonProperty("title")]
@@ -25,17 +40,14 @@ namespace YoutubeDLSharp.Metadata
         public string Extension { get; set; }
         [JsonProperty("format")]
         public string Format { get; set; }
+        [JsonProperty("format_id")]
+        public string FormatID { get; set; }
         [JsonProperty("player_url")]
         public string PlayerUrl { get; set; }
-        [JsonProperty("extractor")]
-        public string Extractor { get; set; }
-        [JsonProperty("extractor_key")]
-        public string ExtractorKey { get; set; }
 
-        // If data refers to a playlist:
-        [JsonProperty("entries")]
-        public VideoData[] Entries { get; set; }
-        // Additional optional fields:
+        //optional fields
+        [JsonProperty("direct")]
+        public bool Direct { get; set; }
         [JsonProperty("alt_title")]
         public string AltTitle { get; set; }
         [JsonProperty("display_id")]
@@ -52,21 +64,29 @@ namespace YoutubeDLSharp.Metadata
         public string License { get; set; }
         [JsonProperty("creator")]
         public string Creator { get; set; }
-        [JsonProperty("release_timestamp")]
-        public long? ReleaseTimestamp { get; set; }
-        [JsonProperty("release_date")]
-        [JsonConverter(typeof(CustomDateTimeConverter))]
-        public DateTime? ReleaseDate { get; set; }
+        [JsonConverter(typeof(UnixTimestampConverter))]
         [JsonProperty("timestamp")]
-        public long? Timestamp { get; set; }
+        public DateTime? UploadTimestamp { get; set; } // date as unix timestamp
+
+        [JsonConverter(typeof(DateTimeConverter))]
         [JsonProperty("upload_date")]
-        [JsonConverter(typeof(CustomDateTimeConverter))]
-        public DateTime? UploadDate { get; set; }
-        [JsonProperty("modified_timestemp")]
-        public long? ModifiedTimestamp { get; set; }
+        public DateTime? UploadDate { get; set; } // date in UTC (YYYYMMDD).
+
+        [JsonConverter(typeof(UnixTimestampConverter))]
+        [JsonProperty("release_timestamp")]
+        public DateTime? ReleaseTimestamp { get; set; } // date as unix timestamp
+
+        [JsonConverter(typeof(DateTimeConverter))]
+        [JsonProperty("release_date")]
+        public DateTime? ReleaseDate { get; set; } // date in UTC (YYYYMMDD).
+
+        [JsonConverter(typeof(UnixTimestampConverter))]
+        [JsonProperty("modified_timestamp")]
+        public DateTime? ModifiedTimestamp { get; set; } // date as unix timestamp
+
+        [JsonConverter(typeof(DateTimeConverter))]
         [JsonProperty("modified_date")]
-        [JsonConverter(typeof(CustomDateTimeConverter))]
-        public DateTime? ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; } // date in UTC (YYYYMMDD).
         [JsonProperty("uploader_id")]
         public string UploaderID { get; set; }
         [JsonProperty("uploader_url")]
@@ -83,6 +103,8 @@ namespace YoutubeDLSharp.Metadata
         public string Location { get; set; }
         [JsonProperty("subtitles")]
         public Dictionary<string, SubtitleData[]> Subtitles { get; set; }
+        [JsonProperty("automatic_captions")]
+        public Dictionary<string, SubtitleData[]> AutomaticCaptions { get; set; }
         [JsonProperty("duration")]
         public float? Duration { get; set; }
         [JsonProperty("view_count")]
@@ -116,17 +138,108 @@ namespace YoutubeDLSharp.Metadata
         [JsonProperty("was_live")]
         public bool? WasLive { get; set; }
         [JsonProperty("live_status")]
-        public string LiveStatus { get; set; }
+        public LiveStatus LiveStatus { get; set; }
         [JsonProperty("start_time")]
         public float? StartTime { get; set; }
         [JsonProperty("end_time")]
         public float? EndTime { get; set; }
-        [JsonProperty("chapters")]
-        public ChapterData[] Chapters { get; set; }
+        [JsonConverter(typeof(ObjectToStringConverter))]
         [JsonProperty("playable_in_embed")]
         public string PlayableInEmbed { get; set; }
+        [JsonConverter(typeof(AvailabilityJsonConverter))] //In .net 6, switch to JsonStringEnumConverter
         [JsonProperty("availability")]
-        public string Availability { get; set; }
+        public Availability? Availability { get; set; }
+        [JsonProperty("chapters")]
+        public ChapterData[] Chapters { get; set; }
+        [JsonProperty("chapter")]
+        public string Chapter { get; set; }
+
+        [JsonProperty("chapter_number")]
+        public int? ChapterNumber { get; set; }
+
+        [JsonProperty("chapter_id")]
+        public string ChapterId { get; set; }
+
+        [JsonProperty("series")]
+        public string Series { get; set; }
+
+        [JsonProperty("series_id")]
+        public string SeriesId { get; set; }
+
+        [JsonProperty("season")]
+        public string Season { get; set; }
+
+        [JsonProperty("season_number")]
+        public int? SeasonNumber { get; set; }
+
+        [JsonProperty("season_id")]
+        public string SeasonId { get; set; }
+
+        [JsonProperty("episode")]
+        public string Episode { get; set; }
+
+        [JsonProperty("episode_number")]
+        public int? EpisodeNumber { get; set; }
+
+        [JsonProperty("episode_id")]
+        public string EpisodeId { get; set; }
+
+        [JsonProperty("track")]
+        public string Track { get; set; }
+
+        [JsonProperty("track_number")]
+        public int? TrackNumber { get; set; }
+
+        [JsonProperty("track_id")]
+        public string TrackId { get; set; }
+
+        [JsonProperty("artist")]
+        public string Artist { get; set; }
+
+        [JsonProperty("genre")]
+        public string Genre { get; set; }
+
+        [JsonProperty("album")]
+        public string Album { get; set; }
+
+        [JsonProperty("album_type")]
+        public string AlbumType { get; set; }
+
+        [JsonProperty("album_artist")]
+        public string AlbumArtist { get; set; }
+
+        [JsonProperty("disc_number")]
+        public int? DiscNumber { get; set; }
+
+        [JsonProperty("release_year")]
+        public string ReleaseYear { get; set; }
+
+        [JsonProperty("composer")]
+        public string Composer { get; set; }
+
+        [JsonProperty("section_start")]
+        public long? SectionStart { get; set; }
+
+        [JsonProperty("section_end")]
+        public long? SectionEnd { get; set; }
+
+        [JsonProperty("rows")]
+        public long? StoryboardFragmentRows { get; set; }
+
+        [JsonProperty("columns")]
+        public long? StoryboardFragmentColumns { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+        //========================================================================================================================================================================================================
 
         public override string ToString()
         {

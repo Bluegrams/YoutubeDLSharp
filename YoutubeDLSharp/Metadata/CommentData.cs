@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace YoutubeDLSharp.Metadata
 {
+    //https://github.com/yt-dlp/yt-dlp/blob/9c53b9a1b6b8914e4322263c97c26999f2e5832e/yt_dlp/extractor/common.py#L105-L403
     public class CommentData
     {
         [JsonProperty("id")]
@@ -17,7 +19,7 @@ namespace YoutubeDLSharp.Metadata
         [JsonProperty("text")]
         public string Text { get; set; }
         [JsonProperty("timestamp")]
-        public long? Timestamp { get; set; }
+        public DateTime Timestamp { get; set; } //UNIX Timestamp
         [JsonProperty("parent")]
         public string Parent { get; set; }
         [JsonProperty("like_count")]
@@ -28,5 +30,8 @@ namespace YoutubeDLSharp.Metadata
         public bool? IsFavorited { get; set; }
         [JsonProperty("author_is_uploader")]
         public bool? AuthorIsUploader { get; set; }
+
+        //Unused Fields (These are fields that were excluded, but documented for future use:
+        //time_text  
     }
 }

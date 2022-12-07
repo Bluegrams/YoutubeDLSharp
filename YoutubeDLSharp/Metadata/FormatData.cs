@@ -2,6 +2,8 @@
 
 namespace YoutubeDLSharp.Metadata
 {
+    //https://github.com/lesmiscore/yt-dlp/blob/9c53b9a1b6b8914e4322263c97c26999f2e5832e/yt_dlp/extractor/common.py#L105-L403
+
     /// <summary>
     /// Represents information for one available download format for one video as extracted by yt-dlp.
     /// </summary>
@@ -75,5 +77,11 @@ namespace YoutubeDLSharp.Metadata
         public bool? HasDRM { get; set; }
 
         public override string ToString() => $"[{Extension}] {Format}";
+
+        //Unused Fields (These are fields that were excluded, but documented for future use:
+        //downloader_options (internal use only)        
+        //fragments        
+        //http_headers                
+        //manifest_stream_number (internal use only)                        
     }
 }
