@@ -1,35 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.Serialization;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace YoutubeDLSharp.Converters
-{
-    public class DateTimeConverter : JsonConverter<DateTime> //switch to DateOOnly when fully moved to .Net 6
+{    
+    public class UnixTimestampConverter : JsonConverter<DateTime?>
     {
-        public override DateTime ReadJson(JsonReader reader, Type objectType, DateTime existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override DateTime? ReadJson(JsonReader reader, Type objectType, DateTime? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            var data = DateTime.ParseExact(reader.Value.ToString(), "yyyyMMdd", CultureInfo.InvariantCulture);
-            return data;           
+            if(reader.Value == null)
+            {
+                return null;
+            }
+            else
+            {
+                var value = (long)reader.Value;
+                var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                var timeSpan = TimeSpan.FromSeconds(value);
+                var utc = epoch.Add(timeSpan).ToUniversalTime();
+                return utc;
+            }
         }
 
-        public override void WriteJson(JsonWriter writer, DateTime value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, DateTime? value, JsonSerializer serializer)
         {
             writer.WriteValue(value.ToString());
         }
     }
 
-    public class UnixTimestampConverter : JsonConverter<DateTime>
+    public class CustomDateTimeConverter : IsoDateTimeConverter
     {
-        public override DateTime ReadJson(JsonReader reader, Type objectType, DateTime existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public CustomDateTimeConverter()
         {
-            return reader.ReadAsDateTime().Value.ToUniversalTime();
-        }
-
-        public override void WriteJson(JsonWriter writer, DateTime value, JsonSerializer serializer)
-        {
-            writer.WriteValue(value.ToString());
+            DateTimeFormat = "yyyyMMdd";
         }
     }
 }

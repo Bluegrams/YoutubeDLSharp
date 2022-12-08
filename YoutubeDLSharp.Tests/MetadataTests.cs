@@ -15,8 +15,9 @@ namespace YoutubeDLSharp.Tests
         {
             await PrepTests.DownloadBinaries();
             ydl = new YoutubeDL();
-            ydl.YoutubeDLPath = "yt-dlp.exe";
-            ydl.FFmpegPath = "ffmpeg.exe";
+            ydl.YoutubeDLPath = ydl.YoutubeDLPath;
+            ydl.FFmpegPath = ydl.FFmpegPath;
+            ydl.OutputFileTemplate = "%(title)s.%(ext)s";
         }
 
         [TestMethod]

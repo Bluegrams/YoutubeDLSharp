@@ -15,14 +15,7 @@ namespace YoutubeDLSharp.Tests
         {
             if (_didDownloadBinaries == false)
             {
-                if (!File.Exists("yt-dlp.exe"))
-                {
-                    await YoutubeDL.DownloadYtDlpBinary();
-                }
-                if (!File.Exists("ffmpeg.exe"))
-                {
-                    await YoutubeDL.DownloadFFmpegBinary();
-                }
+                await Utils.DownloadBinaries();
                 _didDownloadBinaries = true;
             }
         }

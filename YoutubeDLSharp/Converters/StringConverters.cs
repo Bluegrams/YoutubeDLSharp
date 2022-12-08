@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using YoutubeDLSharp.Metadata;
 
 namespace YoutubeDLSharp.Converters
@@ -18,31 +19,23 @@ namespace YoutubeDLSharp.Converters
             writer.WriteValue(value.ToString());
         }
     }
-
-    public class AvailabilityJsonConverter : JsonConverter<Availability>
+    public class StringToEnumConverter<T> : JsonConverter<T> where T : Enum
     {
-        public override Availability ReadJson(JsonReader reader, Type objectType, Availability existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override T ReadJson(JsonReader reader, Type objectType, T existingValue, bool hasExistingValue, JsonSerializer serializer) 
         {
-            return (Availability)Enum.Parse(typeof(Availability), (string)reader.Value);
+            var value = (string)reader.Value;
+            if(value == null)
+            {
+                return default(T);
+            }
+            var jsonString = $"'{value.ToLower()}'";
+            var enumValue = JsonConvert.DeserializeObject<T>(jsonString, new StringEnumConverter());
+            return enumValue;
         }
 
-        public override void WriteJson(JsonWriter writer, Availability value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, T value, JsonSerializer serializer)
         {
             writer.WriteValue(value.ToString());
         }
     }
-
-    public class MetadataJsonConverter : JsonConverter<MetadataType>
-    {
-        public override MetadataType ReadJson(JsonReader reader, Type objectType, MetadataType existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            return (MetadataType)Enum.Parse(typeof(MetadataType), (string)reader.Value);
-        }
-
-        public override void WriteJson(JsonWriter writer, MetadataType value, JsonSerializer serializer)
-        {
-            writer.WriteValue(value.ToString());
-        }
-    }
-
 }

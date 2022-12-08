@@ -4,7 +4,6 @@ using System.ComponentModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using YoutubeDLSharp.Converters;
-using DateTimeConverter = YoutubeDLSharp.Converters.DateTimeConverter;
 
 namespace YoutubeDLSharp.Metadata
 {
@@ -16,18 +15,16 @@ namespace YoutubeDLSharp.Metadata
     /// </summary>
     public class VideoData
     {
-        [JsonConverter(typeof(MetadataJsonConverter))] ////In .net 6, switch to JsonStringEnumConverter
+        [JsonConverter(typeof(StringToEnumConverter<MetadataType>))]
         [JsonProperty("_type")]
         public MetadataType ResultType { get; set; }
         [JsonProperty("extractor")]
         public string Extractor { get; set; }
         [JsonProperty("extractor_key")]
         public string ExtractorKey { get; set; }
-
         // If data refers to a playlist:
         [JsonProperty("entries")]
         public VideoData[] Entries { get; set; }
-
         [JsonProperty("id")]
         public string ID { get; set; }
         [JsonProperty("title")]
@@ -44,7 +41,6 @@ namespace YoutubeDLSharp.Metadata
         public string FormatID { get; set; }
         [JsonProperty("player_url")]
         public string PlayerUrl { get; set; }
-
         //optional fields
         [JsonProperty("direct")]
         public bool Direct { get; set; }
@@ -65,28 +61,23 @@ namespace YoutubeDLSharp.Metadata
         [JsonProperty("creator")]
         public string Creator { get; set; }
         [JsonConverter(typeof(UnixTimestampConverter))]
-        [JsonProperty("timestamp")]
-        public DateTime? UploadTimestamp { get; set; } // date as unix timestamp
-
-        [JsonConverter(typeof(DateTimeConverter))]
-        [JsonProperty("upload_date")]
-        public DateTime? UploadDate { get; set; } // date in UTC (YYYYMMDD).
-
+        [JsonProperty("release_timestamp")] // date as unix timestamp
+        public DateTime? ReleaseTimestamp { get; set; }
+        [JsonConverter(typeof(CustomDateTimeConverter))]
+        [JsonProperty("release_date")] // date in UTC (YYYYMMDD).        
+        public DateTime? ReleaseDate { get; set; }
         [JsonConverter(typeof(UnixTimestampConverter))]
-        [JsonProperty("release_timestamp")]
-        public DateTime? ReleaseTimestamp { get; set; } // date as unix timestamp
-
-        [JsonConverter(typeof(DateTimeConverter))]
-        [JsonProperty("release_date")]
-        public DateTime? ReleaseDate { get; set; } // date in UTC (YYYYMMDD).
-
+        [JsonProperty("timestamp")] // date as unix timestamp        
+        public DateTime? Timestamp { get; set; }
+        [JsonConverter(typeof(CustomDateTimeConverter))]
+        [JsonProperty("upload_date")] // date in UTC (YYYYMMDD).        
+        public DateTime? UploadDate { get; set; }
         [JsonConverter(typeof(UnixTimestampConverter))]
-        [JsonProperty("modified_timestamp")]
-        public DateTime? ModifiedTimestamp { get; set; } // date as unix timestamp
-
-        [JsonConverter(typeof(DateTimeConverter))]
-        [JsonProperty("modified_date")]
-        public DateTime? ModifiedDate { get; set; } // date in UTC (YYYYMMDD).
+        [JsonProperty("modified_timestemp")] // date as unix timestamp
+        public DateTime? ModifiedTimestamp { get; set; }
+        [JsonConverter(typeof(CustomDateTimeConverter))]
+        [JsonProperty("modified_date")] // date in UTC (YYYYMMDD).        
+        public DateTime? ModifiedDate { get; set; }
         [JsonProperty("uploader_id")]
         public string UploaderID { get; set; }
         [JsonProperty("uploader_url")]
@@ -137,16 +128,16 @@ namespace YoutubeDLSharp.Metadata
         public bool? IsLive { get; set; }
         [JsonProperty("was_live")]
         public bool? WasLive { get; set; }
+        [JsonConverter(typeof(StringToEnumConverter<LiveStatus>))]
         [JsonProperty("live_status")]
         public LiveStatus LiveStatus { get; set; }
         [JsonProperty("start_time")]
         public float? StartTime { get; set; }
         [JsonProperty("end_time")]
         public float? EndTime { get; set; }
-        [JsonConverter(typeof(ObjectToStringConverter))]
         [JsonProperty("playable_in_embed")]
         public string PlayableInEmbed { get; set; }
-        [JsonConverter(typeof(AvailabilityJsonConverter))] //In .net 6, switch to JsonStringEnumConverter
+        [JsonConverter(typeof(StringToEnumConverter<Availability>))]
         [JsonProperty("availability")]
         public Availability? Availability { get; set; }
         [JsonProperty("chapters")]
@@ -229,29 +220,11 @@ namespace YoutubeDLSharp.Metadata
         [JsonProperty("columns")]
         public long? StoryboardFragmentColumns { get; set; }
 
-
-
-
-
-
-
-
-
-
-
-        //========================================================================================================================================================================================================
-
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
 
-    class CustomDateTimeConverter : IsoDateTimeConverter
-    {
-        public CustomDateTimeConverter()
-        {
-            DateTimeFormat = "yyyyMMdd";
-        }
-    }
+    
 }
