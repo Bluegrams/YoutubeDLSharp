@@ -33,7 +33,7 @@ Package versions 0.x retain support for the original youtube-dl.
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
 	<PackageReference Include="System.ValueTuple" Version="4.5.0" />
