@@ -62,7 +62,7 @@ namespace YoutubeDLSharp.Options
                 .ToArray();
 
             IEnumerable<FieldInfo> overrideFields = overrideOptions.GetType().GetRuntimeFields()
-                .Where(p => p.FieldType.IsGenericType && p.FieldType.GetGenericTypeDefinition() == typeof(Option<>));
+                .Where(p => p.FieldType.IsGenericType && p.FieldType.GetInterfaces().Contains(typeof(IOption)));
             
             foreach (var field in overrideFields)
             {

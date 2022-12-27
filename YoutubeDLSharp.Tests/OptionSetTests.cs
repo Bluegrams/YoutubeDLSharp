@@ -152,7 +152,8 @@ namespace YoutubeDLSharp.Tests
             var overrideOptions = new OptionSet()
             {
                 MergeOutputFormat = DownloadMergeFormat.Mkv,
-                Password = "passw0rd"
+                Password = "passw0rd",
+                ForceKeyframesAtCuts = true
             };
             var newOptions = originalOptions.OverrideOptions(overrideOptions);
             Assert.AreEqual(AudioConversionFormat.Wav, newOptions.AudioFormat);
@@ -161,6 +162,21 @@ namespace YoutubeDLSharp.Tests
             Assert.AreEqual(DownloadMergeFormat.Mkv, newOptions.MergeOutputFormat);
             Assert.AreEqual("bob", newOptions.Username);
             Assert.AreEqual("passw0rd", newOptions.Password);
+            Assert.AreEqual(true, newOptions.ForceKeyframesAtCuts);
+        }
+
+        [TestMethod]
+        public void TestOptionSetOverrideOptionsMulti()
+        {
+            var originalOptions = new OptionSet();
+            var overrideOptions = new OptionSet()
+            {
+                DownloadSections = "*15-30",
+                Downloader = new MultiValue<string>("aria2c", "dash,m3u8:native")
+            };
+            var newOptions = originalOptions.OverrideOptions(overrideOptions);
+            Assert.AreEqual("*15-30", (string)newOptions.DownloadSections);
+            CollectionAssert.AreEquivalent(new[] { "aria2c", "dash,m3u8:native" }, (string[])newOptions.Downloader);
         }
     }
 }
