@@ -1,5 +1,14 @@
 # YoutubeDLSharp Changelog
 
+### v.1.0.0 (beta)
+- **New**: Use yt-dlp instead of youtube-dl as default downloader.
+- **New**: Methods for automatically downloading yt-dlp and FFmpeg.
+- **New**: Addition of options, video & format data attributes for yt-dlp.
+- **New**: MultiOption & MultiValue classes for options that can be set multiple times.
+- **New**: Add .NET 6 as build target.
+- **New**: Support extraction of chapter & comment information.
+- **Changed**: Apply override options after setting other options in `YoutubeDL` methods.
+
 ### v.0.4.3 (2022-11)
 - **Fixed**: Windows issues with non-ASCII chars in output.
 
