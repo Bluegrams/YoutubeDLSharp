@@ -1,13 +1,13 @@
 # YoutubeDLSharp
 
 [![Build status](https://bluegrams.visualstudio.com/vividl/_apis/build/status/youtubedlsharp-ci)](https://bluegrams.visualstudio.com/vividl/_build/latest?definitionId=3)
-[![NuGet](https://img.shields.io/nuget/v/YoutubeDLSharp.svg)](https://www.nuget.org/packages/YoutubeDLSharp/)
 
 A simple .NET wrapper library for [youtube-dl](https://github.com/ytdl-org/youtube-dl) and [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 
 | For **yt-dlp** | For **youtube-dl** |
 | --- | --- |
-| [Versions >= v.1.0](https://github.com/Bluegrams/YoutubeDLSharp/tree/master) | **[Versions v.0.x](https://github.com/Bluegrams/YoutubeDLSharp/tree/v.0.x) (HERE)** 
+| [Versions >= v.1.0](https://github.com/Bluegrams/YoutubeDLSharp/tree/master) | **Versions v.0.x**
+| [![Nuget](https://img.shields.io/nuget/vpre/YoutubeDLSharp?color=blue)](https://www.nuget.org/packages/YoutubeDLSharp/1.0.0-beta2) | [![NuGet](https://img.shields.io/badge/nuget-v.0.4.3-blue)](https://www.nuget.org/packages/YoutubeDLSharp/0.4.3)
 
 ## What is it?
 
@@ -159,6 +159,10 @@ You are very welcome to contribute by reporting issues, fixing bugs or resolving
 If you want to contribute a new feature to the library, please open an issue with your suggestion before starting to implement it.
 
 All issues related to downloading specific videos, support for websites or downloading/ conversion features should better be reported to https://github.com/ytdl-org/youtube-dl/issues.
+
+## Version History
+
+See [Changelog](Changelog.md).
 
 ## License
 

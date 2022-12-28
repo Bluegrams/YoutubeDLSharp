@@ -264,3 +264,6 @@ __pycache__/
 *.py
 *.json
 *.exe
+/YoutubeDLSharp/Options/*.txt
+/YoutubeDLSharp/Options/*.ps1
+/YtDlSharpTestCli
