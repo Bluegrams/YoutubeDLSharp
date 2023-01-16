@@ -121,7 +121,7 @@ namespace YoutubeDLSharp
             }            
         }
 
-        private static string GetYtDlpBinaryName(bool fullPath = false)
+        private static string GetYtDlpDownloadUrl()
         {
             const string BASE_GITHUB_URL = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp";
 
@@ -140,7 +140,13 @@ namespace YoutubeDLSharp
                 default:
                     throw new Exception("Your OS isn't supported");
             }
-            return fullPath ? downloadUrl : Path.GetFileName(downloadUrl);
+            return downloadUrl;
+        }
+
+        private static string GetYtDlpBinaryName()
+        {
+            string ytdlpDownloadPath = GetYtDlpDownloadUrl();
+            return Path.GetFileName(ytdlpDownloadPath);            
         }
 
         private static string GetFfmpegBinaryName()
@@ -171,9 +177,9 @@ namespace YoutubeDLSharp
             }
         }
 
-        internal static async Task DownloadYtDlp(string directoryPath = "")
+        public static async Task DownloadYtDlp(string directoryPath = "")
         {
-            string downloadUrl = GetYtDlpBinaryName(true);
+            string downloadUrl = GetYtDlpDownloadUrl();
 
             if (string.IsNullOrEmpty(directoryPath)) { directoryPath = Directory.GetCurrentDirectory(); }
 
@@ -182,12 +188,12 @@ namespace YoutubeDLSharp
             File.WriteAllBytes(downloadLocation, data);
         }
 
-        internal static async Task DownloadFFmpeg(string directoryPath = "")
+        public static async Task DownloadFFmpeg(string directoryPath = "")
         {
             await FFDownloader(directoryPath, FFmpegApi.BinaryType.FFmpeg);
         }
 
-        internal static async Task DownloadFFprobe(string directoryPath = "")
+        public static async Task DownloadFFprobe(string directoryPath = "")
         {
             await FFDownloader(directoryPath, FFmpegApi.BinaryType.FFprobe);
         }
