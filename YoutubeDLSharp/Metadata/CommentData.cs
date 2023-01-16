@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using YoutubeDLSharp.Converters;
 
 namespace YoutubeDLSharp.Metadata
 {
@@ -19,6 +20,7 @@ namespace YoutubeDLSharp.Metadata
         [JsonProperty("text")]
         public string Text { get; set; }
         [JsonProperty("timestamp")]
+        [JsonConverter(typeof(UnixTimestampConverter))]
         public DateTime Timestamp { get; set; } //UNIX Timestamp
         [JsonProperty("parent")]
         public string Parent { get; set; }
