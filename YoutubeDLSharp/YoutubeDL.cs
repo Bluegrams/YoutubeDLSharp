@@ -93,10 +93,10 @@ namespace YoutubeDLSharp
         }
 
         /// <summary>
-        /// Runs youtube-dl with the given option set and additional parameters.
+        /// Runs yt-dlp with the given option set and additional parameters.
         /// </summary>
-        /// <param name="url">The video URL passed to youtube-dl.</param>
-        /// <param name="options">The OptionSet of youtube-dl options.</param>
+        /// <param name="url">The video URL passed to yt-dlp.</param>
+        /// <param name="options">The OptionSet of yt-dlp options.</param>
         /// <param name="ct">A CancellationToken used to cancel the process.</param>
         /// <param name="progress">A progress provider used to get download progress information.</param>
         /// <param name="output">A progress provider used to capture the standard output.</param>
