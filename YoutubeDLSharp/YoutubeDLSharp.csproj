@@ -6,7 +6,7 @@
     <Description>
 		A simple .NET wrapper library for youtube-dl and yt-dlp.
 
-Note: Package versions >= 1.0 are optimized to work with yt-dlp.
+Note: Package versions &gt;= 1.0 are optimized to work with yt-dlp.
 Package versions 0.x retain support for the original youtube-dl.
 	</Description>
     <Copyright>© 2022 Bluegrams</Copyright>

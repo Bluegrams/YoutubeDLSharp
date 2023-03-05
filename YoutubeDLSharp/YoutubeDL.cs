@@ -25,11 +25,11 @@ namespace YoutubeDLSharp
         /// <summary>
         /// Path to the yt-dlp executable.
         /// </summary>
-        public string YoutubeDLPath { get; set; } = "yt-dlp.exe";
+        public string YoutubeDLPath { get; set; } = Utils.YtDlpBinaryName;
         /// <summary>
         /// Path to the FFmpeg executable.
         /// </summary>
-        public string FFmpegPath { get; set; } = "ffmpeg.exe";
+        public string FFmpegPath { get; set; } = Utils.FfmpegBinaryName;
         /// <summary>
         /// Path of the folder where items will be downloaded to.
         /// </summary>
@@ -38,7 +38,7 @@ namespace YoutubeDLSharp
         /// Template of the name of the downloaded file on yt-dlp style.
         /// See https://github.com/yt-dlp/yt-dlp#output-template.
         /// </summary>
-        public string OutputFileTemplate { get; set; } = "%(title)s.%(ext)s";
+        public string OutputFileTemplate { get; set; } = "%(title)s [%(id)s].%(ext)s";
         /// <summary>
         /// If set to true, file names a re restricted to ASCII characters.
         /// </summary>
@@ -368,7 +368,7 @@ namespace YoutubeDLSharp
                 IgnoreErrors = this.IgnoreDownloadErrors,
                 IgnoreConfig = true,
                 NoPlaylist = true,
-                HlsPreferNative = true,
+                Downloader = "m3u8:native",
                 DownloaderArgs = "ffmpeg:-nostats -loglevel 0",
                 Output = Path.Combine(OutputFolder, OutputFileTemplate),
                 RestrictFilenames = this.RestrictFilenames,
@@ -380,20 +380,6 @@ namespace YoutubeDLSharp
             };
         }
 
-        #endregion
-
-        /// <summary>
-        /// Downloads the latest YT-DLP binary
-        /// </summary>
-        /// <param name="directoryPath">Optional directory path of where you want the YT-DLP binary saved</param>
-        public static async Task DownloadYtDlpBinary(string directoryPath = "")
-            => await DownloadHelper.DownloadYtDlp(directoryPath);
-
-        /// <summary>
-        /// Downloads the latest FFmpeg binary
-        /// </summary>
-        /// <param name="directoryPath">Optional directory path of where you want the FFmpeg binary saved</param>
-        public static async Task DownloadFFmpegBinary(string directoryPath = "")
-            => await DownloadHelper.DownloadFFmpeg(directoryPath);
+        #endregion        
     }
 }
