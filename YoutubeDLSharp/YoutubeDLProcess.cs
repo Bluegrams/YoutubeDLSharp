@@ -103,7 +103,7 @@ namespace YoutubeDLSharp
                 if (!String.IsNullOrEmpty(PythonPath))
                     runCommand = $"{PythonPath} \"{ExecutablePath}\" {ConvertToArgs(urls, options)}";
                 else
-                    runCommand = $"{ExecutablePath} {ConvertToArgs(urls, options)}";
+                    runCommand = $"\"{ExecutablePath}\" {ConvertToArgs(urls, options)}";
                 startInfo.Arguments = $"/C chcp 65001 >nul 2>&1 && {runCommand}";
             }
             else if (!String.IsNullOrEmpty(PythonPath))
