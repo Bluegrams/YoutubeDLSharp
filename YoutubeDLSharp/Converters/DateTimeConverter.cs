@@ -19,7 +19,7 @@ namespace YoutubeDLSharp.Converters
             }
             else
             {
-                var value = (long)reader.Value;
+                var value = (double)reader.Value;
                 var timeSpan = TimeSpan.FromSeconds(value);
                 var utc = _Epoch.Add(timeSpan).ToUniversalTime();
                 return utc;

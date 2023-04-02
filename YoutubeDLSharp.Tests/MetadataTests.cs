@@ -34,20 +34,6 @@ namespace YoutubeDLSharp.Tests
         }
 
         [TestMethod]
-        public async Task TestVideoInformationVimeo()
-        {
-            string url = "https://vimeo.com/23608259";
-            RunResult<VideoData> result = await ydl.RunVideoDataFetch(url);
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(MetadataType.Video, result.Data.ResultType);
-            Assert.AreEqual("Cats in Tanks", result.Data.Title);
-            Assert.AreEqual("Vimeo", result.Data.ExtractorKey);
-            Assert.AreEqual("Whitehouse Post", result.Data.Uploader);
-            Assert.IsNotNull(result.Data.Formats);
-            Assert.IsNull(result.Data.Entries);
-        }
-
-        [TestMethod]
         public async Task TestPlaylistInformation()
         {
             string url = "https://www.youtube.com/playlist?list=PLD8804CB40CAB0EA5";

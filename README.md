@@ -7,7 +7,7 @@ A simple .NET wrapper library for [youtube-dl](https://github.com/ytdl-org/youtu
 | For **yt-dlp** | For **youtube-dl** |
 | --- | --- |
 | **Versions >= v.1.0**  | [Versions v.0.x](https://github.com/Bluegrams/YoutubeDLSharp/tree/v.0.x)
-| [![Nuget](https://img.shields.io/nuget/vpre/YoutubeDLSharp?color=blue)](https://www.nuget.org/packages/YoutubeDLSharp/1.0.0-beta4) | [![NuGet](https://img.shields.io/badge/nuget-v.0.4.3-blue)](https://www.nuget.org/packages/YoutubeDLSharp/0.4.3)
+| [![Nuget](https://img.shields.io/nuget/vpre/YoutubeDLSharp?color=blue)](https://www.nuget.org/packages/YoutubeDLSharp/1.0.0-beta5) | [![NuGet](https://img.shields.io/badge/nuget-v.0.4.3-blue)](https://www.nuget.org/packages/YoutubeDLSharp/0.4.3)
 
 ## What is it?
 
