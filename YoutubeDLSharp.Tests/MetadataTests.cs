@@ -34,6 +34,21 @@ namespace YoutubeDLSharp.Tests
         }
 
         [TestMethod]
+        public async Task TestVideoInformationYoutube_Premier()
+        {
+            string url = "https://youtu.be/HEdbxIfAKyk";
+            RunResult<VideoData> result = await ydl.RunVideoDataFetch(url);
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(MetadataType.Video, result.Data.ResultType);
+            Assert.AreEqual("TEST VIDEO PREMIER", result.Data.Title);
+            Assert.AreEqual("Youtube", result.Data.ExtractorKey);
+            Assert.AreEqual(new DateTime(2020, 11, 25), result.Data.UploadDate);
+            Assert.IsNotNull(result.Data.Formats);
+            Assert.IsNotNull(result.Data.Tags);
+            Assert.IsNull(result.Data.Entries);
+        }
+        
+        [TestMethod]
         public async Task TestPlaylistInformation()
         {
             string url = "https://www.youtube.com/playlist?list=PLD8804CB40CAB0EA5";
