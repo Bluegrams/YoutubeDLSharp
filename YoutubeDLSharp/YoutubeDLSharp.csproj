@@ -21,7 +21,7 @@ Package versions 0.x retain support for the original youtube-dl.
 
   <PropertyGroup>
     <VersionPrefix>1.0.0</VersionPrefix>
-	<VersionSuffix>beta5</VersionSuffix>
+	<VersionSuffix>beta6</VersionSuffix>
     <BuildYear>$([System.DateTime]::Now.ToString(yy))</BuildYear>
     <BuildDay>$([System.DateTime]::Now.DayOfYear)</BuildDay>
     <AssemblyVersion>$(VersionPrefix).$(BuildYear)$(BuildDay)</AssemblyVersion>
