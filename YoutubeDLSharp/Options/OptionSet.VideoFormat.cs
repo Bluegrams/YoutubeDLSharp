@@ -10,7 +10,7 @@ namespace YoutubeDLSharp.Options
     {
         private Option<string> format = new Option<string>("-f", "--format");
         private Option<string> formatSort = new Option<string>("-S", "--format-sort");
-        private Option<bool> formatSortForce = new Option<bool>("--format-sort-force");
+        private Option<bool> formatSortForce = new Option<bool>("--format-sort-force", "--S-force");
         private Option<bool> noFormatSortForce = new Option<bool>("--no-format-sort-force");
         private Option<bool> videoMultistreams = new Option<bool>("--video-multistreams");
         private Option<bool> noVideoMultistreams = new Option<bool>("--no-video-multistreams");

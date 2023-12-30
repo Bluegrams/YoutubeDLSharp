@@ -15,8 +15,8 @@ namespace YoutubeDLSharp.Options
         private Option<int?> fileAccessRetries = new Option<int?>("--file-access-retries");
         private Option<int?> fragmentRetries = new Option<int?>("--fragment-retries");
         private MultiOption<string> retrySleep = new MultiOption<string>("--retry-sleep");
-        private Option<bool> skipUnavailableFragments = new Option<bool>("--skip-unavailable-fragments");
-        private Option<bool> abortOnUnavailableFragments = new Option<bool>("--abort-on-unavailable-fragments");
+        private Option<bool> skipUnavailableFragments = new Option<bool>("--skip-unavailable-fragments", "--no-abort-on-unavailable-fragments");
+        private Option<bool> abortOnUnavailableFragments = new Option<bool>("--abort-on-unavailable-fragments", "--no-skip-unavailable-fragments");
         private Option<bool> keepFragments = new Option<bool>("--keep-fragments");
         private Option<bool> noKeepFragments = new Option<bool>("--no-keep-fragments");
         private Option<long?> bufferSize = new Option<long?>("--buffer-size");

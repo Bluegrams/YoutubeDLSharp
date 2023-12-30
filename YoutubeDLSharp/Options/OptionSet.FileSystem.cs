@@ -35,8 +35,8 @@ namespace YoutubeDLSharp.Options
         private Option<bool> noWritePlaylistMetafiles = new Option<bool>("--no-write-playlist-metafiles");
         private Option<bool> cleanInfoJson = new Option<bool>("--clean-info-json");
         private Option<bool> noCleanInfoJson = new Option<bool>("--no-clean-info-json");
-        private Option<bool> writeComments = new Option<bool>("--write-comments");
-        private Option<bool> noWriteComments = new Option<bool>("--no-write-comments");
+        private Option<bool> writeComments = new Option<bool>("--write-comments", "--get-comments");
+        private Option<bool> noWriteComments = new Option<bool>("--no-write-comments", "--no-get-comments");
         private Option<string> loadInfoJson = new Option<string>("--load-info-json");
         private Option<string> cookies = new Option<string>("--cookies");
         private Option<bool> noCookies = new Option<bool>("--no-cookies");
@@ -219,7 +219,6 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoCookies { get => noCookies.Value; set => noCookies.Value = value; }
         /// <summary>
-        /// +KEYRING][:PROFILE][::CONTAINER]
         /// The name of the browser to load cookies
         /// from. Currently supported browsers are:
         /// brave, chrome, chromium, edge, firefox,

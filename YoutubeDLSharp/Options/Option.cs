@@ -15,7 +15,7 @@ namespace YoutubeDLSharp.Options
         /// <summary>
         /// The default string representation of the option flag.
         /// </summary>
-        public string DefaultOptionString => OptionStrings.Last();
+        public string DefaultOptionString => OptionStrings.First();
 
         /// <summary>
         /// An array of all possible string representations of the option flag.

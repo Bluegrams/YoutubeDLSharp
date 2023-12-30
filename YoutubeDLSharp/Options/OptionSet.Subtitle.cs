@@ -10,8 +10,8 @@ namespace YoutubeDLSharp.Options
     {
         private Option<bool> writeSubs = new Option<bool>("--write-subs");
         private Option<bool> noWriteSubs = new Option<bool>("--no-write-subs");
-        private Option<bool> writeAutoSubs = new Option<bool>("--write-auto-subs");
-        private Option<bool> noWriteAutoSubs = new Option<bool>("--no-write-auto-subs");
+        private Option<bool> writeAutoSubs = new Option<bool>("--write-auto-subs", "--write-automatic-subs");
+        private Option<bool> noWriteAutoSubs = new Option<bool>("--no-write-auto-subs", "--no-write-automatic-subs");
         private Option<bool> listSubs = new Option<bool>("--list-subs");
         private Option<string> subFormat = new Option<string>("--sub-format");
         private Option<string> subLangs = new Option<string>("--sub-langs");

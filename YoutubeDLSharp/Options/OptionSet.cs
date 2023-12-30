@@ -50,10 +50,14 @@ namespace YoutubeDLSharp.Options
 
         /// <summary>
         /// Creates a clone of this option set and overrides all options with non-default values set in the given option set.
+        /// 
+        /// Note: Only overriding non-default values might cause some unintuitive behaviour, e.g. for bool options, where "false" is the default.
+        /// Use forceOverride to force overriding also with default values.
         /// </summary>
         /// <param name="overrideOptions">All non-default option values of this option set will be copied to the cloned option set.</param>
+        /// <param name="forceOverride">Force overriding also default values.</param>
         /// <returns>A cloned option set with all specified options overriden.</returns>
-        public OptionSet OverrideOptions(OptionSet overrideOptions)
+        public OptionSet OverrideOptions(OptionSet overrideOptions, bool forceOverride = false)
         {
             var cloned = (OptionSet) Clone();
             cloned.CustomOptions = cloned.CustomOptions
@@ -67,7 +71,7 @@ namespace YoutubeDLSharp.Options
             foreach (var field in overrideFields)
             {
                 var fieldValue = (IOption)field.GetValue(overrideOptions);
-                if (fieldValue.IsSet)
+                if (forceOverride || fieldValue.IsSet)
                 {
                     cloned.GetType()
                         .GetField(field.Name, BindingFlags.NonPublic | BindingFlags.Instance)

@@ -39,10 +39,10 @@ namespace YoutubeDLSharp.Options
         private Option<string> metadataFromTitle = new Option<string>("--metadata-from-title");
         private Option<bool> hlsPreferNative = new Option<bool>("--hls-prefer-native");
         private Option<bool> hlsPreferFfmpeg = new Option<bool>("--hls-prefer-ffmpeg");
-        private Option<bool> listFormatsOld = new Option<bool>("--list-formats-old");
-        private Option<bool> listFormatsAsTable = new Option<bool>("--list-formats-as-table");
-        private Option<bool> youtubeSkipDashManifest = new Option<bool>("--youtube-skip-dash-manifest");
-        private Option<bool> youtubeSkipHlsManifest = new Option<bool>("--youtube-skip-hls-manifest");
+        private Option<bool> listFormatsOld = new Option<bool>("--list-formats-old", "--no-list-formats-as-table");
+        private Option<bool> listFormatsAsTable = new Option<bool>("--list-formats-as-table", "--no-list-formats-old");
+        private Option<bool> youtubeSkipDashManifest = new Option<bool>("--youtube-skip-dash-manifest", "--no-youtube-include-dash-manifest");
+        private Option<bool> youtubeSkipHlsManifest = new Option<bool>("--youtube-skip-hls-manifest", "--no-youtube-include-hls-manifest");
         private Option<bool> geoBypass = new Option<bool>("--geo-bypass");
         private Option<bool> noGeoBypass = new Option<bool>("--no-geo-bypass");
         private Option<string> geoBypassCountry = new Option<string>("--geo-bypass-country");

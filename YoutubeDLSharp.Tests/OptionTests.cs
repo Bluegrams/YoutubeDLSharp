@@ -13,7 +13,7 @@ namespace YoutubeDLSharp.Tests
         {
             var expected = new[]
             {
-                "--ignore-config", "--no-playlist", "--no-continue", "--quiet", "--embed-thumbnail"
+                "--ignore-config", "--no-playlist", "--no-continue", "-q", "--embed-thumbnail"
             };
             var options = new OptionSet()
             {
@@ -31,7 +31,7 @@ namespace YoutubeDLSharp.Tests
         {
             var expected = new[]
             {
-                "--extract-audio", "--audio-format \"mp3\""
+                "-x", "--audio-format \"mp3\""
             };
             var options = new OptionSet()
             {
@@ -46,14 +46,14 @@ namespace YoutubeDLSharp.Tests
         {
             var expected = new[]
             {
-                "--format \"mp4/bestvideo\"", "--playlist-start 10", "--playlist-end 100", "--min-views 1000"
+                "-f \"mp4/bestvideo\"", "-R 10", "--file-access-retries 100", "--cookies-from-browser \"firefox\""
             };
             var options = new OptionSet()
             {
                 Format = "mp4/bestvideo",
-                PlaylistStart = 10,
-                PlaylistEnd = 100,
-                MinViews = 1000
+                Retries = 10,
+                FileAccessRetries = 100,
+                CookiesFromBrowser = "firefox"
             };
             CollectionAssert.AreEquivalent(expected, options.GetOptionFlags().ToArray());
         }

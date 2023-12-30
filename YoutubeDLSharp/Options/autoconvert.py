@@ -69,7 +69,7 @@ option_prop_string = "public {0} {2} {{ get => {1}.Value; set => {1}.Value = val
 
 IN_FILE = sys.argv[1]
 DEPRECATED_IN_FILE = sys.argv[2] if len(sys.argv) > 2 else None
-IN_INDENT = 35
+IN_INDENT = 36
 DEPRECATED_IN_INDENT = 33
 
 
@@ -139,7 +139,11 @@ def extract_data(lines, name):
             if current_item:
                 items.append((current_item, current_descr))
             current_item = [s.strip() for s in line[:IN_INDENT].split(',')]
-            current_descr = [line[IN_INDENT:]]    
+            # use to identify if description starts in next line because of length of option
+            if len(line) > IN_INDENT and line[IN_INDENT-1] == " ":
+                current_descr = [line[IN_INDENT:]]
+            else:
+                current_descr = []
     items.append((current_item, current_descr))
     print("%s : Found %d items." % (name, len(items)))
     return {"name": name, "items": items}
@@ -164,7 +168,11 @@ def convert_to_file(data, deprecated=False):
         name = prepare_name(literals[-1])
         ctype = infer_type(name, item[0][-1])
         # check if option can be set multiple times
-        multi = "multiple times" in " ".join(item[1])
+        joined_descr = " ".join(item[1])
+        multi = "multiple times" in joined_descr
+        # extract alias options
+        if match := re.search(r"\(Alias\: (\S+)\)", joined_descr):
+            literals.append(match.group(1))
         attrs.append(build_attr(ctype, multi, name, literals))
         props.extend(build_prop(ctype, multi, name, item[1], deprecated=deprecated))
     # insert code

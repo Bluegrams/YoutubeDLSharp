@@ -39,7 +39,6 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public string SponsorblockRemove { get => sponsorblockRemove.Value; set => sponsorblockRemove.Value = value; }
         /// <summary>
-        /// MPLATE
         /// An output template for the title of the
         /// SponsorBlock chapters created by
         /// --sponsorblock-mark. The only available

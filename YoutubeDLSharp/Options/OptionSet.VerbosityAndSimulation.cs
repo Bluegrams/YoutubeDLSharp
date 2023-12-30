@@ -15,12 +15,12 @@ namespace YoutubeDLSharp.Options
         private Option<bool> noSimulate = new Option<bool>("--no-simulate");
         private Option<bool> ignoreNoFormatsError = new Option<bool>("--ignore-no-formats-error");
         private Option<bool> noIgnoreNoFormatsError = new Option<bool>("--no-ignore-no-formats-error");
-        private Option<bool> skipDownload = new Option<bool>("--skip-download");
+        private Option<bool> skipDownload = new Option<bool>("--skip-download", "--no-download");
         private MultiOption<string> print = new MultiOption<string>("-O", "--print");
         private MultiOption<string> printToFile = new MultiOption<string>("--print-to-file");
         private Option<bool> dumpJson = new Option<bool>("-j", "--dump-json");
         private Option<bool> dumpSingleJson = new Option<bool>("-J", "--dump-single-json");
-        private Option<bool> forceWriteArchive = new Option<bool>("--force-write-archive");
+        private Option<bool> forceWriteArchive = new Option<bool>("--force-write-archive", "--force-download-archive");
         private Option<bool> newline = new Option<bool>("--newline");
         private Option<bool> noProgress = new Option<bool>("--no-progress");
         private Option<bool> progress = new Option<bool>("--progress");
@@ -130,7 +130,6 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool ConsoleTitle { get => consoleTitle.Value; set => consoleTitle.Value = value; }
         /// <summary>
-        /// PLATE
         /// Template for progress outputs, optionally
         /// prefixed with one of &quot;download:&quot; (default),
         /// &quot;download-title:&quot; (the console title),

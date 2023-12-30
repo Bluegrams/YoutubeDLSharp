@@ -13,7 +13,7 @@ namespace YoutubeDLSharp.Options
         private Option<byte?> audioQuality = new Option<byte?>("--audio-quality");
         private Option<string> remuxVideo = new Option<string>("--remux-video");
         private Option<VideoRecodeFormat> recodeVideo = new Option<VideoRecodeFormat>("--recode-video");
-        private MultiOption<string> postprocessorArgs = new MultiOption<string>("--postprocessor-args");
+        private MultiOption<string> postprocessorArgs = new MultiOption<string>("--postprocessor-args", "--ppa");
         private Option<bool> keepVideo = new Option<bool>("-k", "--keep-video");
         private Option<bool> noKeepVideo = new Option<bool>("--no-keep-video");
         private Option<bool> postOverwrites = new Option<bool>("--post-overwrites");
@@ -22,10 +22,10 @@ namespace YoutubeDLSharp.Options
         private Option<bool> noEmbedSubs = new Option<bool>("--no-embed-subs");
         private Option<bool> embedThumbnail = new Option<bool>("--embed-thumbnail");
         private Option<bool> noEmbedThumbnail = new Option<bool>("--no-embed-thumbnail");
-        private Option<bool> embedMetadata = new Option<bool>("--embed-metadata");
-        private Option<bool> noEmbedMetadata = new Option<bool>("--no-embed-metadata");
-        private Option<bool> embedChapters = new Option<bool>("--embed-chapters");
-        private Option<bool> noEmbedChapters = new Option<bool>("--no-embed-chapters");
+        private Option<bool> embedMetadata = new Option<bool>("--embed-metadata", "--add-metadata");
+        private Option<bool> noEmbedMetadata = new Option<bool>("--no-embed-metadata", "--no-add-metadata");
+        private Option<bool> embedChapters = new Option<bool>("--embed-chapters", "--add-chapters");
+        private Option<bool> noEmbedChapters = new Option<bool>("--no-embed-chapters", "--no-add-chapters");
         private Option<bool> embedInfoJson = new Option<bool>("--embed-info-json");
         private Option<bool> noEmbedInfoJson = new Option<bool>("--no-embed-info-json");
         private Option<string> parseMetadata = new Option<string>("--parse-metadata");
@@ -36,7 +36,7 @@ namespace YoutubeDLSharp.Options
         private Option<string> ffmpegLocation = new Option<string>("--ffmpeg-location");
         private MultiOption<string> exec = new MultiOption<string>("--exec");
         private Option<bool> noExec = new Option<bool>("--no-exec");
-        private Option<string> convertSubs = new Option<string>("--convert-subs");
+        private Option<string> convertSubs = new Option<string>("--convert-subs", "--convert-subtitles");
         private Option<string> convertThumbnails = new Option<string>("--convert-thumbnails");
         private Option<bool> splitChapters = new Option<bool>("--split-chapters");
         private Option<bool> noSplitChapters = new Option<bool>("--no-split-chapters");
@@ -179,7 +179,6 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoEmbedInfoJson { get => noEmbedInfoJson.Value; set => noEmbedInfoJson.Value = value; }
         /// <summary>
-        /// 
         /// Parse additional metadata like title/artist
         /// from other fields; see &quot;MODIFYING METADATA&quot;
         /// for details. Supported values of &quot;WHEN&quot; are
@@ -188,7 +187,6 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public string ParseMetadata { get => parseMetadata.Value; set => parseMetadata.Value = value; }
         /// <summary>
-        /// ELDS REGEX REPLACE
         /// Replace text in a metadata field using the
         /// given regex. This option can be used
         /// multiple times. Supported values of &quot;WHEN&quot;
@@ -297,7 +295,6 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoForceKeyframesAtCuts { get => noForceKeyframesAtCuts.Value; set => noForceKeyframesAtCuts.Value = value; }
         /// <summary>
-        /// 
         /// The (case sensitive) name of plugin
         /// postprocessors to be enabled, and
         /// (optionally) arguments to be passed to it,

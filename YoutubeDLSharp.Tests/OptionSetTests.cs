@@ -83,6 +83,25 @@ namespace YoutubeDLSharp.Tests
         }
 
         [TestMethod]
+        public void TestOptionSetWithAliasFromString()
+        {
+            string[] lines = new[]
+            {
+                "-x",
+                "--external-downloader ffmpeg",
+                "--external-downloader-args ffmpeg:some_arg",
+                "--min-sleep-interval 10",
+                "--add-metadata"
+            };
+            OptionSet opts = OptionSet.FromString(lines);
+            Assert.IsTrue(opts.ExtractAudio);
+            CollectionAssert.AreEquivalent(new[] { "ffmpeg" }, (string[])opts.Downloader);
+            CollectionAssert.AreEquivalent(new[] { "ffmpeg:some_arg" }, (string[])opts.DownloaderArgs);
+            Assert.AreEqual(10, opts.SleepInterval);
+            Assert.IsTrue(opts.EmbedMetadata);
+        }
+
+        [TestMethod]
         public void TestCustomOptionSetFromString()
         {
             void AssertCustomOption(IOption option)
@@ -177,6 +196,25 @@ namespace YoutubeDLSharp.Tests
             var newOptions = originalOptions.OverrideOptions(overrideOptions);
             Assert.AreEqual("*15-30", (string)newOptions.DownloadSections);
             CollectionAssert.AreEquivalent(new[] { "aria2c", "dash,m3u8:native" }, (string[])newOptions.Downloader);
+        }
+
+        [TestMethod]
+        public void TestOptionSetOverrideOptionsForce()
+        {
+            var originalOptions = new OptionSet()
+            {
+                NoPlaylist = true,
+                DumpSingleJson = true,
+                Quiet = false,
+            };
+            var overrideOptions = (OptionSet)originalOptions.Clone();
+            overrideOptions.NoPlaylist = false;
+            overrideOptions.DumpSingleJson = false;
+            overrideOptions.Quiet = true;
+            var newOptions = originalOptions.OverrideOptions(overrideOptions, forceOverride: true);
+            Assert.AreEqual(false, newOptions.NoPlaylist);
+            Assert.AreEqual(false, newOptions.DumpSingleJson);
+            Assert.AreEqual(true, newOptions.Quiet);
         }
     }
 }

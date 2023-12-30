@@ -15,7 +15,7 @@ namespace YoutubeDLSharp.Options
         private MultiOption<string> addHeaders = new MultiOption<string>("--add-headers");
         private Option<bool> bidiWorkaround = new Option<bool>("--bidi-workaround");
         private Option<int?> sleepRequests = new Option<int?>("--sleep-requests");
-        private Option<int?> sleepInterval = new Option<int?>("--sleep-interval");
+        private Option<int?> sleepInterval = new Option<int?>("--sleep-interval", "--min-sleep-interval");
         private Option<int?> maxSleepInterval = new Option<int?>("--max-sleep-interval");
         private Option<int?> sleepSubtitles = new Option<int?>("--sleep-subtitles");
 

@@ -15,13 +15,13 @@ namespace YoutubeDLSharp.Options
         private Option<string> updateTo = new Option<string>("--update-to");
         private Option<bool> ignoreErrors = new Option<bool>("-i", "--ignore-errors");
         private Option<bool> noAbortOnError = new Option<bool>("--no-abort-on-error");
-        private Option<bool> abortOnError = new Option<bool>("--abort-on-error");
+        private Option<bool> abortOnError = new Option<bool>("--abort-on-error", "--no-ignore-errors");
         private Option<bool> dumpUserAgent = new Option<bool>("--dump-user-agent");
         private Option<bool> listExtractors = new Option<bool>("--list-extractors");
         private Option<bool> extractorDescriptions = new Option<bool>("--extractor-descriptions");
-        private Option<string> useExtractors = new Option<string>("--use-extractors");
+        private Option<string> useExtractors = new Option<string>("--use-extractors", "--ies");
         private Option<string> defaultSearch = new Option<string>("--default-search");
-        private Option<bool> ignoreConfig = new Option<bool>("--ignore-config");
+        private Option<bool> ignoreConfig = new Option<bool>("--ignore-config", "--no-config");
         private Option<bool> noConfigLocations = new Option<bool>("--no-config-locations");
         private MultiOption<string> configLocations = new MultiOption<string>("--config-locations");
         private Option<bool> flatPlaylist = new Option<bool>("--flat-playlist");
@@ -34,7 +34,7 @@ namespace YoutubeDLSharp.Options
         private Option<bool> noMarkWatched = new Option<bool>("--no-mark-watched");
         private MultiOption<string> color = new MultiOption<string>("--color");
         private Option<string> compatOptions = new Option<string>("--compat-options");
-        private Option<string> alias = new Option<string>("--alias");
+        private MultiOption<string> alias = new MultiOption<string>("--alias");
 
         /// <summary>
         /// Print this help text and exit
@@ -212,6 +212,6 @@ namespace YoutubeDLSharp.Options
         /// times. This option can be used multiple
         /// times
         /// </summary>
-        public string Alias { get => alias.Value; set => alias.Value = value; }
+        public MultiValue<string> Alias { get => alias.Value; set => alias.Value = value; }
     }
 }

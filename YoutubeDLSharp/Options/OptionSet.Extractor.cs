@@ -9,8 +9,8 @@ namespace YoutubeDLSharp.Options
     public partial class OptionSet
     {
         private Option<int?> extractorRetries = new Option<int?>("--extractor-retries");
-        private Option<bool> allowDynamicMpd = new Option<bool>("--allow-dynamic-mpd");
-        private Option<bool> ignoreDynamicMpd = new Option<bool>("--ignore-dynamic-mpd");
+        private Option<bool> allowDynamicMpd = new Option<bool>("--allow-dynamic-mpd", "--no-ignore-dynamic-mpd");
+        private Option<bool> ignoreDynamicMpd = new Option<bool>("--ignore-dynamic-mpd", "--no-allow-dynamic-mpd");
         private Option<bool> hlsSplitDiscontinuity = new Option<bool>("--hls-split-discontinuity");
         private Option<bool> noHlsSplitDiscontinuity = new Option<bool>("--no-hls-split-discontinuity");
         private MultiOption<string> extractorArgs = new MultiOption<string>("--extractor-args");

@@ -16,8 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfDemoApp", "WpfDemoApp\WpfDemoApp.csproj", "{723CB799-D3BB-42D3-8861-BB5557B957B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLIDemo", "CLIDemo\CLIDemo.csproj", "{4E0348B8-2B82-45B3-B3BD-7C34092A959C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,10 +34,6 @@ Global
 		{723CB799-D3BB-42D3-8861-BB5557B957B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{723CB799-D3BB-42D3-8861-BB5557B957B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{723CB799-D3BB-42D3-8861-BB5557B957B5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E0348B8-2B82-45B3-B3BD-7C34092A959C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E0348B8-2B82-45B3-B3BD-7C34092A959C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E0348B8-2B82-45B3-B3BD-7C34092A959C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E0348B8-2B82-45B3-B3BD-7C34092A959C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

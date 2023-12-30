@@ -81,13 +81,11 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public string ClientCertificate { get => clientCertificate.Value; set => clientCertificate.Value = value; }
         /// <summary>
-        /// E
         /// Path to private key file for client
         /// certificate
         /// </summary>
         public string ClientCertificateKey { get => clientCertificateKey.Value; set => clientCertificateKey.Value = value; }
         /// <summary>
-        /// ASSWORD
         /// Password for client certificate private key,
         /// if encrypted. If not provided, and the key
         /// is encrypted, yt-dlp will ask interactively
