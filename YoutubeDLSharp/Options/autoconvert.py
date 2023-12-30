@@ -89,8 +89,15 @@ def infer_type(name, s):
     else:
         return "string"
 
-def build_attr(ctype: str, multi: bool, name, literals):
+def get_attr_name(name):
     attr_name = name[:1].lower() + name[1:]
+    # workaround for attr names matching C# keywords
+    if attr_name in ["continue"]:
+        attr_name = "do" + attr_name.title()
+    return attr_name
+
+def build_attr(ctype: str, multi: bool, name, literals):
+    attr_name = get_attr_name(name)
     if multi:
         multi_str = "Multi"
     else:
@@ -109,7 +116,7 @@ def build_summary(descr_lines):
 def build_prop(ctype: str, multi: bool, name, descr_lines=None, deprecated=False):
     if multi:
         ctype = f"MultiValue<{ctype}>"
-    attr_name = name[:1].lower() + name[1:]
+    attr_name = get_attr_name(name)
     prop_list = []
     if descr_lines:
         prop_list.extend(build_summary(descr_lines))

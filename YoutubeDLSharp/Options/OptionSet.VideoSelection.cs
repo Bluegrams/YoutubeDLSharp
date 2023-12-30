@@ -15,7 +15,9 @@ namespace YoutubeDLSharp.Options
         private Option<DateTime> dateBefore = new Option<DateTime>("--datebefore");
         private Option<DateTime> dateAfter = new Option<DateTime>("--dateafter");
         private MultiOption<string> matchFilters = new MultiOption<string>("--match-filters");
-        private Option<bool> noMatchFilter = new Option<bool>("--no-match-filter");
+        private Option<bool> noMatchFilters = new Option<bool>("--no-match-filters");
+        private Option<string> breakMatchFilters = new Option<string>("--break-match-filters");
+        private Option<bool> noBreakMatchFilters = new Option<bool>("--no-break-match-filters");
         private Option<bool> noPlaylist = new Option<bool>("--no-playlist");
         private Option<bool> yesPlaylist = new Option<bool>("--yes-playlist");
         private Option<byte?> ageLimit = new Option<byte?>("--age-limit");
@@ -23,38 +25,39 @@ namespace YoutubeDLSharp.Options
         private Option<bool> noDownloadArchive = new Option<bool>("--no-download-archive");
         private Option<int?> maxDownloads = new Option<int?>("--max-downloads");
         private Option<bool> breakOnExisting = new Option<bool>("--break-on-existing");
-        private Option<bool> breakOnReject = new Option<bool>("--break-on-reject");
         private Option<bool> breakPerInput = new Option<bool>("--break-per-input");
         private Option<bool> noBreakPerInput = new Option<bool>("--no-break-per-input");
         private Option<int?> skipPlaylistAfterErrors = new Option<int?>("--skip-playlist-after-errors");
 
         /// <summary>
-        /// Comma separated playlist_index of the videos
+        /// Comma separated playlist_index of the items
         /// to download. You can specify a range using
         /// &quot;[START]:[STOP][:STEP]&quot;. For backward
         /// compatibility, START-STOP is also supported.
         /// Use negative indices to count from the right
         /// and negative STEP to download in reverse
         /// order. E.g. &quot;-I 1:3,7,-5::2&quot; used on a
-        /// playlist of size 15 will download the videos
+        /// playlist of size 15 will download the items
         /// at index 1,2,3,7,11,13,15
         /// </summary>
         public string PlaylistItems { get => playlistItems.Value; set => playlistItems.Value = value; }
         /// <summary>
-        /// Do not download any videos smaller than
+        /// Abort download if filesize is smaller than
         /// SIZE, e.g. 50k or 44.6M
         /// </summary>
         public string MinFilesize { get => minFilesize.Value; set => minFilesize.Value = value; }
         /// <summary>
-        /// Do not download any videos larger than SIZE,
-        /// e.g. 50k or 44.6M
+        /// Abort download if filesize is larger than
+        /// SIZE, e.g. 50k or 44.6M
         /// </summary>
         public string MaxFilesize { get => maxFilesize.Value; set => maxFilesize.Value = value; }
         /// <summary>
         /// Download only videos uploaded on this date.
         /// The date can be &quot;YYYYMMDD&quot; or in the format
         /// [now|today|yesterday][-N[day|week|month|year
-        /// ]]. E.g. --date today-2weeks
+        /// ]]. E.g. &quot;--date today-2weeks&quot; downloads
+        /// only videos uploaded on the same day two
+        /// weeks ago
         /// </summary>
         public DateTime Date { get => date.Value; set => date.Value = value; }
         /// <summary>
@@ -93,9 +96,19 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public MultiValue<string> MatchFilters { get => matchFilters.Value; set => matchFilters.Value = value; }
         /// <summary>
-        /// Do not use generic video filter (default)
+        /// Do not use any --match-filter (default)
         /// </summary>
-        public bool NoMatchFilter { get => noMatchFilter.Value; set => noMatchFilter.Value = value; }
+        public bool NoMatchFilters { get => noMatchFilters.Value; set => noMatchFilters.Value = value; }
+        /// <summary>
+        /// Same as &quot;--match-filters&quot; but stops the
+        /// download process when a video is rejected
+        /// </summary>
+        public string BreakMatchFilters { get => breakMatchFilters.Value; set => breakMatchFilters.Value = value; }
+        /// <summary>
+        /// Do not use any --break-match-filters
+        /// (default)
+        /// </summary>
+        public bool NoBreakMatchFilters { get => noBreakMatchFilters.Value; set => noBreakMatchFilters.Value = value; }
         /// <summary>
         /// Download only the video, if the URL refers
         /// to a video and a playlist
@@ -131,14 +144,9 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool BreakOnExisting { get => breakOnExisting.Value; set => breakOnExisting.Value = value; }
         /// <summary>
-        /// Stop the download process when encountering
-        /// a file that has been filtered out
-        /// </summary>
-        public bool BreakOnReject { get => breakOnReject.Value; set => breakOnReject.Value = value; }
-        /// <summary>
-        /// --break-on-existing, --break-on-reject,
-        /// --max-downloads, and autonumber resets per
-        /// input URL
+        /// Alters --max-downloads, --break-on-existing,
+        /// --break-match-filter, and autonumber to
+        /// reset per input URL
         /// </summary>
         public bool BreakPerInput { get => breakPerInput.Value; set => breakPerInput.Value = value; }
         /// <summary>

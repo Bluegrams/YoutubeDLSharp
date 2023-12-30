@@ -19,10 +19,10 @@ namespace YoutubeDLSharp.Options
         /// for, separated by commas. Available
         /// categories are sponsor, intro, outro,
         /// selfpromo, preview, filler, interaction,
-        /// music_offtopic, poi_highlight, all and
-        /// default (=all). You can prefix the category
-        /// with a &quot;-&quot; to exclude it. See [1] for
-        /// description of the categories. E.g.
+        /// music_offtopic, poi_highlight, chapter, all
+        /// and default (=all). You can prefix the
+        /// category with a &quot;-&quot; to exclude it. See [1]
+        /// for description of the categories. E.g.
         /// --sponsorblock-mark all,-preview [1] https:/
         /// /wiki.sponsor.ajay.app/w/Segment_Categories
         /// </summary>
@@ -34,8 +34,8 @@ namespace YoutubeDLSharp.Options
         /// remove takes precedence. The syntax and
         /// available categories are the same as for
         /// --sponsorblock-mark except that &quot;default&quot;
-        /// refers to &quot;all,-filler&quot; and poi_highlight is
-        /// not available
+        /// refers to &quot;all,-filler&quot; and poi_highlight,
+        /// chapter are not available
         /// </summary>
         public string SponsorblockRemove { get => sponsorblockRemove.Value; set => sponsorblockRemove.Value = value; }
         /// <summary>

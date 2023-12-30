@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using YoutubeDLSharp.Metadata;
@@ -16,6 +17,7 @@ namespace YoutubeDLSharp.Tests
             await PrepTests.DownloadBinaries();
             ydl = new YoutubeDL();
             ydl.OutputFileTemplate = "%(title)s.%(ext)s";
+            Trace.WriteLine("yt-dlp Version: " + ydl.Version);
         }
 
         [TestMethod]

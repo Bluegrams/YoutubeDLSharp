@@ -16,7 +16,7 @@ namespace YoutubeDLSharp.Options
         private Option<int?> fragmentRetries = new Option<int?>("--fragment-retries");
         private MultiOption<string> retrySleep = new MultiOption<string>("--retry-sleep");
         private Option<bool> skipUnavailableFragments = new Option<bool>("--skip-unavailable-fragments");
-        private Option<bool> abortOnUnavailableFragment = new Option<bool>("--abort-on-unavailable-fragment");
+        private Option<bool> abortOnUnavailableFragments = new Option<bool>("--abort-on-unavailable-fragments");
         private Option<bool> keepFragments = new Option<bool>("--keep-fragments");
         private Option<bool> noKeepFragments = new Option<bool>("--no-keep-fragments");
         private Option<long?> bufferSize = new Option<long?>("--buffer-size");
@@ -80,15 +80,14 @@ namespace YoutubeDLSharp.Options
         /// <summary>
         /// Skip unavailable fragments for DASH,
         /// hlsnative and ISM downloads (default)
-        /// (Alias: --no-abort-on-unavailable-fragment)
+        /// (Alias: --no-abort-on-unavailable-fragments)
         /// </summary>
         public bool SkipUnavailableFragments { get => skipUnavailableFragments.Value; set => skipUnavailableFragments.Value = value; }
         /// <summary>
-        /// 
         /// Abort download if a fragment is unavailable
         /// (Alias: --no-skip-unavailable-fragments)
         /// </summary>
-        public bool AbortOnUnavailableFragment { get => abortOnUnavailableFragment.Value; set => abortOnUnavailableFragment.Value = value; }
+        public bool AbortOnUnavailableFragments { get => abortOnUnavailableFragments.Value; set => abortOnUnavailableFragments.Value = value; }
         /// <summary>
         /// Keep downloaded fragments on disk after
         /// downloading is finished
@@ -158,12 +157,14 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoHlsUseMpegts { get => noHlsUseMpegts.Value; set => noHlsUseMpegts.Value = value; }
         /// <summary>
-        /// Download only chapters whose title matches
-        /// the given regular expression. Time ranges
-        /// prefixed by a &quot;*&quot; can also be used in place
-        /// of chapters to download the specified range.
-        /// Needs ffmpeg. This option can be used
-        /// multiple times to download multiple
+        /// Download only chapters that match the
+        /// regular expression. A &quot;*&quot; prefix denotes
+        /// time-range instead of chapter. Negative
+        /// timestamps are calculated from the end.
+        /// &quot;*from-url&quot; can be used to download between
+        /// the &quot;start_time&quot; and &quot;end_time&quot; extracted
+        /// from the URL. Needs ffmpeg. This option can
+        /// be used multiple times to download multiple
         /// sections, e.g. --download-sections
         /// &quot;*10:15-inf&quot; --download-sections &quot;intro&quot;
         /// </summary>

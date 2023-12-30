@@ -181,9 +181,8 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoWritePlaylistMetafiles { get => noWritePlaylistMetafiles.Value; set => noWritePlaylistMetafiles.Value = value; }
         /// <summary>
-        /// Remove some private fields such as filenames
-        /// from the infojson. Note that it could still
-        /// contain some personal information (default)
+        /// Remove some internal metadata such as
+        /// filenames from the infojson (default)
         /// </summary>
         public bool CleanInfoJson { get => cleanInfoJson.Value; set => cleanInfoJson.Value = value; }
         /// <summary>
@@ -233,7 +232,7 @@ namespace YoutubeDLSharp.Options
         /// By default, all containers of the most
         /// recently accessed profile are used.
         /// Currently supported keyrings are: basictext,
-        /// gnomekeyring, kwallet
+        /// gnomekeyring, kwallet, kwallet5, kwallet6
         /// </summary>
         public string CookiesFromBrowser { get => cookiesFromBrowser.Value; set => cookiesFromBrowser.Value = value; }
         /// <summary>

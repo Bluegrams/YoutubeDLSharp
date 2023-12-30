@@ -13,6 +13,7 @@ namespace YoutubeDLSharp.Options
         private Option<string> twoFactor = new Option<string>("-2", "--twofactor");
         private Option<bool> netrc = new Option<bool>("-n", "--netrc");
         private Option<string> netrcLocation = new Option<string>("--netrc-location");
+        private Option<string> netrcCmd = new Option<string>("--netrc-cmd");
         private Option<string> videoPassword = new Option<string>("--video-password");
         private Option<string> apMso = new Option<string>("--ap-mso");
         private Option<string> apUsername = new Option<string>("--ap-username");
@@ -46,7 +47,12 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public string NetrcLocation { get => netrcLocation.Value; set => netrcLocation.Value = value; }
         /// <summary>
-        /// Video password (vimeo, youku)
+        /// Command to execute to get the credentials
+        /// for an extractor.
+        /// </summary>
+        public string NetrcCmd { get => netrcCmd.Value; set => netrcCmd.Value = value; }
+        /// <summary>
+        /// Video-specific password
         /// </summary>
         public string VideoPassword { get => videoPassword.Value; set => videoPassword.Value = value; }
         /// <summary>

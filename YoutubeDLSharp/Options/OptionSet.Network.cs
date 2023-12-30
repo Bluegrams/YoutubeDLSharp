@@ -13,6 +13,7 @@ namespace YoutubeDLSharp.Options
         private Option<string> sourceAddress = new Option<string>("--source-address");
         private Option<bool> forceIPv4 = new Option<bool>("-4", "--force-ipv4");
         private Option<bool> forceIPv6 = new Option<bool>("-6", "--force-ipv6");
+        private Option<bool> enableFileUrls = new Option<bool>("--enable-file-urls");
 
         /// <summary>
         /// Use the specified HTTP/HTTPS/SOCKS proxy. To
@@ -38,5 +39,10 @@ namespace YoutubeDLSharp.Options
         /// Make all connections via IPv6
         /// </summary>
         public bool ForceIPv6 { get => forceIPv6.Value; set => forceIPv6.Value = value; }
+        /// <summary>
+        /// Enable file:// URLs. This is disabled by
+        /// default for security reasons.
+        /// </summary>
+        public bool EnableFileUrls { get => enableFileUrls.Value; set => enableFileUrls.Value = value; }
     }
 }

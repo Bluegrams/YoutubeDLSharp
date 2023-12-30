@@ -12,6 +12,7 @@ namespace YoutubeDLSharp.Options
         private Option<bool> version = new Option<bool>("--version");
         private Option<bool> update = new Option<bool>("-U", "--update");
         private Option<bool> noUpdate = new Option<bool>("--no-update");
+        private Option<string> updateTo = new Option<string>("--update-to");
         private Option<bool> ignoreErrors = new Option<bool>("-i", "--ignore-errors");
         private Option<bool> noAbortOnError = new Option<bool>("--no-abort-on-error");
         private Option<bool> abortOnError = new Option<bool>("--abort-on-error");
@@ -31,7 +32,7 @@ namespace YoutubeDLSharp.Options
         private Option<bool> noWaitForVideo = new Option<bool>("--no-wait-for-video");
         private Option<bool> markWatched = new Option<bool>("--mark-watched");
         private Option<bool> noMarkWatched = new Option<bool>("--no-mark-watched");
-        private Option<bool> noColors = new Option<bool>("--no-colors");
+        private MultiOption<string> color = new MultiOption<string>("--color");
         private Option<string> compatOptions = new Option<string>("--compat-options");
         private Option<string> alias = new Option<string>("--alias");
 
@@ -44,13 +45,23 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool Version { get => version.Value; set => version.Value = value; }
         /// <summary>
-        /// Update this program to the latest version
+        /// Update this program to the latest stable
+        /// version
         /// </summary>
         public bool Update { get => update.Value; set => update.Value = value; }
         /// <summary>
         /// Do not check for updates (default)
         /// </summary>
         public bool NoUpdate { get => noUpdate.Value; set => noUpdate.Value = value; }
+        /// <summary>
+        /// Upgrade/downgrade to a specific version.
+        /// CHANNEL can be a repository as well. CHANNEL
+        /// and TAG default to &quot;stable&quot; and &quot;latest&quot;
+        /// respectively if omitted; See &quot;UPDATE&quot; for
+        /// details. Supported channels: stable,
+        /// nightly, master
+        /// </summary>
+        public string UpdateTo { get => updateTo.Value; set => updateTo.Value = value; }
         /// <summary>
         /// Ignore download and postprocessing errors.
         /// The download will be considered successful
@@ -133,7 +144,8 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool FlatPlaylist { get => flatPlaylist.Value; set => flatPlaylist.Value = value; }
         /// <summary>
-        /// Extract the videos of a playlist
+        /// Fully extract the videos of a playlist
+        /// (default)
         /// </summary>
         public bool NoFlatPlaylist { get => noFlatPlaylist.Value; set => noFlatPlaylist.Value = value; }
         /// <summary>
@@ -166,10 +178,14 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoMarkWatched { get => noMarkWatched.Value; set => noMarkWatched.Value = value; }
         /// <summary>
-        /// Do not emit color codes in output (Alias:
-        /// --no-colours)
+        /// Whether to emit color codes in output,
+        /// optionally prefixed by the STREAM (stdout or
+        /// stderr) to apply the setting to. Can be one
+        /// of &quot;always&quot;, &quot;auto&quot; (default), &quot;never&quot;, or
+        /// &quot;no_color&quot; (use non color terminal
+        /// sequences). Can be used multiple times
         /// </summary>
-        public bool NoColors { get => noColors.Value; set => noColors.Value = value; }
+        public MultiValue<string> Color { get => color.Value; set => color.Value = value; }
         /// <summary>
         /// Options that can help keep compatibility
         /// with youtube-dl or youtube-dlc

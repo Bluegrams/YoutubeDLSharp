@@ -9,6 +9,7 @@ namespace YoutubeDLSharp.Options
     public partial class OptionSet
     {
         private Option<bool> quiet = new Option<bool>("-q", "--quiet");
+        private Option<bool> noQuiet = new Option<bool>("--no-quiet");
         private Option<bool> noWarnings = new Option<bool>("--no-warnings");
         private Option<bool> simulate = new Option<bool>("-s", "--simulate");
         private Option<bool> noSimulate = new Option<bool>("--no-simulate");
@@ -35,6 +36,10 @@ namespace YoutubeDLSharp.Options
         /// print the log to stderr
         /// </summary>
         public bool Quiet { get => quiet.Value; set => quiet.Value = value; }
+        /// <summary>
+        /// Deactivate quiet mode. (Default)
+        /// </summary>
+        public bool NoQuiet { get => noQuiet.Value; set => noQuiet.Value = value; }
         /// <summary>
         /// Ignore warnings
         /// </summary>
@@ -71,7 +76,7 @@ namespace YoutubeDLSharp.Options
         /// screen, optionally prefixed with when to
         /// print it, separated by a &quot;:&quot;. Supported
         /// values of &quot;WHEN&quot; are the same as that of
-        /// --use-postprocessor, and &quot;video&quot; (default).
+        /// --use-postprocessor (default: video).
         /// Implies --quiet. Implies --simulate unless
         /// --no-simulate or later stages of WHEN are
         /// used. This option can be used multiple times

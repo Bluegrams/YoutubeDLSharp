@@ -20,11 +20,13 @@ namespace YoutubeDLSharp.Options
         private Option<string> rejectTitle = new Option<string>("--reject-title");
         private Option<long?> minViews = new Option<long?>("--min-views");
         private Option<long?> maxViews = new Option<long?>("--max-views");
+        private Option<bool> breakOnReject = new Option<bool>("--break-on-reject");
         private Option<string> userAgent = new Option<string>("--user-agent");
         private Option<string> referer = new Option<string>("--referer");
         private Option<int?> playlistStart = new Option<int?>("--playlist-start");
         private Option<int?> playlistEnd = new Option<int?>("--playlist-end");
         private Option<bool> playlistReverse = new Option<bool>("--playlist-reverse");
+        private Option<bool> noColors = new Option<bool>("--no-colors");
         private Option<bool> forceGenericExtractor = new Option<bool>("--force-generic-extractor");
         private Option<string> execBeforeDownload = new Option<string>("--exec-before-download");
         private Option<bool> noExecBeforeDownload = new Option<bool>("--no-exec-before-download");
@@ -41,6 +43,10 @@ namespace YoutubeDLSharp.Options
         private Option<bool> listFormatsAsTable = new Option<bool>("--list-formats-as-table");
         private Option<bool> youtubeSkipDashManifest = new Option<bool>("--youtube-skip-dash-manifest");
         private Option<bool> youtubeSkipHlsManifest = new Option<bool>("--youtube-skip-hls-manifest");
+        private Option<bool> geoBypass = new Option<bool>("--geo-bypass");
+        private Option<bool> noGeoBypass = new Option<bool>("--no-geo-bypass");
+        private Option<string> geoBypassCountry = new Option<string>("--geo-bypass-country");
+        private Option<string> geoBypassIpBlock = new Option<string>("--geo-bypass-ip-block");
 
         /// <summary>
         /// Deprecated in favor of: --print description.
@@ -103,6 +109,11 @@ namespace YoutubeDLSharp.Options
         [Obsolete("Deprecated in favor of: --match-filter \"view_count <=? COUNT\".")]
         public long? MaxViews { get => maxViews.Value; set => maxViews.Value = value; }
         /// <summary>
+        /// Deprecated in favor of: Use --break-match-filter.
+        /// </summary>
+        [Obsolete("Deprecated in favor of: Use --break-match-filter.")]
+        public bool BreakOnReject { get => breakOnReject.Value; set => breakOnReject.Value = value; }
+        /// <summary>
         /// Deprecated in favor of: --add-header &quot;User-Agent:UA&quot;.
         /// </summary>
         [Obsolete("Deprecated in favor of: --add-header \"User-Agent:UA\".")]
@@ -127,6 +138,11 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         [Obsolete("Deprecated in favor of: -I ::-1.")]
         public bool PlaylistReverse { get => playlistReverse.Value; set => playlistReverse.Value = value; }
+        /// <summary>
+        /// Deprecated in favor of: --color no_color.
+        /// </summary>
+        [Obsolete("Deprecated in favor of: --color no_color.")]
+        public bool NoColors { get => noColors.Value; set => noColors.Value = value; }
         /// <summary>
         /// Deprecated in favor of: --ies generic,default.
         /// </summary>
@@ -207,5 +223,25 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         [Obsolete("Deprecated in favor of: --extractor-args \"youtube:skip=hls\" (Alias: --no-youtube-include-hls-manifest).")]
         public bool YoutubeSkipHlsManifest { get => youtubeSkipHlsManifest.Value; set => youtubeSkipHlsManifest.Value = value; }
+        /// <summary>
+        /// Deprecated in favor of: --xff &quot;default&quot;.
+        /// </summary>
+        [Obsolete("Deprecated in favor of: --xff \"default\".")]
+        public bool GeoBypass { get => geoBypass.Value; set => geoBypass.Value = value; }
+        /// <summary>
+        /// Deprecated in favor of: --xff &quot;never&quot;.
+        /// </summary>
+        [Obsolete("Deprecated in favor of: --xff \"never\".")]
+        public bool NoGeoBypass { get => noGeoBypass.Value; set => noGeoBypass.Value = value; }
+        /// <summary>
+        /// Deprecated in favor of: --xff CODE.
+        /// </summary>
+        [Obsolete("Deprecated in favor of: --xff CODE.")]
+        public string GeoBypassCountry { get => geoBypassCountry.Value; set => geoBypassCountry.Value = value; }
+        /// <summary>
+        /// Deprecated in favor of: --xff IP_BLOCK.
+        /// </summary>
+        [Obsolete("Deprecated in favor of: --xff IP_BLOCK.")]
+        public string GeoBypassIpBlock { get => geoBypassIpBlock.Value; set => geoBypassIpBlock.Value = value; }
     }
 }

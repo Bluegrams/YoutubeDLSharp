@@ -12,7 +12,7 @@ namespace YoutubeDLSharp.Options
         private Option<bool> legacyServerConnect = new Option<bool>("--legacy-server-connect");
         private Option<bool> noCheckCertificates = new Option<bool>("--no-check-certificates");
         private Option<bool> preferInsecure = new Option<bool>("--prefer-insecure");
-        private MultiOption<string> addHeader = new MultiOption<string>("--add-header");
+        private MultiOption<string> addHeaders = new MultiOption<string>("--add-headers");
         private Option<bool> bidiWorkaround = new Option<bool>("--bidi-workaround");
         private Option<int?> sleepRequests = new Option<int?>("--sleep-requests");
         private Option<int?> sleepInterval = new Option<int?>("--sleep-interval");
@@ -44,7 +44,7 @@ namespace YoutubeDLSharp.Options
         /// separated by a colon &quot;:&quot;. You can use this
         /// option multiple times
         /// </summary>
-        public MultiValue<string> AddHeader { get => addHeader.Value; set => addHeader.Value = value; }
+        public MultiValue<string> AddHeaders { get => addHeaders.Value; set => addHeaders.Value = value; }
         /// <summary>
         /// Work around terminals that lack
         /// bidirectional text support. Requires bidiv
