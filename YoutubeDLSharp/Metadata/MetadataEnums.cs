@@ -53,4 +53,14 @@ namespace YoutubeDLSharp.Metadata
         [EnumMember(Value = "public")]
         Public
     }
+
+    public enum MaybeBool
+    {
+        [EnumMember(Value = "True")]
+        True,
+        [EnumMember(Value = "maybe")]
+        Maybe,
+        [EnumMember(Value = "False")]
+        False
+    }
 }

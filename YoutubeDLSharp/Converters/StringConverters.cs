@@ -11,7 +11,7 @@ namespace YoutubeDLSharp.Converters
     {
         public override T ReadJson(JsonReader reader, Type objectType, T existingValue, bool hasExistingValue, JsonSerializer serializer) 
         {
-            var value = (string)reader.Value;
+            var value = reader.Value?.ToString();
             if(value == null)
             {
                 return default(T);

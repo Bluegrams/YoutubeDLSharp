@@ -163,7 +163,17 @@ namespace YoutubeDLSharp
             }
             VideoData videoData = null;
             var process = new YoutubeDLProcess(YoutubeDLPath);
-            process.OutputReceived += (o, e) => videoData = JsonConvert.DeserializeObject<VideoData>(e.Data);
+            process.OutputReceived += (o, e) =>
+            {
+                try
+                {
+                    videoData = JsonConvert.DeserializeObject<VideoData>(e.Data);
+                }
+                catch (JsonSerializationException)
+                {
+                    process.RedirectToError(e);
+                }
+            };
             (int code, string[] errors) = await runner.RunThrottled(process, new[] { url }, opts, ct);
             return new RunResult<VideoData>(code == 0, errors, videoData);
         }

@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
+using YoutubeDLSharp.Converters;
 
 namespace YoutubeDLSharp.Metadata
 {
-    //https://github.com/lesmiscore/yt-dlp/blob/9c53b9a1b6b8914e4322263c97c26999f2e5832e/yt_dlp/extractor/common.py#L105-L403
+    // https://github.com/yt-dlp/yt-dlp/blob/85b33f5c163f60dbd089a6b9bc2ba1366d3ddf93/yt_dlp/extractor/common.py#L105-L534
 
     /// <summary>
     /// Represents information for one available download format for one video as extracted by yt-dlp.
@@ -73,8 +74,9 @@ namespace YoutubeDLSharp.Metadata
         public float? StretchedRatio { get; set; }
         [JsonProperty("no_resume")]
         public bool? NoResume { get; set; }
+        [JsonConverter(typeof(StringToEnumConverter<MaybeBool>))]
         [JsonProperty("has_drm")]
-        public bool? HasDRM { get; set; }
+        public MaybeBool HasDRM { get; set; }
 
         public override string ToString() => $"[{Extension}] {Format}";
 

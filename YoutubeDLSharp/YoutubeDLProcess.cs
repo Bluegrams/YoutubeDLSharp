@@ -64,6 +64,9 @@ namespace YoutubeDLSharp
         internal string ConvertToArgs(string[] urls, OptionSet options)
             => (urls != null ? String.Join(" ", urls.Select(s => $"\"{s}\"")) : String.Empty) + options.ToString();
 
+        internal void RedirectToError(DataReceivedEventArgs e)
+            => ErrorReceived?.Invoke(this, e);
+
         /// <summary>
         /// Invokes yt-dlp with the specified parameters and options.
         /// </summary>
