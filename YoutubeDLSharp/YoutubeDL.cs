@@ -53,6 +53,11 @@ namespace YoutubeDLSharp
         public bool IgnoreDownloadErrors { get; set; } = true;
 
         /// <summary>
+        /// Optional. If set, will use python to run yt-dlp and <see cref="YoutubeDLPath"/> must be lead to the python script.
+        /// </summary>
+        public string PythonInterpreterPath { get; set; } = null;
+
+        /// <summary>
         /// Gets the product version of the yt-dlp executable file.
         /// </summary>
         public string Version
@@ -86,7 +91,7 @@ namespace YoutubeDLSharp
         public async Task<RunResult<string[]>> RunWithOptions(string[] urls, OptionSet options, CancellationToken ct)
         {
             var output = new List<string>();
-            var process = new YoutubeDLProcess(YoutubeDLPath);
+            var process = CreateYoutubeDLProcess();
             process.OutputReceived += (o, e) => output.Add(e.Data);
             (int code, string[] errors) = await runner.RunThrottled(process, urls, options, ct);
             return new RunResult<string[]>(code == 0, errors, output.ToArray());
@@ -106,7 +111,7 @@ namespace YoutubeDLSharp
             IProgress<DownloadProgress> progress = null, IProgress<string> output = null, bool showArgs = true)
         {
             string outFile = string.Empty;
-            var process = new YoutubeDLProcess(YoutubeDLPath);
+            var process = CreateYoutubeDLProcess();
             if (showArgs)
                 output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, options)}\n");
             else
@@ -132,7 +137,7 @@ namespace YoutubeDLSharp
         public async Task<string> RunUpdate()
         {
             string output = String.Empty;
-            var process = new YoutubeDLProcess(YoutubeDLPath);
+            var process = CreateYoutubeDLProcess();
             process.OutputReceived += (o, e) => output = e.Data;
             await process.RunAsync(null, new OptionSet() { Update = true });
             return output;
@@ -162,7 +167,7 @@ namespace YoutubeDLSharp
                 opts = opts.OverrideOptions(overrideOptions);
             }
             VideoData videoData = null;
-            var process = new YoutubeDLProcess(YoutubeDLPath);
+            var process = CreateYoutubeDLProcess();
             process.OutputReceived += (o, e) =>
             {
                 try
@@ -206,7 +211,7 @@ namespace YoutubeDLSharp
                 opts = opts.OverrideOptions(overrideOptions);
             }
             string outputFile = String.Empty;
-            var process = new YoutubeDLProcess(YoutubeDLPath);
+            var process = CreateYoutubeDLProcess();
             // Report the used ytdl args
             output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
             process.OutputReceived += (o, e) =>
@@ -258,7 +263,7 @@ namespace YoutubeDLSharp
                 opts = opts.OverrideOptions(overrideOptions);
             }
             var outputFiles = new List<string>();
-            var process = new YoutubeDLProcess(YoutubeDLPath);
+            var process = CreateYoutubeDLProcess();
             // Report the used ytdl args
             output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
             process.OutputReceived += (o, e) =>
@@ -300,7 +305,7 @@ namespace YoutubeDLSharp
             }
             string outputFile = String.Empty;
             var error = new List<string>();
-            var process = new YoutubeDLProcess(YoutubeDLPath);
+            var process = CreateYoutubeDLProcess();
             // Report the used ytdl args
             output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
             process.OutputReceived += (o, e) =>
@@ -350,7 +355,7 @@ namespace YoutubeDLSharp
             {
                 opts = opts.OverrideOptions(overrideOptions);
             }
-            var process = new YoutubeDLProcess(YoutubeDLPath);
+            var process = CreateYoutubeDLProcess();
             // Report the used ytdl args
             output?.Report($"Arguments: {process.ConvertToArgs(new[] { url }, opts)}\n");
             process.OutputReceived += (o, e) =>
@@ -390,6 +395,14 @@ namespace YoutubeDLSharp
             };
         }
 
-        #endregion        
+        #endregion
+
+        private YoutubeDLProcess CreateYoutubeDLProcess()
+        {
+            return new YoutubeDLProcess(YoutubeDLPath)
+            {
+                PythonPath = PythonInterpreterPath,
+            };
+        }
     }
 }
