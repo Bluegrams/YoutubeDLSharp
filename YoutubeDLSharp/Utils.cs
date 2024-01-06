@@ -291,5 +291,13 @@ namespace YoutubeDLSharp
             }
         }
 #endregion
+
+        public static void EnsureSuccess<T>(this RunResult<T> runResult)
+        {
+            if (!runResult.Success)
+            {
+                throw new Exception("Download failed:\n" + string.Join("\n", runResult.ErrorOutput));
+            }
+        }
     }
 }
