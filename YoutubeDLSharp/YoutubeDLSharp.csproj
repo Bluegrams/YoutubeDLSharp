@@ -9,7 +9,7 @@
 Note: Package versions &gt;= 1.0 are optimized to work with yt-dlp.
 Package versions 0.x retain support for the original youtube-dl.
 	</Description>
-    <Copyright>© 2020-2023 Bluegrams</Copyright>
+    <Copyright>© 2020-2024 Bluegrams</Copyright>
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Bluegrams/YoutubeDLSharp</PackageProjectUrl>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -20,7 +20,7 @@ Package versions 0.x retain support for the original youtube-dl.
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionPrefix>1.1.0</VersionPrefix>
 	<VersionSuffix></VersionSuffix>
     <BuildYear>$([System.DateTime]::Now.ToString(yy))</BuildYear>
     <BuildDay>$([System.DateTime]::Now.DayOfYear)</BuildDay>

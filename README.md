@@ -7,7 +7,7 @@ A simple .NET wrapper library for [youtube-dl](https://github.com/ytdl-org/youtu
 | For **yt-dlp** | For **youtube-dl** |
 | --- | --- |
 | **Versions >= v.1.0**  | [Versions v.0.x](https://github.com/Bluegrams/YoutubeDLSharp/tree/v.0.x)
-| [![Nuget](https://img.shields.io/nuget/vpre/YoutubeDLSharp?color=blue)](https://www.nuget.org/packages/YoutubeDLSharp/1.0.0) | [![NuGet](https://img.shields.io/badge/nuget-v.0.4.3-blue)](https://www.nuget.org/packages/YoutubeDLSharp/0.4.3)
+| [![Nuget](https://img.shields.io/nuget/vpre/YoutubeDLSharp?color=blue)](https://www.nuget.org/packages/YoutubeDLSharp) | [![NuGet](https://img.shields.io/badge/nuget-v.0.4.3-blue)](https://www.nuget.org/packages/YoutubeDLSharp/0.4.3)
 
 ## What is it?
 
@@ -38,7 +38,7 @@ If you don't have them set up already, you can either...
 There are two ways to use YoutubeDLSharp: the class `YoutubeDL` provides high level methods for downloading and converting videos
 while the class `YoutubeDLProcess` allows directer and flexibler access to the youtube-dl process.
 
-### Convenient Approach
+### Using the `YoutubeDL` class
 
 In the simplest case, initializing the downloader and downloading a video can be achieved like this:
 
@@ -50,7 +50,7 @@ ytdl.FFmpegPath = "path\\to\\ffmpeg.exe";
 // optional: set a different download folder
 ytdl.OutputFolder = "some\\directory\\for\\video\\downloads";
 // download a video
-var res = await ytdl.RunVideoDownload("https://www.youtube.com/watch?v=_QdPW8JrYzQ");
+var res = await ytdl.RunVideoDownload("https://www.youtube.com/watch?v=bq9ghmgqoyc");
 // the path of the downloaded file
 string path = res.Data;
 ```
@@ -104,9 +104,7 @@ This intro does not show all available options. Refer to the method documentatio
 
 The project includes a demo WPF desktop app under [WpfDemoApp](WpfDemoApp/MainWindow.xaml.cs) that uses the `YoutubeDL` class.
 
-### Advanced Usage
-
-#### Working with options
+### Working with options
 
 YoutubeDLSharp uses the `OptionSet` class to model youtube-dl/ yt-dlp options.
 The names of the option properties correspond to the names of youtube-dl, so defining a set of options can look like this:
@@ -136,6 +134,28 @@ var options = new OptionSet()
 };
 ```
 
+`OptionSet` instances can be passed to many `YoutubeDL` methods to override the default behaviour:
+
+```csharp
+var options = new OptionSet()
+{
+    NoContinue = true,
+    RestrictFilenames = true
+}
+var ytdl = new YoutubeDL();
+var res = await ytdl.RunVideoDownload(
+    "https://www.youtube.com/watch?v=bq9ghmgqoyc",
+    overrideOptions: options
+);
+```
+
+Alternatively, `RunWithOptions()` can be used to directly run youtube-dl/ yt-dlp with a given `OptionSet`:
+
+```csharp
+var ytdl = new YoutubeDL();
+var res = await ytdl.WithOptions("<YOUR_URL>", options);
+```
+
 For documentation of all options supported by yt-dlp and their effects, visit https://github.com/yt-dlp/yt-dlp#usage-and-options.
 
 Additionally, YoutubeDLSharp allows you to pass **custom options** to the downloader program.
@@ -149,9 +169,9 @@ options.AddCustomOption<string>("--my-custom-option", "value");
 options.SetCustomOption<string>("--my-custom-option", "new value");
 ```
 
-#### `YoutubeDLProcess`
+### `YoutubeDLProcess`
 
-To run a youtube-dl process with the defined options, you can use the `YoutubeDLProcess` class:
+To start a youtube-dl/ yt-dlp process directly with the defined options, you can also use the low-level `YoutubeDLProcess` class, giving you more control over the process:
 
 ```csharp
 var ytdlProc = new YoutubeDLProcess();
@@ -163,7 +183,7 @@ string[] urls = new[] { "https://github.com/ytdl-org/youtube-dl#options" };
 await ytdlProc.RunAsync(urls, options);
 ```
 
-#### Loading/ Saving configuration
+### Loading/ Saving configuration
 
 You can persist a youtube-dl/ yt-dlp configuration to a file and reload it:
 
