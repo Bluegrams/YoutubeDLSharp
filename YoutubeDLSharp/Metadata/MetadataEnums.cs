@@ -56,11 +56,11 @@ namespace YoutubeDLSharp.Metadata
 
     public enum MaybeBool
     {
-        [EnumMember(Value = "True")]
-        True,
+        [EnumMember(Value = "False")]
+        False,
         [EnumMember(Value = "maybe")]
         Maybe,
-        [EnumMember(Value = "False")]
-        False
+        [EnumMember(Value = "True")]
+        True
     }
 }

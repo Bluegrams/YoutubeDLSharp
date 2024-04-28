@@ -137,7 +137,7 @@ namespace YoutubeDLSharp.Metadata
         public float? EndTime { get; set; }
         [JsonProperty("playable_in_embed")]
         public string PlayableInEmbed { get; set; }
-        [JsonConverter(typeof(StringToEnumConverter<Availability>))]
+        [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty("availability")]
         public Availability? Availability { get; set; }
         [JsonProperty("chapters")]
