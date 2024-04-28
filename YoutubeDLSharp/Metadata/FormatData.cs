@@ -22,8 +22,10 @@ namespace YoutubeDLSharp.Metadata
         public string FormatId { get; set; }
         [JsonProperty("format_note")]
         public string FormatNote { get; set; }
+        [JsonConverter(typeof(StringToNullableIntConverter))]
         [JsonProperty("width")]
         public int? Width { get; set; }
+        [JsonConverter(typeof(StringToNullableIntConverter))]
         [JsonProperty("height")]
         public int? Height { get; set; }
         [JsonProperty("resolution")]
@@ -38,6 +40,7 @@ namespace YoutubeDLSharp.Metadata
         public string AudioCodec { get; set; }
         [JsonProperty("asr")]
         public double? AudioSamplingRate { get; set; }
+        [JsonConverter(typeof(StringToNullableIntConverter))]
         [JsonProperty("audio_channels")]
         public int? AudioChannels { get; set; }
         [JsonProperty("vbr")]
@@ -60,14 +63,17 @@ namespace YoutubeDLSharp.Metadata
         public string FragmentBaseUrl { get; set; }
         [JsonProperty("is_from_start")]
         public bool? IsFromStart { get; set; }
+        [JsonConverter(typeof(StringToNullableIntConverter))]
         [JsonProperty("preference")]
         public int? Preference { get; set; }
         [JsonProperty("language")]
         public string Language { get; set; }
+        [JsonConverter(typeof(StringToNullableIntConverter))]
         [JsonProperty("language_preference")]
         public int? LanguagePreference { get; set; }
         [JsonProperty("quality")]
         public double? Quality { get; set; }
+        [JsonConverter(typeof(StringToNullableIntConverter))]
         [JsonProperty("source_preference")]
         public int? SourcePreference { get; set; }
         [JsonProperty("stretched_ratio")]
