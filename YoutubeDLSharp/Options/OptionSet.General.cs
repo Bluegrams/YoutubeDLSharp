@@ -116,7 +116,7 @@ namespace YoutubeDLSharp.Options
         public string DefaultSearch { get => defaultSearch.Value; set => defaultSearch.Value = value; }
         /// <summary>
         /// Don&#x27;t load any more configuration files
-        /// except those given by --config-locations.
+        /// except those given to --config-locations.
         /// For backward compatibility, if this option
         /// is found inside the system configuration
         /// file, the user configuration is not loaded.
@@ -183,7 +183,9 @@ namespace YoutubeDLSharp.Options
         /// stderr) to apply the setting to. Can be one
         /// of &quot;always&quot;, &quot;auto&quot; (default), &quot;never&quot;, or
         /// &quot;no_color&quot; (use non color terminal
-        /// sequences). Can be used multiple times
+        /// sequences). Use &quot;auto-tty&quot; or &quot;no_color-tty&quot;
+        /// to decide based on terminal support only.
+        /// Can be used multiple times
         /// </summary>
         public MultiValue<string> Color { get => color.Value; set => color.Value = value; }
         /// <summary>

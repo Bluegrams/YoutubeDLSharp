@@ -26,6 +26,7 @@ namespace YoutubeDLSharp.Options
         private Option<bool> progress = new Option<bool>("--progress");
         private Option<bool> consoleTitle = new Option<bool>("--console-title");
         private Option<string> progressTemplate = new Option<string>("--progress-template");
+        private Option<string> progressDelta = new Option<string>("--progress-delta");
         private Option<bool> verbose = new Option<bool>("-v", "--verbose");
         private Option<bool> dumpPages = new Option<bool>("--dump-pages");
         private Option<bool> writePages = new Option<bool>("--write-pages");
@@ -142,6 +143,10 @@ namespace YoutubeDLSharp.Options
         /// title:%(info.id)s-%(progress.eta)s&quot;
         /// </summary>
         public string ProgressTemplate { get => progressTemplate.Value; set => progressTemplate.Value = value; }
+        /// <summary>
+        /// Time between progress output (default: 0)
+        /// </summary>
+        public string ProgressDelta { get => progressDelta.Value; set => progressDelta.Value = value; }
         /// <summary>
         /// Print various debugging information
         /// </summary>

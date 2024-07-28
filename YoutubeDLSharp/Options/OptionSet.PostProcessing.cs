@@ -308,7 +308,7 @@ namespace YoutubeDLSharp.Options
         /// --print/--output), &quot;before_dl&quot; (before each
         /// video download), &quot;post_process&quot; (after each
         /// video download; default), &quot;after_move&quot;
-        /// (after moving video file to it&#x27;s final
+        /// (after moving video file to its final
         /// locations), &quot;after_video&quot; (after downloading
         /// and processing all formats of a video), or
         /// &quot;playlist&quot; (at end of playlist). This option

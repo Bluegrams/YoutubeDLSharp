@@ -25,6 +25,7 @@ namespace YoutubeDLSharp.Options
         private Option<bool> noDownloadArchive = new Option<bool>("--no-download-archive");
         private Option<int?> maxDownloads = new Option<int?>("--max-downloads");
         private Option<bool> breakOnExisting = new Option<bool>("--break-on-existing");
+        private Option<bool> noBreakOnExisting = new Option<bool>("--no-break-on-existing");
         private Option<bool> breakPerInput = new Option<bool>("--break-per-input");
         private Option<bool> noBreakPerInput = new Option<bool>("--no-break-per-input");
         private Option<int?> skipPlaylistAfterErrors = new Option<int?>("--skip-playlist-after-errors");
@@ -82,8 +83,8 @@ namespace YoutubeDLSharp.Options
         /// is not present, and &quot;&amp;&quot; to check multiple
         /// conditions. Use a &quot;\&quot; to escape &quot;&amp;&quot; or
         /// quotes if needed. If used multiple times,
-        /// the filter matches if atleast one of the
-        /// conditions are met. E.g. --match-filter
+        /// the filter matches if at least one of the
+        /// conditions is met. E.g. --match-filter
         /// !is_live --match-filter &quot;like_count&gt;?100 &amp;
         /// description~=&#x27;(?i)\bcats \&amp; dogs\b&#x27;&quot; matches
         /// only videos that are not live OR those that
@@ -143,6 +144,12 @@ namespace YoutubeDLSharp.Options
         /// a file that is in the archive
         /// </summary>
         public bool BreakOnExisting { get => breakOnExisting.Value; set => breakOnExisting.Value = value; }
+        /// <summary>
+        /// Do not stop the download process when
+        /// encountering a file that is in the archive
+        /// (default)
+        /// </summary>
+        public bool NoBreakOnExisting { get => noBreakOnExisting.Value; set => noBreakOnExisting.Value = value; }
         /// <summary>
         /// Alters --max-downloads, --break-on-existing,
         /// --break-match-filter, and autonumber to

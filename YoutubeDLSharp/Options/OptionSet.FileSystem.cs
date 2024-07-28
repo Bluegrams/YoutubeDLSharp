@@ -10,7 +10,7 @@ namespace YoutubeDLSharp.Options
     {
         private Option<string> batchFile = new Option<string>("-a", "--batch-file");
         private Option<bool> noBatchFile = new Option<bool>("--no-batch-file");
-        private Option<string> paths = new Option<string>("-P", "--paths");
+        private MultiOption<string> paths = new MultiOption<string>("-P", "--paths");
         private Option<string> output = new Option<string>("-o", "--output");
         private Option<string> outputNaPlaceholder = new Option<string>("--output-na-placeholder");
         private Option<bool> restrictFilenames = new Option<bool>("--restrict-filenames");
@@ -70,7 +70,7 @@ namespace YoutubeDLSharp.Options
         /// This option is ignored if --output is an
         /// absolute path
         /// </summary>
-        public string Paths { get => paths.Value; set => paths.Value = value; }
+        public MultiValue<string> Paths { get => paths.Value; set => paths.Value = value; }
         /// <summary>
         /// Output filename template; see &quot;OUTPUT
         /// TEMPLATE&quot; for details
@@ -78,7 +78,7 @@ namespace YoutubeDLSharp.Options
         public string Output { get => output.Value; set => output.Value = value; }
         /// <summary>
         /// Placeholder for unavailable fields in
-        /// &quot;OUTPUT TEMPLATE&quot; (default: &quot;NA&quot;)
+        /// --output (default: &quot;NA&quot;)
         /// </summary>
         public string OutputNaPlaceholder { get => outputNaPlaceholder.Value; set => outputNaPlaceholder.Value = value; }
         /// <summary>
@@ -222,16 +222,17 @@ namespace YoutubeDLSharp.Options
         /// The name of the browser to load cookies
         /// from. Currently supported browsers are:
         /// brave, chrome, chromium, edge, firefox,
-        /// opera, safari, vivaldi. Optionally, the
-        /// KEYRING used for decrypting Chromium cookies
-        /// on Linux, the name/path of the PROFILE to
-        /// load cookies from, and the CONTAINER name
-        /// (if Firefox) (&quot;none&quot; for no container) can
-        /// be given with their respective seperators.
-        /// By default, all containers of the most
-        /// recently accessed profile are used.
-        /// Currently supported keyrings are: basictext,
-        /// gnomekeyring, kwallet, kwallet5, kwallet6
+        /// opera, safari, vivaldi, whale. Optionally,
+        /// the KEYRING used for decrypting Chromium
+        /// cookies on Linux, the name/path of the
+        /// PROFILE to load cookies from, and the
+        /// CONTAINER name (if Firefox) (&quot;none&quot; for no
+        /// container) can be given with their
+        /// respective separators. By default, all
+        /// containers of the most recently accessed
+        /// profile are used. Currently supported
+        /// keyrings are: basictext, gnomekeyring,
+        /// kwallet, kwallet5, kwallet6
         /// </summary>
         public string CookiesFromBrowser { get => cookiesFromBrowser.Value; set => cookiesFromBrowser.Value = value; }
         /// <summary>
