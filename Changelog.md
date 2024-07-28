@@ -1,5 +1,10 @@
 # YoutubeDLSharp Changelog
 
+### v.1.1.1 (2024-07)
+- **New:** Add .NET 8 as build target.
+- **Fixed:** More robust int value parsing in FormatData.
+- **Fixed:** Fix enum serialization defaults.
+
 ### v.1.1.0 (2024-01)
 - **New**/ **Changed:** Include new and changed yt-dlp options (version 2023-12-30).
 - **New:** Add support for option string aliases (e.g. for parsing).
