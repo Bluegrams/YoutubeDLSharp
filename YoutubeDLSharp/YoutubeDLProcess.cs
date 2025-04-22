@@ -39,11 +39,6 @@ namespace YoutubeDLSharp
         public string ExecutablePath { get; set; }
 
         /// <summary>
-        /// Windows only. If set to true, start process via cmd.exe to support Unicode chars.
-        /// </summary>
-        public bool UseWindowsEncodingWorkaround { get; set; } = true;
-
-        /// <summary>
         /// Occurs each time yt-dlp writes to the standard output.
         /// </summary>
         public event EventHandler<DataReceivedEventArgs> OutputReceived;
@@ -98,17 +93,7 @@ namespace YoutubeDLSharp
                 StandardOutputEncoding = Encoding.UTF8,
                 StandardErrorEncoding = Encoding.UTF8,
             };
-            if (OSHelper.IsWindows && UseWindowsEncodingWorkaround)
-            {
-                startInfo.FileName = "cmd.exe";
-                string runCommand;
-                if (!String.IsNullOrEmpty(PythonPath))
-                    runCommand = $"\"{PythonPath}\" \"{ExecutablePath}\" {ConvertToArgs(urls, options)}";
-                else
-                    runCommand = $"\"{ExecutablePath}\" {ConvertToArgs(urls, options)}";
-                startInfo.Arguments = $"/C chcp 65001 >nul 2>&1 && {runCommand}";
-            }
-            else if (!String.IsNullOrEmpty(PythonPath))
+            if (!String.IsNullOrEmpty(PythonPath))
             {
                 startInfo.FileName = PythonPath;
                 startInfo.Arguments = $"\"{ExecutablePath}\" {ConvertToArgs(urls, options)}";
