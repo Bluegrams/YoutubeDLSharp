@@ -86,10 +86,10 @@ namespace YoutubeDLSharp.Options
         /// <summary>
         /// FILE
         /// Append given template to the file. The
-        /// values of WHEN and TEMPLATE are same as that
-        /// of --print. FILE uses the same syntax as the
-        /// output template. This option can be used
-        /// multiple times
+        /// values of WHEN and TEMPLATE are the same as
+        /// that of --print. FILE uses the same syntax
+        /// as the output template. This option can be
+        /// used multiple times
         /// </summary>
         public MultiValue<string> PrintToFile { get => printToFile.Value; set => printToFile.Value = value; }
         /// <summary>
@@ -101,7 +101,7 @@ namespace YoutubeDLSharp.Options
         public bool DumpJson { get => dumpJson.Value; set => dumpJson.Value = value; }
         /// <summary>
         /// Quiet, but print JSON information for each
-        /// url or infojson passed. Simulate unless
+        /// URL or infojson passed. Simulate unless
         /// --no-simulate is used. If the URL refers to
         /// a playlist, the whole playlist information
         /// is dumped in a single line

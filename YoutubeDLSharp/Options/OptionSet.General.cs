@@ -24,6 +24,8 @@ namespace YoutubeDLSharp.Options
         private Option<bool> ignoreConfig = new Option<bool>("--ignore-config", "--no-config");
         private Option<bool> noConfigLocations = new Option<bool>("--no-config-locations");
         private MultiOption<string> configLocations = new MultiOption<string>("--config-locations");
+        private MultiOption<string> pluginDirs = new MultiOption<string>("--plugin-dirs");
+        private Option<bool> noPluginDirs = new Option<bool>("--no-plugin-dirs");
         private Option<bool> flatPlaylist = new Option<bool>("--flat-playlist");
         private Option<bool> noFlatPlaylist = new Option<bool>("--no-flat-playlist");
         private Option<bool> liveFromStart = new Option<bool>("--live-from-start");
@@ -139,8 +141,23 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public MultiValue<string> ConfigLocations { get => configLocations.Value; set => configLocations.Value = value; }
         /// <summary>
-        /// Do not extract the videos of a playlist,
-        /// only list them
+        /// Path to an additional directory to search
+        /// for plugins. This option can be used
+        /// multiple times to add multiple directories.
+        /// Use &quot;default&quot; to search the default plugin
+        /// directories (default)
+        /// </summary>
+        public MultiValue<string> PluginDirs { get => pluginDirs.Value; set => pluginDirs.Value = value; }
+        /// <summary>
+        /// Clear plugin directories to search,
+        /// including defaults and those provided by
+        /// previous --plugin-dirs
+        /// </summary>
+        public bool NoPluginDirs { get => noPluginDirs.Value; set => noPluginDirs.Value = value; }
+        /// <summary>
+        /// Do not extract a playlist&#x27;s URL result
+        /// entries; some entry metadata may be missing
+        /// and downloading may be bypassed
         /// </summary>
         public bool FlatPlaylist { get => flatPlaylist.Value; set => flatPlaylist.Value = value; }
         /// <summary>

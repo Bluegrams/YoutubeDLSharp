@@ -22,7 +22,7 @@ namespace YoutubeDLSharp.Options
         /// music_offtopic, poi_highlight, chapter, all
         /// and default (=all). You can prefix the
         /// category with a &quot;-&quot; to exclude it. See [1]
-        /// for description of the categories. E.g.
+        /// for descriptions of the categories. E.g.
         /// --sponsorblock-mark all,-preview [1] https:/
         /// /wiki.sponsor.ajay.app/w/Segment_Categories
         /// </summary>

@@ -1,5 +1,9 @@
 # YoutubeDLSharp Changelog
 
+### v.1.1.2 (2025-04)
+- **New**/ **Changed:** Include new and changed yt-dlp options (version 2023-03-31).
+- **Fixed:** Fix command-injection vulnerability running on Windows
+
 ### v.1.1.1 (2024-07)
 - **New:** Add .NET 8 as build target.
 - **Fixed:** More robust int value parsing in FormatData.

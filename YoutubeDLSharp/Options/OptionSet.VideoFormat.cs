@@ -67,9 +67,9 @@ namespace YoutubeDLSharp.Options
         public bool NoAudioMultistreams { get => noAudioMultistreams.Value; set => noAudioMultistreams.Value = value; }
         /// <summary>
         /// Prefer video formats with free containers
-        /// over non-free ones of same quality. Use with
-        /// &quot;-S ext&quot; to strictly prefer free containers
-        /// irrespective of quality
+        /// over non-free ones of the same quality. Use
+        /// with &quot;-S ext&quot; to strictly prefer free
+        /// containers irrespective of quality
         /// </summary>
         public bool PreferFreeFormats { get => preferFreeFormats.Value; set => preferFreeFormats.Value = value; }
         /// <summary>

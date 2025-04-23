@@ -96,8 +96,7 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool WindowsFilenames { get => windowsFilenames.Value; set => windowsFilenames.Value = value; }
         /// <summary>
-        /// Make filenames Windows-compatible only if
-        /// using Windows (default)
+        /// Sanitize filenames only minimally
         /// </summary>
         public bool NoWindowsFilenames { get => noWindowsFilenames.Value; set => noWindowsFilenames.Value = value; }
         /// <summary>

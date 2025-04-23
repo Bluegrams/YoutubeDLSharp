@@ -55,21 +55,21 @@ namespace YoutubeDLSharp.Options
         /// <summary>
         /// Download only videos uploaded on this date.
         /// The date can be &quot;YYYYMMDD&quot; or in the format
-        /// [now|today|yesterday][-N[day|week|month|year
-        /// ]]. E.g. &quot;--date today-2weeks&quot; downloads
-        /// only videos uploaded on the same day two
-        /// weeks ago
+        /// [now|today|yesterday][-
+        /// N[day|week|month|year]]. E.g. &quot;--date
+        /// today-2weeks&quot; downloads only videos uploaded
+        /// on the same day two weeks ago
         /// </summary>
         public DateTime Date { get => date.Value; set => date.Value = value; }
         /// <summary>
         /// Download only videos uploaded on or before
-        /// this date. The date formats accepted is the
+        /// this date. The date formats accepted are the
         /// same as --date
         /// </summary>
         public DateTime DateBefore { get => dateBefore.Value; set => dateBefore.Value = value; }
         /// <summary>
         /// Download only videos uploaded on or after
-        /// this date. The date formats accepted is the
+        /// this date. The date formats accepted are the
         /// same as --date
         /// </summary>
         public DateTime DateAfter { get => dateAfter.Value; set => dateAfter.Value = value; }
@@ -84,20 +84,20 @@ namespace YoutubeDLSharp.Options
         /// conditions. Use a &quot;\&quot; to escape &quot;&amp;&quot; or
         /// quotes if needed. If used multiple times,
         /// the filter matches if at least one of the
-        /// conditions is met. E.g. --match-filter
-        /// !is_live --match-filter &quot;like_count&gt;?100 &amp;
+        /// conditions is met. E.g. --match-filters
+        /// !is_live --match-filters &quot;like_count&gt;?100 &amp;
         /// description~=&#x27;(?i)\bcats \&amp; dogs\b&#x27;&quot; matches
         /// only videos that are not live OR those that
         /// have a like count more than 100 (or the like
         /// field is not available) and also has a
         /// description that contains the phrase &quot;cats &amp;
-        /// dogs&quot; (caseless). Use &quot;--match-filter -&quot; to
+        /// dogs&quot; (caseless). Use &quot;--match-filters -&quot; to
         /// interactively ask whether to download each
         /// video
         /// </summary>
         public MultiValue<string> MatchFilters { get => matchFilters.Value; set => matchFilters.Value = value; }
         /// <summary>
-        /// Do not use any --match-filter (default)
+        /// Do not use any --match-filters (default)
         /// </summary>
         public bool NoMatchFilters { get => noMatchFilters.Value; set => noMatchFilters.Value = value; }
         /// <summary>
@@ -141,7 +141,8 @@ namespace YoutubeDLSharp.Options
         public int? MaxDownloads { get => maxDownloads.Value; set => maxDownloads.Value = value; }
         /// <summary>
         /// Stop the download process when encountering
-        /// a file that is in the archive
+        /// a file that is in the archive supplied with
+        /// the --download-archive option
         /// </summary>
         public bool BreakOnExisting { get => breakOnExisting.Value; set => breakOnExisting.Value = value; }
         /// <summary>
@@ -152,7 +153,7 @@ namespace YoutubeDLSharp.Options
         public bool NoBreakOnExisting { get => noBreakOnExisting.Value; set => noBreakOnExisting.Value = value; }
         /// <summary>
         /// Alters --max-downloads, --break-on-existing,
-        /// --break-match-filter, and autonumber to
+        /// --break-match-filters, and autonumber to
         /// reset per input URL
         /// </summary>
         public bool BreakPerInput { get => breakPerInput.Value; set => breakPerInput.Value = value; }

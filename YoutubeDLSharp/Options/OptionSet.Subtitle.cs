@@ -40,18 +40,21 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool ListSubs { get => listSubs.Value; set => listSubs.Value = value; }
         /// <summary>
-        /// Subtitle format; accepts formats preference,
-        /// e.g. &quot;srt&quot; or &quot;ass/srt/best&quot;
+        /// Subtitle format; accepts formats preference
+        /// separated by &quot;/&quot;, e.g. &quot;srt&quot; or
+        /// &quot;ass/srt/best&quot;
         /// </summary>
         public string SubFormat { get => subFormat.Value; set => subFormat.Value = value; }
         /// <summary>
         /// Languages of the subtitles to download (can
         /// be regex) or &quot;all&quot; separated by commas, e.g.
-        /// --sub-langs &quot;en.*,ja&quot;. You can prefix the
-        /// language code with a &quot;-&quot; to exclude it from
-        /// the requested languages, e.g. --sub-langs
-        /// all,-live_chat. Use --list-subs for a list
-        /// of available language tags
+        /// --sub-langs &quot;en.*,ja&quot; (where &quot;en.*&quot; is a
+        /// regex pattern that matches &quot;en&quot; followed by
+        /// 0 or more of any character). You can prefix
+        /// the language code with a &quot;-&quot; to exclude it
+        /// from the requested languages, e.g. --sub-
+        /// langs all,-live_chat. Use --list-subs for a
+        /// list of available language tags
         /// </summary>
         public string SubLangs { get => subLangs.Value; set => subLangs.Value = value; }
     }

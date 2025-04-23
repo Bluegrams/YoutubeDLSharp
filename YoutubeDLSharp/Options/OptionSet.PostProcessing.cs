@@ -36,7 +36,7 @@ namespace YoutubeDLSharp.Options
         private Option<string> ffmpegLocation = new Option<string>("--ffmpeg-location");
         private MultiOption<string> exec = new MultiOption<string>("--exec");
         private Option<bool> noExec = new Option<bool>("--no-exec");
-        private Option<string> convertSubs = new Option<string>("--convert-subs", "--convert-subtitles");
+        private Option<string> convertSubs = new Option<string>("--convert-subs");
         private Option<string> convertThumbnails = new Option<string>("--convert-thumbnails");
         private Option<bool> splitChapters = new Option<bool>("--split-chapters");
         private Option<bool> noSplitChapters = new Option<bool>("--no-split-chapters");
@@ -71,9 +71,9 @@ namespace YoutubeDLSharp.Options
         /// necessary (currently supported: avi, flv,
         /// gif, mkv, mov, mp4, webm, aac, aiff, alac,
         /// flac, m4a, mka, mp3, ogg, opus, vorbis,
-        /// wav). If target container does not support
-        /// the video/audio codec, remuxing will fail.
-        /// You can specify multiple rules; e.g.
+        /// wav). If the target container does not
+        /// support the video/audio codec, remuxing will
+        /// fail. You can specify multiple rules; e.g.
         /// &quot;aac&gt;m4a/mov&gt;mp4/mkv&quot; will remux aac to m4a,
         /// mov to mp4 and anything else to mkv
         /// </summary>
@@ -196,16 +196,16 @@ namespace YoutubeDLSharp.Options
         public MultiValue<string> ReplaceInMetadata { get => replaceInMetadata.Value; set => replaceInMetadata.Value = value; }
         /// <summary>
         /// Write metadata to the video file&#x27;s xattrs
-        /// (using dublin core and xdg standards)
+        /// (using Dublin Core and XDG standards)
         /// </summary>
         public bool Xattrs { get => xattrs.Value; set => xattrs.Value = value; }
         /// <summary>
         /// Concatenate videos in a playlist. One of
         /// &quot;never&quot;, &quot;always&quot;, or &quot;multi_video&quot;
         /// (default; only when the videos form a single
-        /// show). All the video files must have same
-        /// codecs and number of streams to be
-        /// concatable. The &quot;pl_video:&quot; prefix can be
+        /// show). All the video files must have the
+        /// same codecs and number of streams to be
+        /// concatenable. The &quot;pl_video:&quot; prefix can be
         /// used with &quot;--paths&quot; and &quot;--output&quot; to set
         /// the output filename for the concatenated
         /// files. See &quot;OUTPUT TEMPLATE&quot; for details
@@ -215,9 +215,9 @@ namespace YoutubeDLSharp.Options
         /// Automatically correct known faults of the
         /// file. One of never (do nothing), warn (only
         /// emit a warning), detect_or_warn (the
-        /// default; fix file if we can, warn
-        /// otherwise), force (try fixing even if file
-        /// already exists)
+        /// default; fix the file if we can, warn
+        /// otherwise), force (try fixing even if the
+        /// file already exists)
         /// </summary>
         public string Fixup { get => fixup.Value; set => fixup.Value = value; }
         /// <summary>
@@ -231,7 +231,7 @@ namespace YoutubeDLSharp.Options
         /// when to execute it, separated by a &quot;:&quot;.
         /// Supported values of &quot;WHEN&quot; are the same as
         /// that of --use-postprocessor (default:
-        /// after_move). Same syntax as the output
+        /// after_move). The same syntax as the output
         /// template can be used to pass any field as
         /// arguments to the command. If no fields are
         /// passed, %(filepath,_filename|)q is appended
@@ -245,15 +245,19 @@ namespace YoutubeDLSharp.Options
         public bool NoExec { get => noExec.Value; set => noExec.Value = value; }
         /// <summary>
         /// Convert the subtitles to another format
-        /// (currently supported: ass, lrc, srt, vtt)
-        /// (Alias: --convert-subtitles)
+        /// (currently supported: ass, lrc, srt, vtt).
+        /// Use &quot;--convert-subs none&quot; to disable
+        /// conversion (default) (Alias: --convert-
+        /// subtitles)
         /// </summary>
         public string ConvertSubs { get => convertSubs.Value; set => convertSubs.Value = value; }
         /// <summary>
         /// Convert the thumbnails to another format
         /// (currently supported: jpg, png, webp). You
         /// can specify multiple rules using similar
-        /// syntax as --remux-video
+        /// syntax as &quot;--remux-video&quot;. Use &quot;--convert-
+        /// thumbnails none&quot; to disable conversion
+        /// (default)
         /// </summary>
         public string ConvertThumbnails { get => convertThumbnails.Value; set => convertThumbnails.Value = value; }
         /// <summary>
@@ -295,7 +299,7 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoForceKeyframesAtCuts { get => noForceKeyframesAtCuts.Value; set => noForceKeyframesAtCuts.Value = value; }
         /// <summary>
-        /// The (case sensitive) name of plugin
+        /// The (case-sensitive) name of plugin
         /// postprocessors to be enabled, and
         /// (optionally) arguments to be passed to it,
         /// separated by a colon &quot;:&quot;. ARGS are a
@@ -308,8 +312,8 @@ namespace YoutubeDLSharp.Options
         /// --print/--output), &quot;before_dl&quot; (before each
         /// video download), &quot;post_process&quot; (after each
         /// video download; default), &quot;after_move&quot;
-        /// (after moving video file to its final
-        /// locations), &quot;after_video&quot; (after downloading
+        /// (after moving the video file to its final
+        /// location), &quot;after_video&quot; (after downloading
         /// and processing all formats of a video), or
         /// &quot;playlist&quot; (at end of playlist). This option
         /// can be used multiple times to add different

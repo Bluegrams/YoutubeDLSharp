@@ -1,7 +1,5 @@
 # YoutubeDLSharp
 
-[![Build status](https://bluegrams.visualstudio.com/vividl/_apis/build/status/youtubedlsharp-ci)](https://bluegrams.visualstudio.com/vividl/_build/latest?definitionId=3)
-
 A simple .NET wrapper library for [youtube-dl](https://github.com/ytdl-org/youtube-dl) and [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 
 | For **yt-dlp** | For **youtube-dl** |

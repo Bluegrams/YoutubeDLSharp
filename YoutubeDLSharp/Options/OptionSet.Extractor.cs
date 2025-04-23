@@ -36,7 +36,7 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool HlsSplitDiscontinuity { get => hlsSplitDiscontinuity.Value; set => hlsSplitDiscontinuity.Value = value; }
         /// <summary>
-        /// Do not split HLS playlists to different
+        /// Do not split HLS playlists into different
         /// formats at discontinuities such as ad breaks
         /// (default)
         /// </summary>
