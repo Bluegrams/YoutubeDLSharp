@@ -190,12 +190,12 @@ namespace YoutubeDLSharp
             SetUnixExecPerms(downloadLocation);
         }
 
-        public static async Task DownloadFFmpeg(string directoryPath = "")
+        public static async Task DownloadFFmpeg(string directoryPath = "", int timeoutSeconds = 60 * 5)
         {
             await FFDownloader(directoryPath, binary: FFmpegApi.BinaryType.FFmpeg);
         }
 
-        public static async Task DownloadFFprobe(string directoryPath = "")
+        public static async Task DownloadFFprobe(string directoryPath = "", int timeoutSeconds = 60 * 5)
         {
             await FFDownloader(directoryPath, binary:FFmpegApi.BinaryType.FFprobe);
         }
