@@ -91,7 +91,9 @@ namespace YoutubeDLSharp
             return null;
         }
 
-#region Download Helpers
+        #region Download Helpers
+
+        public static int TimeoutSeconds { get; set; } = 60 * 5;
 
         public static string YtDlpBinaryName => GetYtDlpBinaryName();
         public static string FfmpegBinaryName => GetFfmpegBinaryName();
@@ -178,31 +180,31 @@ namespace YoutubeDLSharp
             }
         }
 
-        public static async Task DownloadYtDlp(string directoryPath = "", int timeoutSeconds = 60*5)
+        public static async Task DownloadYtDlp(string directoryPath = "")
         {
             string downloadUrl = GetYtDlpDownloadUrl();
 
             if (string.IsNullOrEmpty(directoryPath)) { directoryPath = Directory.GetCurrentDirectory(); }
 
             var downloadLocation = Path.Combine(directoryPath, Path.GetFileName(downloadUrl));
-            var data = await DownloadFileBytesAsync(downloadUrl, timeoutSeconds);
+            var data = await DownloadFileBytesAsync(downloadUrl);
             File.WriteAllBytes(downloadLocation, data);
             SetUnixExecPerms(downloadLocation);
         }
 
-        public static async Task DownloadFFmpeg(string directoryPath = "", int timeoutSeconds = 60 * 5)
+        public static async Task DownloadFFmpeg(string directoryPath = "")
         {
             await FFDownloader(directoryPath, binary: FFmpegApi.BinaryType.FFmpeg);
         }
 
-        public static async Task DownloadFFprobe(string directoryPath = "", int timeoutSeconds = 60 * 5)
+        public static async Task DownloadFFprobe(string directoryPath = "")
         {
             await FFDownloader(directoryPath, binary:FFmpegApi.BinaryType.FFprobe);
         }
 
         
 
-        private static async Task FFDownloader(string directoryPath = "", int timeoutSeconds = 60*5, FFmpegApi.BinaryType binary = FFmpegApi.BinaryType.FFmpeg)
+        private static async Task FFDownloader(string directoryPath = "", FFmpegApi.BinaryType binary = FFmpegApi.BinaryType.FFmpeg)
         {
             if (string.IsNullOrEmpty(directoryPath)) { directoryPath = Directory.GetCurrentDirectory(); }
             const string FFMPEG_API_URL = "https://ffbinaries.com/api/v1/version/latest";
@@ -226,7 +228,7 @@ namespace YoutubeDLSharp
             }
 
             string downloadUrl = binary == FFmpegApi.BinaryType.FFmpeg ? ffContent.Ffmpeg : ffContent.Ffprobe;
-            var dataBytes = await DownloadFileBytesAsync(downloadUrl, timeoutSeconds);
+            var dataBytes = await DownloadFileBytesAsync(downloadUrl);
             string fileName = string.Empty;
             using (var stream = new MemoryStream(dataBytes))
             {
@@ -245,19 +247,19 @@ namespace YoutubeDLSharp
         private static void SetUnixExecPerms(string filename)
         {
             if(OSHelper.IsWindows)return;
-#if NET8_0_OR_GREATER            
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+#if NET7_0_OR_GREATER            
+            if (!OSHelper.IsWindows)
                 File.SetUnixFileMode(filename, UnixFileMode.UserExecute | UnixFileMode.UserRead | UnixFileMode.UserWrite);
 #else
             throw new PlatformNotSupportedException("Setting Unix permissions is not supported on this platform.");
 #endif
         }
 
-        private static async Task<byte[]> DownloadFileBytesAsync(string uri, int timeoutSeconds)
+        private static async Task<byte[]> DownloadFileBytesAsync(string uri)
         {
             if (!Uri.TryCreate(uri, UriKind.Absolute, out Uri _))
                 throw new InvalidOperationException("URI is invalid.");
-            _client.Timeout = TimeSpan.FromSeconds(timeoutSeconds); // Set a reasonable timeout for downloads
+            _client.Timeout = TimeSpan.FromSeconds(TimeoutSeconds); // Set a reasonable timeout for downloads
 
             byte[] fileBytes = await _client.GetByteArrayAsync(uri);
             return fileBytes;
