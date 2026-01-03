@@ -31,7 +31,7 @@ namespace YoutubeDLSharp.Options
         private Option<int?> skipPlaylistAfterErrors = new Option<int?>("--skip-playlist-after-errors");
 
         /// <summary>
-        /// Comma separated playlist_index of the items
+        /// Comma-separated playlist_index of the items
         /// to download. You can specify a range using
         /// &quot;[START]:[STOP][:STEP]&quot;. For backward
         /// compatibility, START-STOP is also supported.

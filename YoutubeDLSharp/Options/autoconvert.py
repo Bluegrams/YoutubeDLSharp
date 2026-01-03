@@ -197,7 +197,11 @@ with open(IN_FILE, 'r') as f:
 all_items = []
 for par in all_text:
     lines = [line for line in par.splitlines() if line.startswith(" ")]
+    if len(lines) == 0:
+        continue
     name = re.sub("(Options)?:", "", prepare_name(lines[0].strip()))
+    if name == "PresetAliases":
+        continue
     all_items.append(extract_data(lines[1:], name))
 # write to files
 for item_data in all_items:

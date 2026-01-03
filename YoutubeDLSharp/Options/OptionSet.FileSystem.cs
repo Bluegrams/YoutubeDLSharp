@@ -142,12 +142,12 @@ namespace YoutubeDLSharp.Options
         public bool NoPart { get => noPart.Value; set => noPart.Value = value; }
         /// <summary>
         /// Use the Last-modified header to set the file
-        /// modification time (default)
+        /// modification time
         /// </summary>
         public bool Mtime { get => mtime.Value; set => mtime.Value = value; }
         /// <summary>
         /// Do not use the Last-modified header to set
-        /// the file modification time
+        /// the file modification time (default)
         /// </summary>
         public bool NoMtime { get => noMtime.Value; set => noMtime.Value = value; }
         /// <summary>

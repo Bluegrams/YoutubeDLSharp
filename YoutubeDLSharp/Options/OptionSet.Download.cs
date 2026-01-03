@@ -26,7 +26,6 @@ namespace YoutubeDLSharp.Options
         private Option<bool> playlistRandom = new Option<bool>("--playlist-random");
         private Option<bool> lazyPlaylist = new Option<bool>("--lazy-playlist");
         private Option<bool> noLazyPlaylist = new Option<bool>("--no-lazy-playlist");
-        private Option<bool> xattrSetFilesize = new Option<bool>("--xattr-set-filesize");
         private Option<bool> hlsUseMpegts = new Option<bool>("--hls-use-mpegts");
         private Option<bool> noHlsUseMpegts = new Option<bool>("--no-hls-use-mpegts");
         private MultiOption<string> downloadSections = new MultiOption<string>("--download-sections");
@@ -137,11 +136,6 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoLazyPlaylist { get => noLazyPlaylist.Value; set => noLazyPlaylist.Value = value; }
         /// <summary>
-        /// Set file xattribute ytdl.filesize with
-        /// expected file size
-        /// </summary>
-        public bool XattrSetFilesize { get => xattrSetFilesize.Value; set => xattrSetFilesize.Value = value; }
-        /// <summary>
         /// Use the mpegts container for HLS videos;
         /// allowing some players to play the video
         /// while downloading, and reducing the chance
@@ -174,9 +168,9 @@ namespace YoutubeDLSharp.Options
         /// use (optionally) prefixed by the protocols
         /// (http, ftp, m3u8, dash, rstp, rtmp, mms) to
         /// use it for. Currently supports native,
-        /// aria2c, avconv, axel, curl, ffmpeg, httpie,
-        /// wget. You can use this option multiple times
-        /// to set different downloaders for different
+        /// aria2c, axel, curl, ffmpeg, httpie, wget.
+        /// You can use this option multiple times to
+        /// set different downloaders for different
         /// protocols. E.g. --downloader aria2c
         /// --downloader &quot;dash,m3u8:native&quot; will use
         /// aria2c for http/ftp downloads, and the

@@ -16,7 +16,6 @@ namespace YoutubeDLSharp.Options
         private Option<bool> ignoreErrors = new Option<bool>("-i", "--ignore-errors");
         private Option<bool> noAbortOnError = new Option<bool>("--no-abort-on-error");
         private Option<bool> abortOnError = new Option<bool>("--abort-on-error", "--no-ignore-errors");
-        private Option<bool> dumpUserAgent = new Option<bool>("--dump-user-agent");
         private Option<bool> listExtractors = new Option<bool>("--list-extractors");
         private Option<bool> extractorDescriptions = new Option<bool>("--extractor-descriptions");
         private Option<string> useExtractors = new Option<string>("--use-extractors", "--ies");
@@ -26,6 +25,10 @@ namespace YoutubeDLSharp.Options
         private MultiOption<string> configLocations = new MultiOption<string>("--config-locations");
         private MultiOption<string> pluginDirs = new MultiOption<string>("--plugin-dirs");
         private Option<bool> noPluginDirs = new Option<bool>("--no-plugin-dirs");
+        private MultiOption<string> jsRuntimes = new MultiOption<string>("--js-runtimes");
+        private Option<bool> noJsRuntimes = new Option<bool>("--no-js-runtimes");
+        private MultiOption<string> remoteComponents = new MultiOption<string>("--remote-components");
+        private Option<bool> noRemoteComponents = new Option<bool>("--no-remote-components");
         private Option<bool> flatPlaylist = new Option<bool>("--flat-playlist");
         private Option<bool> noFlatPlaylist = new Option<bool>("--no-flat-playlist");
         private Option<bool> liveFromStart = new Option<bool>("--live-from-start");
@@ -37,6 +40,7 @@ namespace YoutubeDLSharp.Options
         private MultiOption<string> color = new MultiOption<string>("--color");
         private Option<string> compatOptions = new Option<string>("--compat-options");
         private MultiOption<string> alias = new MultiOption<string>("--alias");
+        private MultiOption<string> presetAlias = new MultiOption<string>("-t", "--preset-alias");
 
         /// <summary>
         /// Print this help text and exit
@@ -81,10 +85,6 @@ namespace YoutubeDLSharp.Options
         /// error occurs (Alias: --no-ignore-errors)
         /// </summary>
         public bool AbortOnError { get => abortOnError.Value; set => abortOnError.Value = value; }
-        /// <summary>
-        /// Display the current user-agent and exit
-        /// </summary>
-        public bool DumpUserAgent { get => dumpUserAgent.Value; set => dumpUserAgent.Value = value; }
         /// <summary>
         /// List all supported extractors and exit
         /// </summary>
@@ -155,6 +155,49 @@ namespace YoutubeDLSharp.Options
         /// </summary>
         public bool NoPluginDirs { get => noPluginDirs.Value; set => noPluginDirs.Value = value; }
         /// <summary>
+        /// Additional JavaScript runtime to enable,
+        /// with an optional location for the runtime
+        /// (either the path to the binary or its
+        /// containing directory). This option can be
+        /// used multiple times to enable multiple
+        /// runtimes. Supported runtimes are (in order
+        /// of priority, from highest to lowest): deno,
+        /// node, quickjs, bun. Only &quot;deno&quot; is enabled
+        /// by default. The highest priority runtime
+        /// that is both enabled and available will be
+        /// used. In order to use a lower priority
+        /// runtime when &quot;deno&quot; is available, --no-js-
+        /// runtimes needs to be passed before enabling
+        /// other runtimes
+        /// </summary>
+        public MultiValue<string> JsRuntimes { get => jsRuntimes.Value; set => jsRuntimes.Value = value; }
+        /// <summary>
+        /// Clear JavaScript runtimes to enable,
+        /// including defaults and those provided by
+        /// previous --js-runtimes
+        /// </summary>
+        public bool NoJsRuntimes { get => noJsRuntimes.Value; set => noJsRuntimes.Value = value; }
+        /// <summary>
+        /// Remote components to allow yt-dlp to fetch
+        /// when required. This option is currently not
+        /// needed if you are using an official
+        /// executable or have the requisite version of
+        /// the yt-dlp-ejs package installed. You can
+        /// use this option multiple times to allow
+        /// multiple components. Supported values:
+        /// ejs:npm (external JavaScript components from
+        /// npm), ejs:github (external JavaScript
+        /// components from yt-dlp-ejs GitHub). By
+        /// default, no remote components are allowed
+        /// </summary>
+        public MultiValue<string> RemoteComponents { get => remoteComponents.Value; set => remoteComponents.Value = value; }
+        /// <summary>
+        /// Disallow fetching of all remote components,
+        /// including any previously allowed by
+        /// --remote-components or defaults.
+        /// </summary>
+        public bool NoRemoteComponents { get => noRemoteComponents.Value; set => noRemoteComponents.Value = value; }
+        /// <summary>
         /// Do not extract a playlist&#x27;s URL result
         /// entries; some entry metadata may be missing
         /// and downloading may be bypassed
@@ -167,8 +210,8 @@ namespace YoutubeDLSharp.Options
         public bool NoFlatPlaylist { get => noFlatPlaylist.Value; set => noFlatPlaylist.Value = value; }
         /// <summary>
         /// Download livestreams from the start.
-        /// Currently only supported for YouTube
-        /// (Experimental)
+        /// Currently experimental and only supported
+        /// for YouTube and Twitch
         /// </summary>
         public bool LiveFromStart { get => liveFromStart.Value; set => liveFromStart.Value = value; }
         /// <summary>
@@ -218,12 +261,12 @@ namespace YoutubeDLSharp.Options
         /// an alias starts with a dash &quot;-&quot;, it is
         /// prefixed with &quot;--&quot;. Arguments are parsed
         /// according to the Python string formatting
-        /// mini-language. E.g. --alias get-audio,-X
-        /// &quot;-S=aext:{0},abr -x --audio-format {0}&quot;
-        /// creates options &quot;--get-audio&quot; and &quot;-X&quot; that
-        /// takes an argument (ARG0) and expands to
-        /// &quot;-S=aext:ARG0,abr -x --audio-format ARG0&quot;.
-        /// All defined aliases are listed in the --help
+        /// mini-language. E.g. --alias get-audio,-X &quot;-S
+        /// aext:{0},abr -x --audio-format {0}&quot; creates
+        /// options &quot;--get-audio&quot; and &quot;-X&quot; that takes an
+        /// argument (ARG0) and expands to &quot;-S
+        /// aext:ARG0,abr -x --audio-format ARG0&quot;. All
+        /// defined aliases are listed in the --help
         /// output. Alias options can trigger more
         /// aliases; so be careful to avoid defining
         /// recursive options. As a safety measure, each
@@ -232,5 +275,14 @@ namespace YoutubeDLSharp.Options
         /// times
         /// </summary>
         public MultiValue<string> Alias { get => alias.Value; set => alias.Value = value; }
+        /// <summary>
+        /// Applies a predefined set of options. e.g.
+        /// --preset-alias mp3. The following presets
+        /// are available: mp3, aac, mp4, mkv, sleep.
+        /// See the &quot;Preset Aliases&quot; section at the end
+        /// for more info. This option can be used
+        /// multiple times
+        /// </summary>
+        public MultiValue<string> PresetAlias { get => presetAlias.Value; set => presetAlias.Value = value; }
     }
 }

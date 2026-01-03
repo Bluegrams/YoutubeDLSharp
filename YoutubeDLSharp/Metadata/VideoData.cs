@@ -73,7 +73,7 @@ namespace YoutubeDLSharp.Metadata
         [JsonProperty("upload_date")] // date in UTC (YYYYMMDD).        
         public DateTime? UploadDate { get; set; }
         [JsonConverter(typeof(UnixTimestampConverter))]
-        [JsonProperty("modified_timestemp")] // date as unix timestamp
+        [JsonProperty("modified_timestamp")] // date as unix timestamp
         public DateTime? ModifiedTimestamp { get; set; }
         [JsonConverter(typeof(CustomDateTimeConverter))]
         [JsonProperty("modified_date")] // date in UTC (YYYYMMDD).        

@@ -391,6 +391,7 @@ namespace YoutubeDLSharp
                 NoOverwrites = !this.OverwriteFiles,
                 NoPart = true,
                 FfmpegLocation = Utils.GetFullPath(this.FFmpegPath),
+                Progress = true,
                 Print = "after_move:outfile: %(filepath)s"
             };
         }
