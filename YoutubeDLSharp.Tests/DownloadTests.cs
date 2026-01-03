@@ -18,7 +18,7 @@ namespace YoutubeDLSharp.Tests
         [ClassInitialize]
         public static async Task Initialize(TestContext context)
         {
-            await PrepTests.DownloadBinaries();
+            await Utils.DownloadBinaries(true);
             ydl = new YoutubeDL();
             ydl.OutputFileTemplate = "%(title)s.%(ext)s";
             downloadedFiles = new List<string>();

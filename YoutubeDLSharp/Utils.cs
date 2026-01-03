@@ -1,14 +1,15 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using YoutubeDLSharp.Helpers;
 
 namespace YoutubeDLSharp
@@ -18,7 +19,6 @@ namespace YoutubeDLSharp
     /// </summary>
     public static class Utils
     {
-        private static readonly HttpClient _client = new HttpClient();
 
         private static readonly Regex rgxTimestamp = new Regex("[0-9]+(?::[0-9]+)+", RegexOptions.Compiled);
         private static readonly Dictionary<char, string> accentChars
@@ -90,7 +90,9 @@ namespace YoutubeDLSharp
             return null;
         }
 
-#region Download Helpers
+        #region Download Helpers
+
+        public static int TimeoutSeconds { get; set; } = 60 * 5;
 
         public static string YtDlpBinaryName => GetYtDlpBinaryName();
         public static string FfmpegBinaryName => GetFfmpegBinaryName();
@@ -121,6 +123,40 @@ namespace YoutubeDLSharp
             }            
         }
 
+        private static string GetYtDlpBinaryName()
+        {
+            string ytdlpDownloadPath = GetYtDlpDownloadUrl();
+            return Path.GetFileName(ytdlpDownloadPath);
+        }
+
+        private static string GetFfmpegBinaryName()
+        {
+            switch (OSHelper.GetOSVersion())
+            {
+                case OSVersion.Windows:
+                    return "ffmpeg.exe";
+                case OSVersion.OSX:
+                case OSVersion.Linux:
+                    return "ffmpeg";
+                default:
+                    throw new Exception("Your OS isn't supported");
+            }
+        }
+
+        private static string GetFfprobeBinaryName()
+        {
+            switch (OSHelper.GetOSVersion())
+            {
+                case OSVersion.Windows:
+                    return "ffprobe.exe";
+                case OSVersion.OSX:
+                case OSVersion.Linux:
+                    return "ffprobe";
+                default:
+                    throw new Exception("Your OS isn't supported");
+            }
+        }
+
         private static string GetYtDlpDownloadUrl()
         {
             const string BASE_GITHUB_URL = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp";
@@ -143,39 +179,7 @@ namespace YoutubeDLSharp
             return downloadUrl;
         }
 
-        private static string GetYtDlpBinaryName()
-        {
-            string ytdlpDownloadPath = GetYtDlpDownloadUrl();
-            return Path.GetFileName(ytdlpDownloadPath);            
-        }
-
-        private static string GetFfmpegBinaryName()
-        {
-            switch (OSHelper.GetOSVersion())
-            {
-                case OSVersion.Windows:
-                    return "ffmpeg.exe";
-                case OSVersion.OSX:
-                case OSVersion.Linux:
-                    return "ffmpeg";
-                default:
-                    throw new Exception("Your OS isn't supported");
-            }            
-        }
-
-        private static string GetFfprobeBinaryName()
-        {
-            switch (OSHelper.GetOSVersion())
-            {
-                case OSVersion.Windows:
-                    return "ffprobe.exe";
-                case OSVersion.OSX:
-                case OSVersion.Linux:
-                    return "ffprobe";
-                default:
-                    throw new Exception("Your OS isn't supported");
-            }
-        }
+        
 
         public static async Task DownloadYtDlp(string directoryPath = "")
         {
@@ -186,26 +190,48 @@ namespace YoutubeDLSharp
             var downloadLocation = Path.Combine(directoryPath, Path.GetFileName(downloadUrl));
             var data = await DownloadFileBytesAsync(downloadUrl);
             File.WriteAllBytes(downloadLocation, data);
+            SetUnixExecPerms(downloadLocation);
         }
 
         public static async Task DownloadFFmpeg(string directoryPath = "")
         {
-            await FFDownloader(directoryPath, FFmpegApi.BinaryType.FFmpeg);
+            await FFDownloader(directoryPath, binary: FFmpegApi.BinaryType.FFmpeg);
         }
 
         public static async Task DownloadFFprobe(string directoryPath = "")
         {
-            await FFDownloader(directoryPath, FFmpegApi.BinaryType.FFprobe);
+            await FFDownloader(directoryPath, binary:FFmpegApi.BinaryType.FFprobe);
         }
 
-        
+        private static void SetUnixExecPerms(string filename)
+        {
+            if (OSHelper.IsWindows) return;
+#if NET7_0_OR_GREATER            
+            if (!OSHelper.IsWindows)
+                File.SetUnixFileMode(filename, UnixFileMode.UserExecute | UnixFileMode.UserRead | UnixFileMode.UserWrite);
+#else
+            throw new PlatformNotSupportedException("Setting Unix permissions is not supported on this platform.");
+#endif
+        }
+
+        private static HttpClient GetHttpClient()
+        {
+            HttpClient _client = null;
+            if (_client == null)
+            {
+                _client = new HttpClient();
+                _client.Timeout = TimeSpan.FromSeconds(TimeoutSeconds);
+            }
+            return _client;
+        }
 
         private static async Task FFDownloader(string directoryPath = "", FFmpegApi.BinaryType binary = FFmpegApi.BinaryType.FFmpeg)
         {
+            var client = GetHttpClient();
             if (string.IsNullOrEmpty(directoryPath)) { directoryPath = Directory.GetCurrentDirectory(); }
             const string FFMPEG_API_URL = "https://ffbinaries.com/api/v1/version/latest";
 
-            var ffmpegVersion = JsonConvert.DeserializeObject<FFmpegApi.Root>(await (await _client.GetAsync(FFMPEG_API_URL)).Content.ReadAsStringAsync());
+            var ffmpegVersion = JsonConvert.DeserializeObject<FFmpegApi.Root>(await (await client.GetAsync(FFMPEG_API_URL)).Content.ReadAsStringAsync());
 
             FFmpegApi.OsBinVersion ffContent;
             switch (OSHelper.GetOSVersion())
@@ -225,24 +251,32 @@ namespace YoutubeDLSharp
 
             string downloadUrl = binary == FFmpegApi.BinaryType.FFmpeg ? ffContent.Ffmpeg : ffContent.Ffprobe;
             var dataBytes = await DownloadFileBytesAsync(downloadUrl);
+            string fileName = string.Empty;
             using (var stream = new MemoryStream(dataBytes))
             {
                 using (var archive = new ZipArchive(stream, ZipArchiveMode.Read))
                 {
                     if (archive.Entries.Count > 0)
                     {
+                        fileName = Path.Combine(directoryPath, archive.Entries[0].FullName);
                         archive.Entries[0].ExtractToFile(Path.Combine(directoryPath, archive.Entries[0].FullName), true);
                     }
                 }                
-            };            
+            };
+            SetUnixExecPerms(fileName);
+            client?.Dispose();
         }
+
+        
 
         private static async Task<byte[]> DownloadFileBytesAsync(string uri)
         {
             if (!Uri.TryCreate(uri, UriKind.Absolute, out Uri _))
                 throw new InvalidOperationException("URI is invalid.");
+            var client = GetHttpClient();// Set a reasonable timeout for downloads
 
-            byte[] fileBytes = await _client.GetByteArrayAsync(uri);
+            byte[] fileBytes = await client.GetByteArrayAsync(uri);
+            client?.Dispose();
             return fileBytes;
         }
 
