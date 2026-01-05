@@ -98,7 +98,7 @@ namespace YoutubeDLSharp
         public static string FfmpegBinaryName => GetFfmpegBinaryName();
         public static string FfprobeBinaryName => GetFfprobeBinaryName();
 
-        public static async Task DownloadBinaries(bool skipExisting = true, string directoryPath = "")
+        public static async Task DownloadBinaries(bool skipExisting = true, string directoryPath = "", bool downloadJSRuntime = true)
         {
             if (skipExisting)
             {
@@ -114,12 +114,20 @@ namespace YoutubeDLSharp
                 {
                     await DownloadFFprobe(directoryPath);
                 }
+                if (downloadJSRuntime && !File.Exists(Path.Combine(directoryPath, GetDenoBinaryName())))
+                {
+                    await DownloadDeno(directoryPath);
+                }
             }
             else
             {
                 await DownloadYtDlp(directoryPath);
                 await DownloadFFmpeg(directoryPath);
                 await DownloadFFprobe(directoryPath);
+                if (downloadJSRuntime)
+                {
+                    await DownloadDeno(directoryPath);
+                }
             }            
         }
 
@@ -152,6 +160,20 @@ namespace YoutubeDLSharp
                 case OSVersion.OSX:
                 case OSVersion.Linux:
                     return "ffprobe";
+                default:
+                    throw new Exception("Your OS isn't supported");
+            }
+        }
+
+        private static string GetDenoBinaryName()
+        {
+            switch (OSHelper.GetOSVersion())
+            {
+                case OSVersion.Windows:
+                    return "deno.exe";
+                case OSVersion.OSX:
+                case OSVersion.Linux:
+                    return "deno";
                 default:
                     throw new Exception("Your OS isn't supported");
             }
@@ -324,7 +346,52 @@ namespace YoutubeDLSharp
                 FFprobe
             }
         }
-#endregion
+
+        private const string DENO_VERSION_URL = "https://dl.deno.land/release-latest.txt";
+        private const string DENO_DOWNLOAD_URL_TEMPLATE = "https://dl.deno.land/release/{0}/deno-{1}.zip";
+
+        public static async Task DownloadDeno(string directoryPath = "")
+        {
+            var client = GetHttpClient();
+            if (string.IsNullOrEmpty(directoryPath)) { directoryPath = Directory.GetCurrentDirectory(); }
+
+            var denoVersion = (await (await client.GetAsync(DENO_VERSION_URL)).Content.ReadAsStringAsync()).Trim();
+
+            string target;
+            switch (OSHelper.GetOSVersion())
+            {
+                case OSVersion.Windows:
+                    target = "x86_64-pc-windows-msvc";
+                    break;
+                case OSVersion.OSX:
+                    target = "aarch64-apple-darwin";
+                    break;
+                case OSVersion.Linux:
+                    target = "x86_64-unknown-linux-gnu";
+                    break;
+                default:
+                    throw new NotImplementedException("Your OS isn't supported");
+            }
+
+            string downloadUrl = String.Format(DENO_DOWNLOAD_URL_TEMPLATE, denoVersion, target);
+            var dataBytes = await DownloadFileBytesAsync(downloadUrl);
+            string fileName = string.Empty;
+            using (var stream = new MemoryStream(dataBytes))
+            {
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Read))
+                {
+                    if (archive.Entries.Count > 0)
+                    {
+                        fileName = Path.Combine(directoryPath, archive.Entries[0].FullName);
+                        archive.Entries[0].ExtractToFile(Path.Combine(directoryPath, archive.Entries[0].FullName), true);
+                    }
+                }
+            }
+            ;
+            SetUnixExecPerms(fileName);
+            client?.Dispose();
+        }
+        #endregion
 
         public static void EnsureSuccess<T>(this RunResult<T> runResult)
         {
