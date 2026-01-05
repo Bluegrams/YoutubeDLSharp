@@ -102,6 +102,21 @@ namespace YoutubeDLSharp.Tests
         }
 
         [TestMethod]
+        public void TestOptionSetWithOptionValsFromString()
+        {
+            string[] lines = new[]
+            {
+                "-x",
+                "--replace-in-metadata title \"&\" \"_\""
+            };
+            OptionSet opts = OptionSet.FromString(lines);
+            Assert.IsTrue(opts.ExtractAudio);
+            CollectionAssert.AreEquivalent(new[] { new StringVals("title", "&", "_") }, (StringVals[])opts.ReplaceInMetadata);
+            // also checl that reverse direction works
+            Assert.AreEqual(" -x --replace-in-metadata \"title\" \"&\" \"_\"", opts.ToString());
+        }
+
+        [TestMethod]
         public void TestCustomOptionSetFromString()
         {
             void AssertCustomOption(IOption option)

@@ -39,7 +39,7 @@ namespace YoutubeDLSharp.Options
         private Option<bool> noMarkWatched = new Option<bool>("--no-mark-watched");
         private MultiOption<string> color = new MultiOption<string>("--color");
         private Option<string> compatOptions = new Option<string>("--compat-options");
-        private MultiOption<string> alias = new MultiOption<string>("--alias");
+        private MultiOption<StringVals> alias = new MultiOption<StringVals>("--alias");
         private MultiOption<string> presetAlias = new MultiOption<string>("-t", "--preset-alias");
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace YoutubeDLSharp.Options
         /// times. This option can be used multiple
         /// times
         /// </summary>
-        public MultiValue<string> Alias { get => alias.Value; set => alias.Value = value; }
+        public MultiValue<StringVals> Alias { get => alias.Value; set => alias.Value = value; }
         /// <summary>
         /// Applies a predefined set of options. e.g.
         /// --preset-alias mp3. The following presets

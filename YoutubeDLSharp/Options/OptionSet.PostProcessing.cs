@@ -29,7 +29,7 @@ namespace YoutubeDLSharp.Options
         private Option<bool> embedInfoJson = new Option<bool>("--embed-info-json");
         private Option<bool> noEmbedInfoJson = new Option<bool>("--no-embed-info-json");
         private Option<string> parseMetadata = new Option<string>("--parse-metadata");
-        private MultiOption<string> replaceInMetadata = new MultiOption<string>("--replace-in-metadata");
+        private MultiOption<StringVals> replaceInMetadata = new MultiOption<StringVals>("--replace-in-metadata");
         private Option<bool> xattrs = new Option<bool>("--xattrs");
         private Option<string> concatPlaylist = new Option<string>("--concat-playlist");
         private Option<string> fixup = new Option<string>("--fixup");
@@ -193,7 +193,7 @@ namespace YoutubeDLSharp.Options
         /// are the same as that of --use-postprocessor
         /// (default: pre_process)
         /// </summary>
-        public MultiValue<string> ReplaceInMetadata { get => replaceInMetadata.Value; set => replaceInMetadata.Value = value; }
+        public MultiValue<StringVals> ReplaceInMetadata { get => replaceInMetadata.Value; set => replaceInMetadata.Value = value; }
         /// <summary>
         /// Write metadata to the video file&#x27;s xattrs
         /// (using Dublin Core and XDG standards)

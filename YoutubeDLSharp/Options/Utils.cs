@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 
 namespace YoutubeDLSharp.Options
 {
@@ -21,6 +22,10 @@ namespace YoutubeDLSharp.Options
             {
                 return (T)(object)DateTime.ParseExact(stringValue, "yyyyMMdd", null);
             }
+            else if (typeof(T) == typeof(StringVals))
+            {
+                return (T)(object)new StringVals(stringValue.Split().Select(v => v.Trim('"')).ToArray());
+            }
             else
             {
                 TypeConverter conv = TypeDescriptor.GetConverter(typeof(T));
@@ -37,6 +42,8 @@ namespace YoutubeDLSharp.Options
                 val = $" \"{value.ToString().ToLower()}\"";
             else if (value is DateTime dateTime)
                 val = $" {dateTime.ToString("yyyyMMdd")}";
+            else if (value is StringVals)
+                val = $" {value}";
             else if (value is string)
                 val = $" \"{value}\"";
             else val = " " + value;

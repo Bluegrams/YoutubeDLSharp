@@ -89,6 +89,8 @@ def infer_type(name, s):
         return "bool"
     elif name in TYPE_MAP.keys():
         return TYPE_MAP[name]
+    elif len(s.split()) > 2:
+        return "OptionVals"
     else:
         return "string"
 
@@ -141,11 +143,12 @@ def extract_data(lines, name):
         elif line.startswith(" "*OPT_INDENT + "-"):
             if current_item:
                 items.append((current_item, current_descr))
-            current_item = [s.strip() for s in line[:IN_INDENT].split(',')]
             # use to identify if description starts in next line because of length of option
             if len(line) > IN_INDENT and line[IN_INDENT-1] == " ":
+                current_item = [s.strip() for s in line[:IN_INDENT].split(',')]
                 current_descr = [line[IN_INDENT:]]
             else:
+                current_item = [s.strip() for s in line.split(',')]
                 current_descr = []
     items.append((current_item, current_descr))
     print("%s : Found %d items." % (name, len(items)))

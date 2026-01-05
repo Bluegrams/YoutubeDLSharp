@@ -68,7 +68,9 @@ namespace YoutubeDLSharp.Options
         public void SetFromString(string s)
         {
             string[] split = s.Split(' ');
-            string stringValue = s.Substring(split[0].Length).Trim().Trim('"');
+            string stringValue = s.Substring(split[0].Length).Trim();
+            if (typeof(T) != typeof(StringVals))
+                stringValue = stringValue.Trim('"');
             if (!OptionStrings.Contains(split[0]))
                 throw new ArgumentException("Given string does not match required format.");
             Value = Utils.OptionValueFromString<T>(stringValue);
