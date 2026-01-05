@@ -29,6 +29,8 @@ If you don't have them set up already, you can either...
     ```csharp
     await YoutubeDLSharp.Utils.DownloadYtDlp();
     await YoutubeDLSharp.Utils.DownloadFFmpeg();
+    
+    await YoutubeDLSharp.Utils.DownloadDeno(); // optional, for YouTube downloads
     ```
 
 ## How do I use it?

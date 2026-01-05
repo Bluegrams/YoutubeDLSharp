@@ -1,5 +1,11 @@
 # YoutubeDLSharp Changelog
 
+### v.1.2.0 (2026-01)
+- **New**/ **Changed:** Include new and changed yt-dlp options (version 2025-12-08).
+- **New:** Better support for options with multiple values via StringVals. Fixes `--alias`, `--replace-in-metadata`.
+- **New:** Add `Utils.DownloadDeno()` method to download Deno runtime.
+- **Changed:** Binary downloads: Add unix setExec support; add timeout on downloads.
+
 ### v.1.1.2 (2025-04)
 - **New**/ **Changed:** Include new and changed yt-dlp options (version 2023-03-31).
 - **Fixed:** Fix command-injection vulnerability running on Windows
