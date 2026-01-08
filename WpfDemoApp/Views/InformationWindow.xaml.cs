@@ -1,15 +1,14 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using YoutubeDLSharp.Metadata;
 
-namespace WpfDemoApp
+namespace WpfDemoApp.Views
 {
     public partial class InformationWindow : Window
     {
         public InformationWindow(VideoData videoData)
         {
-            this.DataContext = videoData;
             InitializeComponent();
+            DataContext = videoData;
         }
     }
 }
